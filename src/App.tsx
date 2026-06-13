@@ -1,20 +1,32 @@
-import { Button } from "@/components/ui/button"
+import Navbar from './sections/Navbar'
+import Hero from './sections/Hero'
+import ServicesBento from './sections/ServicesBento'
 
-export function App() {
+const App = () => {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+    <section 
+      className='min-h-screen bg-background text-foreground transition-colors duration-300 relative'
+      style={{
+        backgroundImage: "url('/stripe.svg')",
+        backgroundRepeat: 'repeat',
+        backgroundSize: '38px',
+      }}
+    >
+      <Navbar />
+      <div 
+        className="h-6 w-full relative z-10"
+        style={{
+          backgroundImage: "url('/stripe.svg')",
+          backgroundRepeat: 'repeat',
+          backgroundSize: '10px',
+        }}
+      />
+      <Hero />
+      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bg-background flex justify-center">
+        <div className="w-1/2 border-t border-neutral-800"></div>
       </div>
-    </div>
+      <ServicesBento />
+    </section>
   )
 }
 
