@@ -87,11 +87,11 @@ const onboardingData: StepperData = {
       index: "04",
       title: "Launch. Support. Grow.",
       subtitle: "Launch",
-      body: [
-        "Deployment is smooth, secure, and production-ready from day one.",
-        "Your project goes live on Vercel or AWS with performance monitoring, analytics, and best-practice configurations.",
-        "Post-launch, I stay involved — supporting improvements, fixing issues, and helping your product grow."
-      ],
+     body: [
+    "Deployment is smooth, secure, and production-ready from day one.",
+    "Your project goes live on Vercel or AWS with performance monitoring, analytics, and best-practice configurations.",
+    "Post-launch, I stay involved — supporting improvements, fixing issues, and helping your product grow.",
+  ],
       cta: { label: "Launch now", href: "/contact" },
       media: {
         back: {
@@ -118,7 +118,7 @@ const Steps: React.FC = () => {
             <span className="text-[#f54900] text-sm uppercase tracking-widest font-semibold bg-background">
               {data.subtitle}
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mt-2 text-foreground bg-background">
+            <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground bg-background leading-none">
               {data.title}
             </h2>
           </div>
@@ -153,7 +153,7 @@ const Steps: React.FC = () => {
                   </h3>
                   <div className="stepper__step-body">
                     {step.body.map((p, idx) => (
-                      <p key={idx} className="stepper__step-text text-muted-foreground font-sans text-base leading-relaxed mb-4">
+                      <p key={idx} className="stepper__step-text text-muted-foreground font-clash text-base leading-relaxed mb-4">
                         {p}
                       </p>
                     ))}
@@ -204,7 +204,7 @@ const Steps: React.FC = () => {
         }
 
         .stepper__spacer {
-          height: 60vh;
+          height: 20vh;
         }
 
         .stepper__item {
@@ -283,12 +283,25 @@ const Steps: React.FC = () => {
         .stepper__content-grid {
           display: grid;
           flex: 1;
-          height: 22rem;
         }
 
         @media (min-width: 1024px) {
+          .stepper__steps {
+            --sticky-top-base: 7.5rem; /* Safe clearance for sticky headers */
+          }
+
+          .stepper__item {
+            height: 25.5rem; /* Strict fixed height for all cards on desktop */
+          }
+
           .stepper__content-grid {
             grid-template-columns: 1fr 1fr;
+            height: 22rem; /* 25.5rem total - 3.5rem number bar height */
+          }
+
+          .stepper__step,
+          .stepper__media {
+            height: 100%;
           }
 
           /* Alternating layout for even steps */
@@ -317,9 +330,6 @@ const Steps: React.FC = () => {
           justify-content: center;
           padding: 1rem;
           background-color: var(--background);
-          background-image: url('/stripe.svg');
-          background-repeat: repeat;
-          background-size: 38px;
           min-height: 0;
         }
 
@@ -343,7 +353,7 @@ const Steps: React.FC = () => {
             padding-bottom: 0;
           }
           .stepper__spacer {
-            height: 40vh;
+            height: 15vh;
           }
           .stepper__item {
             min-height: auto;
@@ -351,9 +361,6 @@ const Steps: React.FC = () => {
           }
           .stepper__item:last-child {
             margin-bottom: 0;
-          }
-          .stepper__content-grid {
-            height: auto;
           }
           .stepper__number-bar {
             padding: 0.5rem 1.25rem;

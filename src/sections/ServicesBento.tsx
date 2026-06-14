@@ -73,7 +73,7 @@ const ServicesBento: React.FC = () => {
   ];
 
   return (
-    <section className="relative w-full font-clash select-none">
+    <section className="relative w-full font-clash select-none overflow-hidden">
       <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bento-section-bg py-16 px-8 lg:p-12">
         {/* Header */}
         <div className="mb-12 border-b border-dashed border-neutral-800 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -81,7 +81,7 @@ const ServicesBento: React.FC = () => {
             <span className="text-[#f54900] text-sm uppercase tracking-widest font-semibold">
               MY SPECIALITIES
             </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mt-2 text-foreground">
+            <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none">
               Services & Capabilities
             </h2>
           </div>
@@ -169,11 +169,11 @@ const ServicesBento: React.FC = () => {
 
       <style>{`
         .bento-section-bg {
-          background: linear-gradient(180deg, var(--background) 0%, color-mix(in srgb, var(--background), #ffffff 20%) 100%);
+          background: var(--background)
         }
 
         .dark .bento-section-bg {
-          background: linear-gradient(180deg, var(--background) 0%, color-mix(in srgb, var(--background), #ffffff 4%) 100%);
+          var(--background)
         }
 
         /* Core bento look with light and dark mode adaptation */
