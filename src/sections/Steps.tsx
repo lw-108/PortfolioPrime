@@ -111,18 +111,18 @@ const Steps: React.FC = () => {
 
   return (
     <section ref={containerRef} className="relative w-full font-clash select-none ">
-      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bg-background py-16 px-8 lg:p-12">
+      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bg-background py-10 px-4 sm:px-8 lg:p-12">
         {/* Header */}
-        <header className="stepper__header mb-12 border-b border-dashed border-neutral-800 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 bg-background ">
+        <header className="stepper__header mb-8 sm:mb-12 border-b border-dashed border-neutral-800 pb-6 sm:pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 bg-background ">
           <div>
             <span className="text-[#f54900] text-sm uppercase tracking-widest font-semibold bg-background">
               {data.subtitle}
             </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mt-2 text-foreground bg-background">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mt-2 text-foreground bg-background">
               {data.title}
             </h2>
           </div>
-          <p className="text-muted-foreground max-w-md font-clash text-base bg-background">
+          <p className="text-muted-foreground max-w-md font-clash text-sm sm:text-base bg-background">
             A structured, collaborative approach to delivering clean code, premium designs, and production-ready applications.
           </p>
         </header>
@@ -148,7 +148,7 @@ const Steps: React.FC = () => {
               <div className="stepper__content-grid">
                 {/* Step Text */}
                 <div className="stepper__step" id={step.id}>
-                  <h3 className="text-3xl lg:text-4xl font-medium tracking-tight text-foreground mb-6">
+                  <h3 className="text-xl sm:text-2xl lg:text-4xl font-medium tracking-tight text-foreground mb-4 sm:mb-6">
                     {step.title}
                   </h3>
                   <div className="stepper__step-body">
@@ -160,7 +160,7 @@ const Steps: React.FC = () => {
                     {step.cta && (
                       <a
                         href={step.cta.href}
-                        className="stepper__step-cta inline-flex items-center gap-2 px-6 py-3 bg-[#f54900] text-white hover:bg-[#d43f00] text-xs font-semibold uppercase tracking-wider transition-colors duration-300 font-clash"
+                        className="stepper__step-cta inline-flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 bg-[#f54900] text-white hover:bg-[#d43f00] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wider transition-colors duration-300 font-clash"
                       >
                         {step.cta.label}
                         <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -192,19 +192,12 @@ const Steps: React.FC = () => {
 
       <style>{`
         .stepper__header {
-          position: sticky;
-          top: 0;
-          z-index: 50;
+          position: relative;
           background-color: var(--background);
-          background-image: url('/stripe.svg');
-          background-repeat: repeat;
-          background-size: 38px;
-          padding-top: 2rem;
-          margin-top: -2rem;
         }
 
         .stepper__steps {
-          --sticky-top-base: 12rem;
+          --sticky-top-base: 1rem;
           display: flex;
           flex-direction: column;
           padding-bottom: 0;
@@ -290,11 +283,12 @@ const Steps: React.FC = () => {
         .stepper__content-grid {
           display: grid;
           flex: 1;
+          height: 22rem;
         }
 
         @media (min-width: 1024px) {
           .stepper__content-grid {
-            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-columns: 1fr 1fr;
           }
 
           /* Alternating layout for even steps */
@@ -314,24 +308,25 @@ const Steps: React.FC = () => {
           display: flex;
           flex-direction: column;
           justify-content: center;
+          overflow: hidden;
         }
 
         .stepper__media {
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 2rem;
-          background-color: rgba(0, 0, 0, 0.02);
-          min-height: 240px;
+          padding: 1rem;
+          background-color: var(--background);
+          background-image: url('/stripe.svg');
+          background-repeat: repeat;
+          background-size: 38px;
+          min-height: 0;
         }
 
-        .dark .stepper__media {
-          background-color: rgba(255, 255, 255, 0.02);
-        }
 
         .stepper__media-image {
           max-width: 100%;
-          max-height: 220px;
+          max-height: 100%;
           object-fit: contain;
           filter: grayscale(10%) contrast(95%);
           transition: all 0.5s ease;
@@ -343,12 +338,8 @@ const Steps: React.FC = () => {
         }
 
         @media (max-width: 1023px) {
-          .stepper__header {
-            padding-top: 1rem;
-            margin-top: -1rem;
-          }
           .stepper__steps {
-            --sticky-top-base: 15.5rem;
+            --sticky-top-base: 1rem;
             padding-bottom: 0;
           }
           .stepper__spacer {
@@ -361,25 +352,73 @@ const Steps: React.FC = () => {
           .stepper__item:last-child {
             margin-bottom: 0;
           }
+          .stepper__content-grid {
+            height: auto;
+          }
+          .stepper__number-bar {
+            padding: 0.5rem 1.25rem;
+            height: 3rem;
+          }
+          .stepper__number {
+            font-size: 1.5rem;
+          }
           .stepper__step {
-            padding: 1.5rem;
+            padding: 1.25rem;
           }
           .stepper__step h3 {
             margin-bottom: 0.75rem !important;
-            font-size: 1.5rem !important;
+            font-size: 1.25rem !important;
             line-height: 1.25 !important;
           }
           .stepper__step-text {
-            font-size: 0.875rem !important;
+            font-size: 0.8125rem !important;
             line-height: 1.5 !important;
-            margin-bottom: 0.5rem !important;
+            margin-bottom: 0.375rem !important;
           }
           .stepper__media {
-            padding: 1rem;
+            padding: 0.75rem;
             min-height: 180px;
+            height: 180px;
           }
           .stepper__media-image {
             max-height: 140px;
+          }
+        }
+
+        /* ── Extra-small devices (≤ 480px) ── */
+        @media (max-width: 480px) {
+          .stepper__item {
+            margin-bottom: 25vh;
+          }
+          .stepper__number-bar {
+            padding: 0.4rem 0.75rem;
+            height: 2.5rem;
+            gap: 0.5rem;
+          }
+          .stepper__number {
+            font-size: 1.25rem;
+          }
+          .stepper__subtitle-label {
+            font-size: 0.625rem;
+          }
+          .stepper__step {
+            padding: 1rem;
+          }
+          .stepper__step h3 {
+            font-size: 1.1rem !important;
+          }
+          .stepper__step-text {
+            font-size: 0.75rem !important;
+            line-height: 1.45 !important;
+            margin-bottom: 0.25rem !important;
+          }
+          .stepper__media {
+            padding: 0.5rem;
+            min-height: 150px;
+            height: 150px;
+          }
+          .stepper__media-image {
+            max-height: 120px;
           }
         }
       `}</style>

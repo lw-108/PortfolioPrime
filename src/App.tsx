@@ -2,6 +2,7 @@ import Navbar from './sections/Navbar'
 import Hero from './sections/Hero'
 import ServicesBento from './sections/ServicesBento'
 import Steps from './sections/Steps'
+import AboutPage from './pages/About'
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
       </div>
       <ServicesBento />
       <Steps />
+      <AboutPage />
     </section>
   )
 }
