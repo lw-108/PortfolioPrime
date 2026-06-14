@@ -7,13 +7,13 @@ import Lanyard from '../components/Lanyard';
 export default function Hero() {
   return (
     <div className="relative w-full min-h-[calc(100vh-5rem)] flex items-stretch font-clash select-none">
-      
+
       {/* Outer Grid Wrapper */}
-      <div className="max-w-[96rem] mx-auto w-full grid lg:grid-cols-2 border-x border-dashed border-neutral-800  bg-background">
-        
+      <div className="max-w-384 mx-auto w-full grid lg:grid-cols-2 border-x border-dashed border-neutral-800  bg-background">
+
         {/* Left Layout (Content) */}
         <div className="flex flex-col justify-between p-8 lg:p-12 border-r border-dashed border-neutral-800 min-w-0">
-          
+
           {/* Top description */}
           <div className="pb-8 border-b border-neutral-800">
             <span className="text-sm uppercase tracking-widest text-muted-foreground ml-2">
@@ -23,7 +23,7 @@ export default function Hero() {
               LINGESHWARMA
             </span>
             <span className="text-sm uppercase tracking-widest text-muted-foreground">
-             , A FULL-STACK DEVELOPER SPECIALIZING IN BUILDING MODERN, RESPONSIVE WEB & MOBILE APPLICATIONS.
+              , A FULL-STACK DEVELOPER SPECIALIZING IN BUILDING MODERN, RESPONSIVE WEB & MOBILE APPLICATIONS.
             </span>
           </div>
 
@@ -52,7 +52,7 @@ export default function Hero() {
           {/* Bottom Actions */}
           <div className="pt-8">
             <a href="#projects" className="inline-block">
-              <CreepyButton 
+              <CreepyButton
                 className="h-12 w-48 text-sm uppercase tracking-wider font-semibold rounded-none"
               >
                 View my work
@@ -63,25 +63,14 @@ export default function Hero() {
         </div>
 
         {/* Right Layout (Lanyard 3D component) */}
-        <div className="relative min-h-[500px] lg:min-h-0 bg-neutral-950/20 flex items-center justify-center overflow-hidden">
-          
-          {/* Decorative repeating stripe background for right side */}
-          <div 
-            className="absolute inset-0 opacity-10 pointer-events-none"
-            style={{
-              backgroundImage: "url('/stripe.svg')",
-              backgroundRepeat: 'repeat',
-              backgroundSize: '38px',
-            }}
-          />
-          
+        <div className="relative min-h-[500px] lg:min-h-0 bg-background flex items-center justify-center overflow-hidden">
           <div className="w-full h-full min-h-[500px] lg:min-h-[600px] flex items-center justify-center relative z-10">
-            <Lanyard 
-              lanyardImage="/lanyard.png" 
+            <Lanyard
+              lanyardImage="/lanyard.png"
               lanyardWidth={1.8}
             />
           </div>
-          
+
         </div>
 
       </div>

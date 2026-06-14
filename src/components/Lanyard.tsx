@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, Suspense } from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
 import { useGLTF, useTexture, Environment, Lightformer } from '@react-three/drei';
 import {
@@ -55,14 +55,33 @@ export default function Lanyard({
   lanyardImage = null,
   lanyardWidth = 1
 }: LanyardProps) {
-  const [isMobile, setIsMobile] = useState<boolean>(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    setMounted(true);
+    
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
+
     const handleResize = (): void => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
+
+  if (!mounted) {
+    return (
+      <div className="w-full h-full min-h-[500px] flex justify-center items-center text-muted-foreground font-clash">
+        Loading 3D Scene...
+      </div>
+    );
+  }
 
   return (
     <div className={`relative z-0 w-full h-full min-h-[500px] flex justify-center items-center transform scale-100 origin-center ${isDragging ? 'touch-none' : 'touch-auto'}`}>
@@ -72,19 +91,20 @@ export default function Lanyard({
         gl={{ alpha: transparent, powerPreference: "high-performance", antialias: !isMobile }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
-        <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
-          <Band
-            isMobile={isMobile}
-            frontImage={frontImage}
-            backImage={backImage}
-            imageFit={imageFit}
-            lanyardImage={lanyardImage}
-            lanyardWidth={lanyardWidth}
-            onDragStateChange={setIsDragging}
-          />
-        </Physics>
-        <Environment blur={0.75}>
+        <Suspense fallback={null}>
+          <ambientLight intensity={Math.PI} />
+          <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+            <Band
+              isMobile={isMobile}
+              frontImage={frontImage}
+              backImage={backImage}
+              imageFit={imageFit}
+              lanyardImage={lanyardImage}
+              lanyardWidth={lanyardWidth}
+              onDragStateChange={setIsDragging}
+            />
+          </Physics>
+          <Environment blur={0.75}>
           <Lightformer
             intensity={2}
             color="white"
@@ -114,6 +134,7 @@ export default function Lanyard({
             scale={[100, 10, 1]}
           />
         </Environment>
+        </Suspense>
       </Canvas>
     </div>
   );
@@ -167,8 +188,8 @@ function Band({
   const texture = useTexture(lanyardImage || lanyard);
   // useTexture must be called unconditionally; use a blank pixel when an image
   // isn't supplied for a given face, then skip compositing it below.
-  const frontTex = useTexture(frontImage || BLANK_PIXEL);
-  const backTex = useTexture(backImage || BLANK_PIXEL);
+  const frontTex = useTexture(frontImage || lanyard);
+  const backTex = useTexture(backImage || lanyard);
 
   // Composite the front/back images into the card's texture atlas (front = left
   // half, back = right half). Each image is drawn aspect-preserving (no stretch).

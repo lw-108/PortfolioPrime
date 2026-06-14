@@ -1,6 +1,7 @@
 import Navbar from './sections/Navbar'
 import Hero from './sections/Hero'
 import ServicesBento from './sections/ServicesBento'
+import Steps from './sections/Steps'
 
 const App = () => {
   return (
@@ -22,10 +23,11 @@ const App = () => {
         }}
       />
       <Hero />
-      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bg-background flex justify-center">
+      <div className="max-w-96rem mx-auto w-full border-x border-dashed border-neutral-800 bg-background flex justify-center">
         <div className="w-1/2 border-t border-neutral-800"></div>
       </div>
       <ServicesBento />
+      <Steps />
     </section>
   )
 }

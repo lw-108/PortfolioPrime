@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
     <nav className="relative w-full border-b border-dashed border-neutral-800 bg-background text-foreground select-none font-clash transition-colors duration-300">
 
       {/* Main Container */}
-      <div className="relative max-w-[96rem] mx-auto px-6 h-20 flex items-center justify-between">
+      <div className="relative max-w-384 mx-auto px-6 h-20 flex items-center justify-between">
 
         {/* Logo */}
         <div className="flex items-center h-full">
@@ -164,7 +164,7 @@ const Navbar: React.FC = () => {
             <a href="#projects" onClick={() => setIsMenuOpen(false)} className="text-2xl font-medium text-muted-foreground hover:text-foreground transition-colors py-1">Projects</a>
             <a href="#skills" onClick={() => setIsMenuOpen(false)} className="text-2xl font-medium text-muted-foreground hover:text-foreground transition-colors py-1">Skills</a>
 
-            <div className="w-24 h-[1px] border-t border-dashed border-neutral-800 my-4" />
+            <div className="w-24 h-px border-t border-dashed border-neutral-800 my-4" />
 
             <a href="#contact" onClick={() => setIsMenuOpen(false)} className="text-2xl font-medium text-muted-foreground hover:text-primary transition-colors py-1">Contact</a>
             <a href="#resume" onClick={() => setIsMenuOpen(false)} className="text-2xl font-medium text-muted-foreground hover:text-primary transition-colors py-1">Resume</a>

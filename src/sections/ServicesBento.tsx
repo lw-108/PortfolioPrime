@@ -74,7 +74,7 @@ const ServicesBento: React.FC = () => {
 
   return (
     <section className="relative w-full font-clash select-none">
-      <div className="max-w-[96rem] mx-auto w-full border-x border-dashed border-neutral-800 bg-background py-16 px-8 lg:p-12">
+      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bento-section-bg py-16 px-8 lg:p-12">
         {/* Header */}
         <div className="mb-12 border-b border-dashed border-neutral-800 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
@@ -168,21 +168,39 @@ const ServicesBento: React.FC = () => {
       </div>
 
       <style>{`
+        .bento-section-bg {
+          background: linear-gradient(180deg, var(--background) 0%, color-mix(in srgb, var(--background), #ffffff 20%) 100%);
+        }
+
+        .dark .bento-section-bg {
+          background: linear-gradient(180deg, var(--background) 0%, color-mix(in srgb, var(--background), #ffffff 4%) 100%);
+        }
+
         /* Core bento look with light and dark mode adaptation */
         .bento-card {
-          position: relative;
-          height: 100%;
-          padding: 2rem;
-          overflow: hidden;
-          border-radius: 0;
-          background-image: 
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 0%, transparent 100%),
-            url('/dot.svg');
-          background-repeat: no-repeat, repeat;
-          background-size: 100% 100%, 32px 32px;
-          border: 1px solid rgba(0, 0, 0, 0.1);
-          transition: all 0.3s ease-in-out;
-        }
+  position: relative;
+  height: 100%;
+  padding: 2rem;
+  overflow: hidden;
+  border-radius: 0;
+
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 227, 0.85) 0%,
+      rgba(255, 255, 227, 0.96) 100%
+    ),
+    url('/dot.svg');
+
+  background-repeat: no-repeat, repeat;
+  background-size: 100% 100%, 32px 32px;
+
+  /* Makes the dots blend softly with the gradient */
+  background-blend-mode: normal, soft-light;
+
+  border: 1px dashed black;
+  transition: all 0.3s ease-in-out;
+}
 
         .dark .bento-card {
           background-image: 

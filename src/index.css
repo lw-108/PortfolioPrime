@@ -165,7 +165,7 @@
   dark:outline-neutral-800
   dark:group-hover:bg-background/0
   dark:group-hover:hover:bg-background
-  lg:h-[9rem] lg:min-w-72;
+  lg:h-36 lg:min-w-72;
 }
 
 @keyframes marquee {
