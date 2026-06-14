@@ -104,7 +104,6 @@ const onboardingData: StepperData = {
 };
 
 const HEADER_HEIGHT_REM = 3.5;
-const BASE_TOP_REM = 4;
 
 const Steps: React.FC = () => {
   const data = onboardingData;
