@@ -38,6 +38,7 @@ interface LanyardProps {
   imageFit?: 'cover' | 'contain';
   lanyardImage?: string | null;
   lanyardWidth?: number;
+  isLoaded?: boolean;
 }
 
 export default function Lanyard({
@@ -49,7 +50,8 @@ export default function Lanyard({
   backImage = null,
   imageFit = 'cover',
   lanyardImage = null,
-  lanyardWidth = 1
+  lanyardWidth = 1,
+  isLoaded = false
 }: LanyardProps) {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -80,7 +82,7 @@ export default function Lanyard({
   }
 
   return (
-    <div className={`relative z-0 w-full h-full min-h-[500px] flex justify-center items-center transform scale-100 origin-center ${isDragging ? 'touch-none' : 'touch-auto'}`}>
+    <div className={`relative z-0 w-full h-full min-h-[500px] flex justify-center items-center transform scale-100 origin-center transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0 pointer-events-none'} ${isDragging ? 'touch-none' : 'touch-auto'}`}>
       <Canvas
         camera={{ position, fov }}
         dpr={isMobile ? 1 : [1, 1.5]}
@@ -91,6 +93,7 @@ export default function Lanyard({
           <ambientLight intensity={Math.PI} />
           <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
             <Band
+              isLoaded={isLoaded}
               isMobile={isMobile}
               frontImage={frontImage}
               backImage={backImage}
@@ -146,6 +149,7 @@ interface BandProps {
   lanyardImage?: string | null;
   lanyardWidth?: number;
   onDragStateChange?: (dragging: boolean) => void;
+  isLoaded?: boolean;
 }
 
 function Band({
@@ -157,7 +161,8 @@ function Band({
   imageFit = 'cover',
   lanyardImage = null,
   lanyardWidth = 1,
-  onDragStateChange
+  onDragStateChange,
+  isLoaded = false
 }: BandProps) {
   // Using "any" for refs since the exact types depend on Rapier's internals
   const band = useRef<any>(null);
@@ -176,8 +181,8 @@ function Band({
     type: 'dynamic' as RigidBodyProps['type'],
     canSleep: true,
     colliders: false,
-    angularDamping: 4,
-    linearDamping: 4
+    angularDamping: 6, // Increased damping for smoother, heavier motion
+    linearDamping: 6   // Increased damping for smoother, heavier motion
   };
 
   const { nodes, materials } = useGLTF(cardGLB) as any;
@@ -263,6 +268,17 @@ function Band({
     }
   }, [hovered, dragged]);
 
+  // Handle dynamic wakeup when loading completes
+  useEffect(() => {
+    if (isLoaded) {
+      [card, j1, j2, j3, fixed].forEach(ref => {
+        if (ref.current) {
+          ref.current.wakeUp();
+        }
+      });
+    }
+  }, [isLoaded]);
+
   useFrame((state, delta) => {
     if (dragged && typeof dragged !== 'boolean') {
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
@@ -298,24 +314,30 @@ function Band({
   curve.curveType = 'chordal';
   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
+  // Set the physics state to 'fixed' during load to hold it in initial shape, switching to 'dynamic' when loaded
+  const activeBodyType = isLoaded ? ('dynamic' as RigidBodyProps['type']) : ('fixed' as RigidBodyProps['type']);
+
   return (
     <>
       <group position={[0, 5.7, 0]}>
+        {/* Anchor point stays fixed */}
         <RigidBody ref={fixed} {...segmentProps} type={'fixed' as RigidBodyProps['type']} />
-        <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
+        
+        {/* Joints and Card start positioned in a neat, slightly compressed vertical drape, ready to fall smoothly */}
+        <RigidBody position={[0.1, -0.6, 0.1]} ref={j1} {...segmentProps} type={activeBodyType}>
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
+        <RigidBody position={[0.2, -1.2, 0.2]} ref={j2} {...segmentProps} type={activeBodyType}>
           <BallCollider args={[0.1]} />
         </RigidBody>
-        <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
+        <RigidBody position={[0.3, -1.8, 0.3]} ref={j3} {...segmentProps} type={activeBodyType}>
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[2, 0, 0]}
+          position={[0.4, -2.4, 0.4]}
           ref={card}
           {...segmentProps}
-          type={dragged ? ('kinematicPosition' as RigidBodyProps['type']) : ('dynamic' as RigidBodyProps['type'])}
+          type={dragged ? ('kinematicPosition' as RigidBodyProps['type']) : activeBodyType}
         >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group

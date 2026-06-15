@@ -116,93 +116,26 @@ export default function BrandMarquee({
   const startX = useRef(0);
   const scrollLeft = useRef(0);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    let animationId: number;
-    const speed = 0.8; // pixels per frame
-
-    const updateScroll = () => {
-      if (!isDragging) {
-        container.scrollLeft += speed;
-        const singleWidth = container.scrollWidth / 3;
-        if (container.scrollLeft >= singleWidth * 2) {
-          container.scrollLeft -= singleWidth;
-        } else if (container.scrollLeft <= 0) {
-          container.scrollLeft += singleWidth;
-        }
-      }
-      animationId = requestAnimationFrame(updateScroll);
-    };
-
-    animationId = requestAnimationFrame(updateScroll);
-    return () => cancelAnimationFrame(animationId);
-  }, [isDragging]);
-
-  const onMouseDown = (e: React.MouseEvent) => {
-    const container = containerRef.current;
-    if (!container) return;
-    setIsDragging(true);
-    startX.current = e.pageX - container.offsetLeft;
-    scrollLeft.current = container.scrollLeft;
-  };
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    const container = containerRef.current;
-    if (!container) return;
-    e.preventDefault();
-    const x = e.pageX - container.offsetLeft;
-    const walk = (x - startX.current) * 1.5;
-    container.scrollLeft = scrollLeft.current - walk;
-  };
-
-  const onMouseUpOrLeave = () => {
-    setIsDragging(false);
-  };
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    const container = containerRef.current;
-    if (!container) return;
-    setIsDragging(true);
-    startX.current = e.touches[0].pageX - container.offsetLeft;
-    scrollLeft.current = container.scrollLeft;
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-    const container = containerRef.current;
-    if (!container) return;
-    const x = e.touches[0].pageX - container.offsetLeft;
-    const walk = (x - startX.current) * 1.5;
-    container.scrollLeft = scrollLeft.current - walk;
-  };
-
-  const tripleLogos = [...logos, ...logos, ...logos];
+  const doubleLogos = [...logos, ...logos];
 
   const marqueeContent = (
     <div
       ref={containerRef}
-      className="overflow-hidden select-none cursor-grab active:cursor-grabbing w-full"
-      onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUpOrLeave}
-      onMouseLeave={onMouseUpOrLeave}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onMouseUpOrLeave}
+      className="overflow-hidden select-none w-full"
     >
-      <div className="flex w-max">
-        {tripleLogos.map((item, index) => (
-          <div key={index} className="brand-grid-item">
+      <div className="flex w-max animate-marquee">
+        {doubleLogos.map((item, index) => (
+          <div key={index} className={compact ? "brand-grid-item-compact" : "brand-grid-item"}>
             <img
               src={item.image}
               alt={item.alt}
               loading="lazy"
               decoding="async"
               draggable={false}
-              className="h-8 w-8 p-0 sm:h-8 sm:w-8 md:h-12 md:w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16 object-contain pointer-events-none"
+              className={compact 
+                ? "h-6 w-6 lg:h-8 lg:w-8 object-contain pointer-events-none" 
+                : "h-8 w-8 p-0 sm:h-8 sm:w-8 md:h-12 md:w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16 object-contain pointer-events-none"
+              }
             />
           </div>
         ))}

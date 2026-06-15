@@ -168,6 +168,21 @@
   lg:h-36 lg:min-w-72;
 }
 
+.brand-grid-item-compact {
+  @apply flex h-12 min-w-32 items-center justify-center
+  bg-transparent border-r-2 border-[#ffffe3] dark:border-neutral-800
+  transition-all duration-700 ease-in-out
+  group-hover:opacity-40
+  group-hover:blur-[1px]
+  group-hover:hover:bg-background
+  group-hover:hover:opacity-100
+  group-hover:hover:blur-none
+  dark:bg-background
+  dark:group-hover:bg-background/0
+  dark:group-hover:hover:bg-background
+  lg:h-16 lg:min-w-44;
+}
+
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -176,6 +191,10 @@
   to {
     transform: translateX(-50%);
   }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
 }
 
 .animate-marquee {

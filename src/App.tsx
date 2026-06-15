@@ -43,7 +43,7 @@ const App = () => {
             backgroundSize: '10px',
           }}
         />
-        <Hero />
+        <Hero isLoaded={!showLoading} />
         <div className="max-w-96rem mx-auto w-full border-x border-dashed border-neutral-800 bg-background flex justify-center">
           <div className="w-1/2 border-t border-neutral-800"></div>
         </div>
