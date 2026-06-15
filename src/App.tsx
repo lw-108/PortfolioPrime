@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import Navbar from './sections/Navbar'
 import Hero from './sections/Hero'
 import ServicesBento from './sections/ServicesBento'
-import Steps from './sections/Steps'
+import StepRibbon from './sections/StepRibbon'
 import AboutPage from './pages/About'
+import Projects from './sections/Projects'
 import { LoadingScreen } from './components/LoadingScreen'
 
 const App = () => {
@@ -48,8 +49,9 @@ const App = () => {
           <div className="w-1/2 border-t border-neutral-800"></div>
         </div>
         <ServicesBento />
-        <Steps />
+        <StepRibbon />
         <AboutPage />
+        <Projects />
         <div className="h-[40vh] w-full" />
       </section>
     </>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { CreepyButton } from '../components/ui/creepy-button';
 
 const AboutPage: React.FC = () => {
   const titleText = "Programmer, Developer,   Web-Designer/";
@@ -130,7 +131,7 @@ const AboutPage: React.FC = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.9, ease: "easeOut" }}
-              src="/Madben2.png"
+              src="/AboutMe.png"
               className="about-profile-img aspect-1/1.5 w-full rounded-lg object-cover object-top"
               alt="Headshot of M.K. Lingeshwarma"
             />
@@ -160,15 +161,22 @@ const AboutPage: React.FC = () => {
               <p className="text-xs sm:text-sm text-muted-foreground/85 text-center text-nowrap uppercase tracking-widest font-semibold">
                 ( ABOUT ME )
               </p>
-              <p className="font-clash text-sm md:text-base w-full text-balance sm:max-w-[40ch] leading-relaxed">
-                Creating great web experiences is my primary focus. I ensure each
-                project leaves users with a feel-good sensation through meticulous
-                attention to detail and user-centric design principles.
-                <br /><br />
-                When I'm not immersed in web development and design, you can find me
-                sharing insights about my freelance journey on <i className="font-serif">𝕏</i>,
-                loudly, playing music (Funk), or just relaxing.
-              </p>
+              <div className="flex flex-col items-start gap-6 w-full sm:max-w-[40ch]">
+                <p className="font-clash text-md md:text-lg w-full text-balance leading-relaxed">
+                  Creating great web experiences is my primary focus. I ensure each
+                  project leaves users with a feel-good sensation through meticulous
+                  attention to detail and user-centric design principles.
+                  <br /><br />
+                  When I'm not immersed in web development, you can find me
+                  vibeing Harris jeyaraj songs on
+                  <a href="https://open.spotify.com/artist/29aw5YCdIw2FEXYyAJZI8l" target='blank'>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 inline-block text-[#1DB954] align-middle mx-1"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.565.387-.86.207-2.377-1.454-5.37-1.785-8.892-.982-.336.075-.67-.136-.746-.472-.075-.336.136-.67.472-.746 3.856-.882 7.15-.506 9.822 1.13.295.18.387.565.204.863zm1.224-2.724c-.226.367-.707.487-1.074.26-2.72-1.672-6.87-2.157-10.075-1.185-.413.125-.847-.107-.972-.52-.125-.413.107-.847.52-.972 3.666-1.112 8.237-.57 11.34 1.34.368.225.488.706.26 1.077zm.106-2.833C14.384 8.71 8.563 8.52 5.176 9.548c-.54.163-1.112-.147-1.275-.687-.163-.54.147-1.112.687-1.275 3.89-1.182 10.32-.96 14.39 1.456.485.287.643.91.356 1.396-.287.485-.91.643-1.396.356z" /></svg>
+                  </a>
+                </p>
+                <CreepyButton onClick={() => window.open('https://github.com', '_blank')}>
+                  View More
+                </CreepyButton>
+              </div>
             </motion.div>
           </div>
         </div>
