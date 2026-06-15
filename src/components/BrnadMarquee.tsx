@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 
 type Logo = {
   image: string;
@@ -112,9 +112,6 @@ export default function BrandMarquee({
   compact = false,
 }: BrandMarqueeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
 
   const doubleLogos = [...logos, ...logos];
 
