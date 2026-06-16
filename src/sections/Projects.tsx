@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'motion/react';
+import { CreepyButton } from '../components/ui/creepy-button';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,49 +19,49 @@ interface Project {
 
 const projectsData: Project[] = [
   {
-    name: 'Portfolio Prime',
+    name: 'U Fill Academy',
     category: 'Frontend & Animation',
-    tags: ['React', 'Tailwind', 'GSAP'],
+    tags: ['React', 'Tailwind', 'Next.js', ''],
     image: '/works/ufaf.png',
     imageBg: '/stripe.svg',
     url: '#',
     year: '2025',
   },
   {
-    name: 'Dashboard UI',
-    category: 'Frontend & Design',
-    tags: ['React', 'TypeScript'],
-    image: 'https://i.ibb.co/b5pNdvFG/dash.png',
-    imageBg: 'https://i.ibb.co/S7M9RfC5/codes-modified.png',
-    url: '#',
-    year: '2024',
-  },
-  {
-    name: 'Code Editor',
-    category: 'Full Stack & Tools',
-    tags: ['Next.js', 'Node.js'],
-    image: 'https://i.ibb.co/S7M9RfC5/codes-modified.png',
-    imageBg: 'https://i.ibb.co/9HxXVqMy/output-onlinepngtools.png',
-    url: '#',
-    year: '2024',
-  },
-  {
-    name: 'Launch Pad',
+    name: 'Career path AI',
     category: 'Frontend & Backend',
-    tags: ['React', 'AWS'],
-    image: 'https://i.ibb.co/hRcY0xqp/reshot-illustration-startup-entrepreneur-T8-A94-HSCXY-modified.png',
-    imageBg: 'https://i.ibb.co/b5pNdvFG/dash.png',
-    url: '#',
-    year: '2023',
+    tags: ['React', 'TypeScript', 'PostgreSQL', 'Supabase'],
+    image: '/works/cpa.png',
+    imageBg: '/stripe.svg',
+    url: 'https://cpa-ebon.vercel.app/',
+    year: '2024',
   },
   {
-    name: 'Creative Lab',
-    category: 'Design & Prototype',
-    tags: ['Figma', 'React'],
-    image: 'https://i.ibb.co/9HxXVqMy/output-onlinepngtools.png',
-    imageBg: 'https://i.ibb.co/hRcY0xqp/reshot-illustration-startup-entrepreneur-T8-A94-HSCXY-modified.png',
-    url: '#',
-    year: '2024',
+    name: 'AI & React Seminar',
+    category: 'Frontend',
+    tags: ['React', 'Tailwind', 'Firebase'],
+    image: '/works/seminar.png',
+    imageBg: '/stripe.svg',
+    url: 'https://141025mcaairtseminarlw19.vercel.app/',
+    year: '2025',
+  },
+  {
+    name: 'Yazhu Cakes',
+    category: 'Frontend',
+    tags: ['React', 'Next.js'],
+    image: '/works/yazhucakes.png',
+    imageBg: '/stripe.svg',
+    url: 'https://yazhu-cakeshop.vercel.app/',
+    year: '2026',
+  },
+  {
+    name: 'Thiran360AI',
+    category: 'Frontend & Backend',
+    tags: ['React', 'Tailwind', 'GSAP', 'Supabase'],
+    image: '/works/thiran360.png',
+    imageBg: '/stripe.svg',
+    url: 'thiran360-ai-xi.vercel.app',
+    year: '2026',
   },
 ];
 
@@ -99,15 +100,78 @@ const AnimatedTitle: React.FC<{ text: string }> = ({ text }) => {
   );
 };
 
+// ── Tag Icon Map ──
+const tagIcons: Record<string, string> = {
+  'React': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+  'Tailwind': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
+  'Tailwind CSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
+  'GSAP': 'https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg',
+  'TypeScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+  'Next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+  'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+  'AWS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg',
+  'Figma': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
+  'Supabase': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg',
+  'Firebase': 'https://brandlogos.net/wp-content/uploads/2025/03/firebase_icon-logo_brandlogos.net_tcvck-512x646.png',
+  'PostgreSQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
+};
+
 // ── Main Component ──
 const Projects: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const indexRef = useRef<HTMLSpanElement>(null);
+  const numberRef = useRef<HTMLSpanElement>(null);
+  const activeIndexRef = useRef(0);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     if (window.innerWidth < 768) return;
+
+    const updateIndex = (newIndex: number) => {
+      if (newIndex === activeIndexRef.current) return;
+      const isForward = newIndex > activeIndexRef.current;
+      activeIndexRef.current = newIndex;
+
+      if (!indexRef.current || !numberRef.current) return;
+
+      // Kill running animations to avoid overlaps and ensure a clean starting point
+      gsap.killTweensOf(indexRef.current);
+      gsap.set(indexRef.current, { yPercent: 0 });
+
+      const tl = gsap.timeline();
+
+      if (isForward) {
+        tl.to(indexRef.current, {
+          yPercent: -100,
+          duration: 0.15,
+          ease: 'power2.in',
+        })
+        .call(() => {
+          if (numberRef.current) numberRef.current.innerText = String(newIndex + 1);
+        })
+        .set(indexRef.current, { yPercent: 100 })
+        .to(indexRef.current, {
+          yPercent: 0,
+          duration: 0.2,
+          ease: 'power2.out',
+        });
+      } else {
+        tl.to(indexRef.current, {
+          yPercent: 100,
+          duration: 0.15,
+          ease: 'power2.in',
+        })
+        .call(() => {
+          if (numberRef.current) numberRef.current.innerText = String(newIndex + 1);
+        })
+        .set(indexRef.current, { yPercent: -100 })
+        .to(indexRef.current, {
+          yPercent: 0,
+          duration: 0.2,
+          ease: 'power2.out',
+        });
+      }
+    };
 
     const ctx = gsap.context(() => {
       cardRefs.current.forEach((card, i) => {
@@ -115,43 +179,13 @@ const Projects: React.FC = () => {
 
         ScrollTrigger.create({
           trigger: card,
-          start: 'top 25%',
-          end: 'bottom 25%',
+          start: 'top 35%',
+          end: 'bottom 35%',
           onEnter: () => {
-            // Forward scroll — number slides up out, new number slides up in
-            gsap.to(indexRef.current, {
-              yPercent: -100,
-              duration: 0.3,
-              ease: 'power4.inOut',
-              onComplete: () => {
-                setActiveIndex(Math.min(i, projectsData.length - 1));
-                gsap.set(indexRef.current, { yPercent: 100 });
-                gsap.to(indexRef.current, {
-                  yPercent: 0,
-                  duration: 0.3,
-                  ease: 'power1.inOut',
-                });
-              },
-            });
+            updateIndex(i);
           },
-          onLeaveBack: () => {
-            // Backward scroll — number slides down out, previous number slides down in
-            if (i > 0) {
-              gsap.to(indexRef.current, {
-                yPercent: 100,
-                duration: 0.3,
-                ease: 'power4.inOut',
-                onComplete: () => {
-                  setActiveIndex(Math.max(i - 1, 0));
-                  gsap.set(indexRef.current, { yPercent: -100 });
-                  gsap.to(indexRef.current, {
-                    yPercent: 0,
-                    duration: 0.3,
-                    ease: 'power1.inOut',
-                  });
-                },
-              });
-            }
+          onEnterBack: () => {
+            updateIndex(i);
           },
         });
       });
@@ -214,28 +248,12 @@ const Projects: React.FC = () => {
               ref={indexRef}
               className="font-clash relative tracking-tighter will-change-transform inline-flex items-baseline"
             >
-              {activeIndex + 1}
-              <span className="inline-block w-[0.07em] h-[0.07em] rounded-full bg-current ml-[0.03em] translate-y-[-0.05em]" />
+              <span ref={numberRef}>1</span>
             </span>
           </div>
 
           {/* Project cards column */}
           <aside className="relative col-span-full flex flex-col space-y-10 md:col-span-7">
-            <style dangerouslySetInnerHTML={{__html: `
-              .scrollbar-custom::-webkit-scrollbar {
-                width: 6px;
-              }
-              .scrollbar-custom::-webkit-scrollbar-track {
-                background: transparent;
-              }
-              .scrollbar-custom::-webkit-scrollbar-thumb {
-                background-color: rgba(120, 120, 120, 0.3);
-                border-radius: 9999px;
-              }
-              .scrollbar-custom::-webkit-scrollbar-thumb:hover {
-                background-color: rgba(120, 120, 120, 0.5);
-              }
-            `}} />
             {projectsData.map((work, i) => (
               <div
                 key={i}
@@ -249,52 +267,60 @@ const Projects: React.FC = () => {
                   href={work.url}
                 >
                   {/* Image container */}
-                  <div className="relative aspect-video sm:aspect-[4/3] h-[350px] sm:h-[450px] overflow-hidden rounded-lg flex flex-col justify-start border border-neutral-200/50 dark:border-neutral-800/50">
+                  <div className="relative w-full h-auto rounded-lg flex flex-col justify-start border border-neutral-200/50 dark:border-neutral-800/50 p-4">
                     {/* Background repeating stripe pattern */}
                     <div
-                      className="absolute inset-0 w-full h-full opacity-35 dark:opacity-20 pointer-events-none select-none"
+                      className="absolute inset-0 w-full h-full opacity-35 dark:opacity-20 pointer-events-none select-none rounded-lg"
                       style={{
                         backgroundImage: "url('/stripe.svg')",
                         backgroundRepeat: 'repeat',
                         backgroundSize: '16px 16px',
                       }}
                     />
-                    {/* Foreground project screenshot scrollable container */}
-                    <div 
-                      className="z-10 w-full h-full overflow-y-auto px-6 py-8 scrollbar-custom"
-                      style={{
-                        scrollbarWidth: 'thin',
-                        scrollbarColor: 'rgba(120, 120, 120, 0.3) transparent',
-                      }}
-                    >
-                      <img
-                        alt={work.name}
-                        loading="lazy"
-                        className="w-full rounded-md object-contain h-auto shadow-md transition-transform duration-500 ease-in-out group-hover:scale-[1.01] group-hover:shadow-2xl"
-                        src={work.image}
-                      />
-                    </div>
+                    {/* Foreground project screenshot */}
+                    <img
+                      alt={work.name}
+                      loading="lazy"
+                      className="z-10 w-full object-contain h-auto shadow-md transition-transform duration-500 ease-in-out group-hover:scale-[1.01] group-hover:shadow-2xl"
+                      src={work.image}
+                    />
                   </div>
 
                   {/* Card info */}
                   <div className="mt-3">
-                    <p className="font-clash text-xs sm:text-sm text-muted-foreground uppercase tracking-widest mb-1 leading-none">
-                      {work.category}
-                    </p>
+                    <div className="flex justify-between items-end mb-1">
+                      <p className="font-clash text-xs sm:text-sm text-muted-foreground uppercase tracking-widest leading-none">
+                        {work.category}
+                      </p>
+                      <span className="md:hidden text-foreground/10 text-3xl font-semibold font-clash tracking-tighter leading-none select-none">
+                        0{i + 1}
+                      </span>
+                    </div>
                     <div className="items-center justify-between sm:flex">
                       <h3 className="font-clash text-2xl sm:text-3xl font-bold uppercase text-foreground">
                         {work.name}
                       </h3>
                       <div className="flex gap-1.5 select-none mt-2 sm:mt-0 flex-wrap">
-                        {work.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="border border-neutral-400 dark:border-neutral-600 text-foreground hover:bg-foreground hover:text-background rounded-full px-4 py-1.5 text-xs sm:text-sm transition-[background-color,color] duration-500 ease-in-out cursor-default"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                        <span className="border border-neutral-400 dark:border-neutral-600 bg-foreground text-background hover:bg-transparent hover:text-foreground rounded-full px-4 py-1.5 text-xs sm:text-sm transition-[background-color,color] duration-500 ease-in-out cursor-default">
+                        {work.tags.map((tag) => {
+                          if (!tag.trim()) return null;
+                          const iconUrl = tagIcons[tag];
+                          return (
+                            <span
+                              key={tag}
+                              className="bg-[#f54900] text-white text-xs sm:text-sm font-semibold px-3 py-1 flex items-center gap-1.5 cursor-default hover:bg-[#d43f00] transition-colors duration-300"
+                            >
+                              {iconUrl && (
+                                <img
+                                  src={iconUrl}
+                                  alt={tag}
+                                  className="w-4 h-4 object-contain"
+                                />
+                              )}
+                              <span>{tag}</span>
+                            </span>
+                          );
+                        })}
+                        <span className="bg-foreground text-background text-xs sm:text-sm font-semibold px-3 py-1 flex items-center cursor-default">
                           {work.year}
                         </span>
                       </div>
@@ -304,6 +330,13 @@ const Projects: React.FC = () => {
               </div>
             ))}
           </aside>
+        </div>
+
+        {/* More Projects Button */}
+        <div className="flex justify-end mt-16 sm:mt-24">
+          <CreepyButton coverClassName="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white whitespace-nowrap">
+            More Projects
+          </CreepyButton>
         </div>
 
       </div>

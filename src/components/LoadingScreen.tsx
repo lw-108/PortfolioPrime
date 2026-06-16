@@ -7,27 +7,17 @@ interface LoadingScreenProps {
 
 /**
  * Generates a zigzag spear-teeth SVG path along the bottom edge.
- * Crucially, we use the same number of points for both flat and zigzag paths
- * to ensure Framer Motion can morph between them perfectly.
- * 
- * @param w      viewport width
- * @param h      viewport height
- * @param teeth  number of teeth
- * @param depth  how far each tooth extends downward
  */
 function buildZigzagPath(w: number, h: number, teeth: number, depth: number): string {
   const toothWidth = w / teeth;
   let d = `M0 0 L${w} 0 L${w} ${h}`;
 
-  // Walk right-to-left along the bottom, drawing alternating teeth
   for (let i = teeth; i > 0; i--) {
     const xRight = i * toothWidth;
     const xMid = xRight - toothWidth / 2;
     const xLeft = (i - 1) * toothWidth;
     
-    // Down to the spear tip
     d += ` L${xMid} ${h + depth}`;
-    // Back up to the baseline
     d += ` L${xLeft} ${h}`;
   }
 
@@ -56,12 +46,14 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   const width = dimensions.width;
   const height = dimensions.height;
 
-  // Configuration for long, sharp, menacing monster teeth
-  const teethCount = 18; // More teeth for a denser, sharper look
-  const frontTeethDepth = Math.max(160, height * 0.22); // Extra long spears (22% of height)
-  const backTeethDepth = frontTeethDepth * 1.15; // Deeper back layer for 3D depth
+  // Optimized settings for responsiveness & low-end devices:
+  // Fewer teeth on mobile (width < 768) reduces path complexity drastically
+  const teethCount = width < 768 ? 10 : 18; 
+  
+  // Medium sized spikes (8% of viewport height instead of 22%)
+  const frontTeethDepth = Math.max(60, height * 0.08); 
+  const backTeethDepth = frontTeethDepth * 1.15; 
 
-  // Generate paths with identical point counts for flawless morph animations
   const flatPath = useMemo(
     () => buildZigzagPath(width, height, teethCount, 0),
     [width, height, teethCount]
@@ -78,9 +70,10 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   );
 
   useEffect(() => {
+    // Shortened wait time from 2400ms to 1200ms for quick render of the app
     const timer = setTimeout(() => {
       setIsExiting(true);
-    }, 2400);
+    }, 1200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -97,8 +90,8 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
           id="loading-screen"
           initial={{ y: 0 }}
           exit={{
-            y: '-125vh', // Slide all the way up to completely clear the long teeth
-            transition: { duration: 1.3, ease: [0.76, 0, 0.24, 1] },
+            y: '-115vh', // Quick slide up using GPU-accelerated transform
+            transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] },
           }}
           className="fixed inset-0 z-99999 size-full cursor-wait overflow-visible select-none"
         >
@@ -112,40 +105,26 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
           >
             {/* Back/Shadow teeth layer for 3D depth */}
             <motion.path
-              fill="#9e2e00" // Dark primary shadow
+              fill="#9e2e00"
               initial={{ d: flatPath }}
               animate={{
-                d: frontZigzagPath, // Already form teeth during load state
-                transition: {
-                  duration: 1.2,
-                  ease: [0.25, 1, 0.5, 1],
-                },
-              }}
-              exit={{
-                d: backZigzagPath, // Stretch even longer as it opens
+                d: backZigzagPath,
                 transition: {
                   duration: 0.8,
-                  ease: [0.76, 0, 0.24, 1],
+                  ease: [0.25, 1, 0.5, 1],
                 },
               }}
             />
             {/* Front primary teeth layer */}
             <motion.path
-              fill="#f54900" // Primary Color
+              fill="#f54900"
               initial={{ d: flatPath }}
               animate={{
-                d: frontZigzagPath, // Show the sharp spears during load state
-                transition: {
-                  duration: 1.0,
-                  ease: [0.25, 1, 0.5, 1],
-                  delay: 0.1,
-                },
-              }}
-              exit={{
                 d: frontZigzagPath,
                 transition: {
-                  duration: 0.8,
-                  ease: [0.76, 0, 0.24, 1],
+                  duration: 0.7,
+                  ease: [0.25, 1, 0.5, 1],
+                  delay: 0.05,
                 },
               }}
             />
@@ -154,16 +133,16 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
           {/* Loading Content */}
           <div
             id="text"
-            className="relative z-10 flex size-full flex-col items-center justify-center text-center text-white"
+            className="relative z-10 flex size-full flex-col items-center justify-center text-center text-white px-4"
           >
             <h3 className="overflow-hidden mb-2">
               <motion.span
                 initial={{ y: '100%' }}
                 animate={{
                   y: 0,
-                  transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1], delay: 0.4 },
+                  transition: { duration: 0.5, ease: [0.215, 0.61, 0.355, 1], delay: 0.2 },
                 }}
-                className="loading-text flicker-effect inline-block text-4xl sm:text-6xl md:text-7xl font-clash font-extrabold uppercase tracking-widest text-white"
+                className="loading-text flicker-effect inline-block text-3xl sm:text-6xl md:text-7xl font-clash font-extrabold uppercase tracking-widest text-white"
               >
                 Lingeshwarma
               </motion.span>
@@ -174,35 +153,35 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
                 initial={{ y: '100%' }}
                 animate={{
                   y: 0,
-                  transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1], delay: 0.65 },
+                  transition: { duration: 0.5, ease: [0.215, 0.61, 0.355, 1], delay: 0.35 },
                 }}
-                className="loading-text inline-block text-sm sm:text-base md:text-lg font-clash uppercase tracking-widest opacity-80"
+                className="loading-text inline-block text-xs sm:text-base md:text-lg font-clash uppercase tracking-widest opacity-80"
               >
                 &copy; Folio {new Date().getFullYear()}
               </motion.span>
             </p>
 
-            <div className="absolute bottom-10 left-6 sm:left-14 overflow-hidden">
+            <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-14 overflow-hidden">
               <motion.span
                 initial={{ y: '100%' }}
                 animate={{
                   y: 0,
-                  transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1], delay: 0.8 },
+                  transition: { duration: 0.5, ease: [0.215, 0.61, 0.355, 1], delay: 0.5 },
                 }}
-                className="loading-text inline-block font-mono text-xs sm:text-sm text-white/80"
+                className="loading-text inline-block font-mono text-[10px] sm:text-sm text-white/80"
               >
                 Version 1.4v
               </motion.span>
             </div>
 
-            <div className="absolute bottom-10 right-6 sm:right-14 overflow-hidden">
+            <div className="absolute bottom-6 right-6 sm:bottom-10 sm:right-14 overflow-hidden">
               <motion.span
                 initial={{ y: '100%' }}
                 animate={{
                   y: 0,
-                  transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1], delay: 0.8 },
+                  transition: { duration: 0.5, ease: [0.215, 0.61, 0.355, 1], delay: 0.5 },
                 }}
-                className="loading-text inline-block font-mono text-xs sm:text-sm animate-pulse text-white/80"
+                className="loading-text inline-block font-mono text-[10px] sm:text-sm animate-pulse text-white/80"
               >
                 Loading...
               </motion.span>

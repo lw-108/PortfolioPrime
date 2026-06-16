@@ -6,6 +6,7 @@ import StepRibbon from './sections/StepRibbon'
 import AboutPage from './pages/About'
 import Projects from './sections/Projects'
 import { LoadingScreen } from './components/LoadingScreen'
+import { CustomCursor } from './components/CustomCursor'
 
 const App = () => {
   const [showLoading, setShowLoading] = useState(true);
@@ -54,6 +55,7 @@ const App = () => {
         <Projects />
         <div className="h-[40vh] w-full" />
       </section>
+      <CustomCursor />
     </>
   )
 }

@@ -201,3 +201,35 @@
   animation: marquee 60s linear infinite;
   will-change: transform;
 }
+
+/* Global Selection Styling */
+::selection {
+  background-color: #f54900;
+  color: #ffffe3;
+}
+::-moz-selection {
+  background-color: #f54900;
+  color: #ffffe3;
+}
+
+/* Global scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #f54900;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #d43f00;
+}
+
+/* Firefox scrollbar support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #f54900 transparent;
+}

@@ -72,7 +72,7 @@ const onboardingData: StepperData = {
       cta: { label: "Start a project", href: "/contact" },
       media: {
         back: {
-          src: "https://i.ibb.co/9HxXVqMy/output-onlinepngtools.png",
+          src: "/steps/plan.png",
           alt: "Project roadmap"
         }
       },
@@ -91,11 +91,11 @@ const onboardingData: StepperData = {
       cta: { label: "See designs", href: "/portfolio" },
       media: {
         back: {
-          src: "https://i.ibb.co/b5pNdvFG/dash.png",
+          src: "/steps/design.png",
           alt: "Interactive prototypes"
         }
       },
-      svgMarkup: <SVGFourStar className="w-10 h-10 sm:w-14 sm:h-14 text-[#f54900]" />
+      svgMarkup: <SVGFourStar className="w-10 h-10 sm:w-14 sm:h-14 text-[#f54900] translate-x-2" />
     },
     {
       id: "step-3",
@@ -110,7 +110,7 @@ const onboardingData: StepperData = {
       cta: { label: "Tech stack", href: "/skills" },
       media: {
         back: {
-          src: "https://i.ibb.co/S7M9RfC5/codes-modified.png",
+          src: "/steps/code.png",
           alt: "Code testing"
         }
       },
@@ -129,7 +129,7 @@ const onboardingData: StepperData = {
       cta: { label: "Launch now", href: "/contact" },
       media: {
         back: {
-          src: "https://i.ibb.co/hRcY0xqp/reshot-illustration-startup-entrepreneur-T8-A94-HSCXY-modified.png",
+          src: "/steps/launch.png",
           alt: "Analytics and monitoring"
         }
       },
@@ -340,8 +340,8 @@ const StepRibbon: React.FC = () => {
                       className="stepper__media-image z-10 relative"
                       src={step.media.back.src}
                       alt={step.media.back.alt}
-                      loading="lazy"
-                      decoding="async"
+                      loading="eager"
+                      decoding="sync"
                     />
                   </figure>
                 )}
