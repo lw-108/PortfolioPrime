@@ -199,6 +199,15 @@ const Steps: React.FC = () => {
                 {/* Step Media */}
                 {step.media?.back && (
                   <figure className="stepper__media border-t lg:border-t-0 lg:border-l border-neutral-200 dark:border-neutral-800 relative overflow-hidden">
+                    {/* Background repeating stripe pattern */}
+                    <div
+                      className="absolute inset-0 w-full h-full opacity-35 dark:opacity-20 pointer-events-none select-none"
+                      style={{
+                        backgroundImage: "url('/stripe.svg')",
+                        backgroundRepeat: 'repeat',
+                        backgroundSize: '16px 16px',
+                      }}
+                    />
                     <img
                       className="stepper__media-image z-10 relative"
                       src={step.media.back.src}
@@ -353,7 +362,7 @@ const Steps: React.FC = () => {
           .stepper__item:nth-child(even) .stepper__media {
             order: 1;
             border-left: 0 !important;
-            border-right: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+            border-right: 1px solid var(--border);
           }
         }
 

@@ -233,3 +233,8 @@
   scrollbar-width: thin;
   scrollbar-color: #f54900 transparent;
 }
+
+/* Page width overrides for wider layout with thin margins */
+.max-w-384, .max-w-96rem {
+  max-width: 97.5% !important;
+}
