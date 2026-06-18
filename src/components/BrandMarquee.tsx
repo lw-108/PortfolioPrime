@@ -15,13 +15,13 @@ type BrandMarqueeProps = {
 };
 
 const defaultLogos: Logo[] = [
-  { image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg", alt: "C" },
-  { image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg", alt: "C++" },
-  { image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", alt: "Python" },
-  { image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg", alt: "Java" },
+  { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg", alt: "C" },
+  { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg", alt: "C++" },
+  { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", alt: "Python" },
+  { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg", alt: "Java" },
 
-  { image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", alt: "HTML5" },
-  { image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg", alt: "CSS3" },
+  { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", alt: "HTML5" },
+  { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg", alt: "CSS3" },
   {
     image: "https://upload.wikimedia.org/wikipedia/commons/b/b9/JavaScript_shield_logo_%28no_text%29.svg",
     alt: "JavaScript",
@@ -31,31 +31,31 @@ const defaultLogos: Logo[] = [
     alt: "Tailwind CSS",
   },
   {
-    image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
     alt: "React",
   },
 
-  { image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg", alt: "Node.js" },
+  { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg", alt: "Node.js" },
   {
     image: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Firebase_Logo_%28No_wordmark%29_%282024-%29.svg",
     alt: "Firebase",
   },
   {
-    image: "https://brandlogos.net/wp-content/uploads/2025/07/supabase_icon-logo_brandlogos.net_nmv8t-512x521.png",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg",
     alt: "Supabase",
   },
 
   {
-    image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
     alt: "PostgreSQL",
   },
   {
-    image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg",
     alt: "SQLite",
   },
 
   {
-    image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
     alt: "Git",
   },
   {
@@ -71,24 +71,24 @@ const defaultLogos: Logo[] = [
     alt: "Flutter",
   },
   {
-    image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg",
     alt: "VS Code",
   },
   {
-    image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
     alt: "Docker",
   },
   {
-    image: "https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/vercel.png",
+    image: "https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/Vercel.svg",
     alt: "Vercel",
   },
 
   {
-    image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
     alt: "TypeScript",
   },
   {
-    image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
     alt: "Next.js",
   },
   {
@@ -96,11 +96,11 @@ const defaultLogos: Logo[] = [
     alt: "MongoDB",
   },
   {
-    image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/heroku/heroku-original.svg",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/heroku/heroku-original.svg",
     alt: "Heroku",
   },
   {
-    image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visualstudio/visualstudio-plain.svg",
+    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/visualstudio/visualstudio-plain.svg",
     alt: "Visual Studio",
   },
 ];
@@ -129,8 +129,8 @@ export default function BrandMarquee({
               loading="lazy"
               decoding="async"
               draggable={false}
-              className={compact 
-                ? "h-6 w-6 lg:h-8 lg:w-8 object-contain pointer-events-none" 
+              className={compact
+                ? "h-6 w-6 lg:h-8 lg:w-8 object-contain pointer-events-none"
                 : "h-8 w-8 p-0 sm:h-8 sm:w-8 md:h-12 md:w-12 lg:h-14 lg:w-14 xl:h-16 xl:w-16 object-contain pointer-events-none"
               }
             />

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { AnimatedTitle } from '../components/ui/AnimatedTitle';
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -278,7 +279,7 @@ const StepRibbon: React.FC = () => {
               {data.subtitle}
             </span>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground bg-background leading-none">
-              {data.title}
+              <AnimatedTitle text={`${data.title} /`} />
             </h2>
           </div>
           <p className="text-muted-foreground max-w-md font-clash text-sm sm:text-base bg-background">

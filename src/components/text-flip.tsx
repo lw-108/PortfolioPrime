@@ -5,9 +5,9 @@ import { AnimatePresence, motion } from "motion/react"
 import { cn } from "@/lib/utils"
 
 const defaultVariants: Variants = {
-  initial: { y: -8, opacity: 0 },
-  animate: { y: 0, opacity: 1 },
-  exit: { y: 8, opacity: 0 },
+  initial: { y: '-100%', opacity: 0, filter: 'blur(4px)' },
+  animate: { y: '0%', opacity: 1, filter: 'blur(0px)' },
+  exit:    { y: '100%', opacity: 0, filter: 'blur(4px)' },
 }
 
 type MotionElement = typeof motion.p | typeof motion.span | typeof motion.code
@@ -47,8 +47,8 @@ export function TextFlip({
   className,
   children,
 
-  interval = 2,
-  transition = { duration: 0.3 },
+  interval = 2.5,
+  transition = { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
   variants = defaultVariants,
   play = true,
 
@@ -76,7 +76,7 @@ export function TextFlip({
     <AnimatePresence mode="wait" initial={false}>
       <Component
         key={currentIndex}
-        className={cn("inline-block", className)}
+        className={cn("block", className)}
         initial="initial"
         animate="animate"
         exit="exit"

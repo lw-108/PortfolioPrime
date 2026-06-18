@@ -1,4 +1,5 @@
 import React from 'react';
+import { AnimatedTitle } from '../components/ui/AnimatedTitle';
 
 // Types
 interface FeatureCardProps {
@@ -82,7 +83,7 @@ const ServicesBento: React.FC = () => {
               MY SPECIALITIES
             </span>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none">
-              Services & Capabilities
+              <AnimatedTitle text="Services & Capabilities /" />
             </h2>
           </div>
           <p className="text-muted-foreground max-w-md font-clash text-base">

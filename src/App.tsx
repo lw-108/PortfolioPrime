@@ -1,12 +1,64 @@
 import { useState, useEffect } from 'react'
+import { HashRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from './sections/Navbar'
-import Hero from './sections/Hero'
-import ServicesBento from './sections/ServicesBento'
-import StepRibbon from './sections/StepRibbon'
-import AboutPage from './pages/About'
-import Projects from './sections/Projects'
+import Home from './pages/Home'
+import AboutPage from './pages/AboutPage'
+import SkillsPage from './pages/SkillsPage'
+import ProjectsPage from './pages/ProjectsPage'
+import ContactPage from './pages/ContactPage'
+import ResumePage from './pages/ResumePage'
+import Footer from './sections/Footer'
 import { LoadingScreen } from './components/LoadingScreen'
 import { CustomCursor } from './components/CustomCursor'
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Helper to scroll window to top on route change and refresh ScrollTrigger
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Refresh ScrollTrigger once route has updated and DOM is stable
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+  }, [pathname]);
+
+  return null;
+};
+
+// Layout wrapper for all pages
+const Layout = () => {
+  return (
+    <section 
+      className='min-h-screen bg-background text-foreground transition-colors duration-300 relative flex flex-col'
+      style={{
+        backgroundImage: "url('/stripe.svg')",
+        backgroundRepeat: 'repeat',
+        backgroundSize: '38px',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      <ScrollToTop />
+      <Navbar />
+      <div 
+        className="h-6 w-full relative z-10 animate-pulse"
+        style={{
+          backgroundImage: "url('/stripe.svg')",
+          backgroundRepeat: 'repeat',
+          backgroundSize: '10px',
+        }}
+      />
+      <main className="flex-1 w-full relative z-10">
+        <Outlet />
+      </main>
+      <Footer />
+    </section>
+  );
+};
 
 const App = () => {
   const [showLoading, setShowLoading] = useState(true);
@@ -16,6 +68,10 @@ const App = () => {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
+      // Refresh ScrollTrigger once DOM changes and loading screen is gone
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
     }
     return () => {
       document.body.style.overflow = '';
@@ -27,34 +83,20 @@ const App = () => {
       {showLoading && (
         <LoadingScreen onComplete={() => setShowLoading(false)} />
       )}
-      <section 
-        className='min-h-screen bg-background text-foreground transition-colors duration-300 relative'
-        style={{
-          backgroundImage: "url('/stripe.svg')",
-          backgroundRepeat: 'repeat',
-          backgroundSize: '38px',
-          backgroundAttachment: 'fixed',
-        }}
-      >
-        <Navbar />
-        <div 
-          className="h-6 w-full relative z-10"
-          style={{
-            backgroundImage: "url('/stripe.svg')",
-            backgroundRepeat: 'repeat',
-            backgroundSize: '10px',
-          }}
-        />
-        <Hero isLoaded={!showLoading} />
-        <div className="max-w-96rem mx-auto w-full border-x border-dashed border-neutral-800 bg-background flex justify-center">
-          <div className="w-1/2 border-t border-neutral-800"></div>
-        </div>
-        <ServicesBento />
-        <StepRibbon />
-        <AboutPage />
-        <Projects />
-        <div className="h-[40vh] w-full" />
-      </section>
+      {!showLoading && (
+        <Router>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="about" element={<AboutPage />} />
+              <Route path="skills" element={<SkillsPage />} />
+              <Route path="projects" element={<ProjectsPage />} />
+              <Route path="contact" element={<ContactPage />} />
+              <Route path="resume" element={<ResumePage />} />
+            </Route>
+          </Routes>
+        </Router>
+      )}
       <CustomCursor />
     </>
   )

@@ -329,8 +329,10 @@ export default function Dither({
   mouseRadius = 1
 }: DitherProps) {
   const [bgColor, setBgColor] = useState<[number, number, number]>([0.063, 0.063, 0.055]);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
     const updateBg = () => {
       const isDark = document.documentElement.classList.contains('dark');
       setBgColor(isDark ? [0.063, 0.063, 0.055] : [1.0, 1.0, 0.89]);
@@ -340,6 +342,18 @@ export default function Dither({
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     return () => observer.disconnect();
   }, []);
+
+  if (isMobile) {
+    return (
+      <div 
+        className="w-full h-full relative" 
+        style={{
+          background: `linear-gradient(135deg, rgb(${waveColor[0]*255}, ${waveColor[1]*255}, ${waveColor[2]*255}) 0%, rgb(${bgColor[0]*255}, ${bgColor[1]*255}, ${bgColor[2]*255}) 100%)`,
+          opacity: 0.85
+        }}
+      />
+    );
+  }
 
   return (
     <Canvas

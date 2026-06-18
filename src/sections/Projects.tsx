@@ -3,102 +3,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'motion/react';
 import { CreepyButton } from '../components/ui/creepy-button';
-
-gsap.registerPlugin(ScrollTrigger);
-
-// ── Project Data ──
-interface Project {
-  name: string;
-  category: string;
-  tags: string[];
-  image: string;
-  imageBg: string;
-  url: string;
-  year: string;
-}
-
-const projectsData: Project[] = [
-  {
-    name: 'U Fill Academy',
-    category: 'Frontend & Animation',
-    tags: ['React', 'Tailwind', 'Next.js', ''],
-    image: '/works/ufaf.png',
-    imageBg: '/stripe.svg',
-    url: '#',
-    year: '2025',
-  },
-  {
-    name: 'Career path AI',
-    category: 'Frontend & Backend',
-    tags: ['React', 'TypeScript', 'PostgreSQL', 'Supabase'],
-    image: '/works/cpa.png',
-    imageBg: '/stripe.svg',
-    url: 'https://cpa-ebon.vercel.app/',
-    year: '2024',
-  },
-  {
-    name: 'AI & React Seminar',
-    category: 'Frontend',
-    tags: ['React', 'Tailwind', 'Firebase'],
-    image: '/works/seminar.png',
-    imageBg: '/stripe.svg',
-    url: 'https://141025mcaairtseminarlw19.vercel.app/',
-    year: '2025',
-  },
-  {
-    name: 'Yazhu Cakes',
-    category: 'Frontend',
-    tags: ['React', 'Next.js'],
-    image: '/works/yazhucakes.png',
-    imageBg: '/stripe.svg',
-    url: 'https://yazhu-cakeshop.vercel.app/',
-    year: '2026',
-  },
-  {
-    name: 'Thiran360AI',
-    category: 'Frontend & Backend',
-    tags: ['React', 'Tailwind', 'GSAP', 'Supabase'],
-    image: '/works/thiran360.png',
-    imageBg: '/stripe.svg',
-    url: 'thiran360-ai-xi.vercel.app',
-    year: '2026',
-  },
-];
-
-// ── Animated Title Characters ──
-const AnimatedTitle: React.FC<{ text: string }> = ({ text }) => {
-  const chars = text.split('');
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: 0.02, delayChildren: 0 },
-    },
-  };
-  const charVariants = {
-    hidden: { opacity: 0, y: 60 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { type: 'spring', damping: 12, stiffness: 100 },
-    },
-  } as const;
-
-  return (
-    <motion.span
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      className="inline"
-    >
-      {chars.map((char, i) => (
-        <motion.span key={i} variants={charVariants} className="inline-block">
-          {char === ' ' ? '\u00A0' : char}
-        </motion.span>
-      ))}
-    </motion.span>
-  );
-};
+import { AnimatedTitle } from '../components/ui/AnimatedTitle';
+import { projectsData, type Project } from '../lib/projects-data';
 
 // ── Tag Icon Map ──
 const tagIcons: Record<string, string> = {
@@ -127,49 +33,40 @@ const Projects: React.FC = () => {
   useEffect(() => {
     if (window.innerWidth < 768) return;
 
-    const updateIndex = (newIndex: number) => {
-      if (newIndex === activeIndexRef.current) return;
-      const isForward = newIndex > activeIndexRef.current;
-      activeIndexRef.current = newIndex;
+    const updateIndex = (targetDigit: number, direction: 'forward' | 'backward') => {
+      const currentVal = numberRef.current ? numberRef.current.innerText : '1';
+      if (currentVal === String(targetDigit)) return;
 
-      if (!indexRef.current || !numberRef.current) return;
-
-      // Kill running animations to avoid overlaps and ensure a clean starting point
-      gsap.killTweensOf(indexRef.current);
-      gsap.set(indexRef.current, { yPercent: 0 });
-
-      const tl = gsap.timeline();
-
-      if (isForward) {
-        tl.to(indexRef.current, {
-          yPercent: -100,
-          duration: 0.15,
-          ease: 'power2.in',
-        })
-        .call(() => {
-          if (numberRef.current) numberRef.current.innerText = String(newIndex + 1);
-        })
-        .set(indexRef.current, { yPercent: 100 })
-        .to(indexRef.current, {
-          yPercent: 0,
-          duration: 0.2,
-          ease: 'power2.out',
-        });
+      if (direction === 'forward') {
+        gsap.timeline({ defaults: { duration: 0.3 } })
+          .to(indexRef.current, {
+            yPercent: -100,
+            ease: 'power4.inOut',
+            onComplete: () => {
+              if (numberRef.current) numberRef.current.innerText = String(targetDigit);
+              activeIndexRef.current = targetDigit - 1;
+              gsap.set(indexRef.current, { yPercent: 100 });
+            },
+          })
+          .to(indexRef.current, {
+            yPercent: 0,
+            ease: 'power1.inOut',
+          });
       } else {
-        tl.to(indexRef.current, {
-          yPercent: 100,
-          duration: 0.15,
-          ease: 'power2.in',
-        })
-        .call(() => {
-          if (numberRef.current) numberRef.current.innerText = String(newIndex + 1);
-        })
-        .set(indexRef.current, { yPercent: -100 })
-        .to(indexRef.current, {
-          yPercent: 0,
-          duration: 0.2,
-          ease: 'power2.out',
-        });
+        gsap.timeline({ defaults: { duration: 0.3 } })
+          .to(indexRef.current, {
+            yPercent: 100,
+            ease: 'power4.inOut',
+            onComplete: () => {
+              if (numberRef.current) numberRef.current.innerText = String(targetDigit);
+              activeIndexRef.current = targetDigit - 1;
+              gsap.set(indexRef.current, { yPercent: -100 });
+            },
+          })
+          .to(indexRef.current, {
+            yPercent: 0,
+            ease: 'power1.inOut',
+          });
       }
     };
 
@@ -179,13 +76,13 @@ const Projects: React.FC = () => {
 
         ScrollTrigger.create({
           trigger: card,
-          start: 'top 35%',
-          end: 'bottom 35%',
+          start: 'top 25%',
+          end: 'bottom 25%',
           onEnter: () => {
-            updateIndex(i);
+            updateIndex(i + 1, 'forward');
           },
           onEnterBack: () => {
-            updateIndex(i);
+            updateIndex(i + 1, 'backward');
           },
         });
       });
@@ -243,22 +140,24 @@ const Projects: React.FC = () => {
 
           {/* Sticky large index number — desktop only */}
           <div className="text-foreground/10 sticky top-12 col-span-5 hidden h-fit w-full overflow-hidden text-[22vw] leading-[0.8] font-semibold md:flex items-baseline">
+            {/* Static "0" — never animates */}
             <span className="font-clash relative tracking-tighter">0</span>
+            {/* Only the second digit flips */}
             <span
               ref={indexRef}
-              className="font-clash relative tracking-tighter will-change-transform inline-flex items-baseline"
+              className="font-clash relative tracking-tighter will-change-transform inline-block overflow-hidden"
+              style={{ height: '1em', lineHeight: '0.8', minWidth: '0.7em' }}
             >
-              <span ref={numberRef}>1</span>
+              <span ref={numberRef} className="inline-block w-full">1</span>
             </span>
           </div>
 
-          {/* Project cards column */}
-          <aside className="relative col-span-full flex flex-col space-y-10 md:col-span-7">
-            {projectsData.map((work, i) => (
+          <aside className="relative col-span-full flex flex-col space-y-12 md:col-span-7">
+            {projectsData.map((work: Project, i: number) => (
               <div
                 key={i}
                 ref={(el) => { cardRefs.current[i] = el; }}
-                className="work-card"
+                className="work-card border-b border-dashed border-neutral-800 pb-10"
               >
                 <a
                   className="group block"
@@ -301,7 +200,7 @@ const Projects: React.FC = () => {
                         {work.name}
                       </h3>
                       <div className="flex gap-1.5 select-none mt-2 sm:mt-0 flex-wrap">
-                        {work.tags.map((tag) => {
+                        {work.tags.map((tag: string) => {
                           if (!tag.trim()) return null;
                           const iconUrl = tagIcons[tag];
                           return (
