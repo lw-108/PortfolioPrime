@@ -6,9 +6,10 @@ import Navbar from './sections/Navbar'
 import Home from './pages/Home'
 import AboutPage from './pages/AboutPage'
 import SkillsPage from './pages/SkillsPage'
-import ProjectsPage from './pages/ProjectsPage'
+import ProjectsPage from './pages/ProjectsPage' // Force reload HMR
 import ContactPage from './pages/ContactPage'
 import ResumePage from './pages/ResumePage'
+import BlogsPage from './pages/BlogsPage'
 import Footer from './sections/Footer'
 import { LoadingScreen } from './components/LoadingScreen'
 import { CustomCursor } from './components/CustomCursor'
@@ -38,7 +39,7 @@ const Layout = () => {
       style={{
         backgroundImage: "url('/stripe.svg')",
         backgroundRepeat: 'repeat',
-        backgroundSize: '38px',
+        backgroundSize: '24px 24px',
         backgroundAttachment: 'fixed',
       }}
     >
@@ -93,6 +94,7 @@ const App = () => {
               <Route path="projects" element={<ProjectsPage />} />
               <Route path="contact" element={<ContactPage />} />
               <Route path="resume" element={<ResumePage />} />
+              <Route path="blogs" element={<BlogsPage />} />
             </Route>
           </Routes>
         </Router>

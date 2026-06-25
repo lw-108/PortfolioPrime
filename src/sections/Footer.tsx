@@ -1,347 +1,310 @@
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUp, Moon, Sun, Heart } from 'lucide-react';
-import { useTheme } from '../components/theme-provider';
 import WorldMap from '../components/ui/WorldMap';
+import { useTheme } from '../components/theme-provider';
+import StickerPeel from '../components/StickerPeel'
+import logo from '/logo.png'
 
-function handleScrollTop() {
-  window.scroll({
-    top: 0,
-    behavior: "smooth",
-  });
-}
+const contacts = [
+  {
+    name: "Mail",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/4/40/Zorin_Icon_Themes_%E2%80%93_mail-message-new-symbolic.svg",
+    link: "mailto:lingeshwarma108@gmail.com",
+    color: "#ff5500",
+    description: "Send an email"
+  },
+  {
+    name: "Twitter",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Logo_of_Twitter.svg",
+    link: "https://x.com/lingeshwarma19",
+    color: "#ff5500",
+    description: "Follow for updates"
+  },
+  {
+    name: "Instagram",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Instagram_simple_icon.svg",
+    link: "https://www.instagram.com/lingeshwarma_19/",
+    color: "#ff5500",
+    description: "Visual portfolio"
+  },
+  {
+    name: "WhatsApp",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/9/90/WhatsApp_font_awesome.svg",
+    link: "https://wa.me/919025464209",
+    color: "#ff5500",
+    description: "Instant messaging"
+  },
+  {
+    name: "Stack Overflow",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Stack_Overflow_icon.svg",
+    link: "https://stackoverflow.com/users/31676920/lingeshwarma",
+    color: "#ff5500",
+    description: "Tech Q&A profile"
+  },
+  {
+    name: "CodePen",
+    icon: "https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/codepen.svg",
+    link: "https://codepen.io/lingeshwarma",
+    color: "#ff5500",
+    description: "Code experiments"
+  },
+  {
+    name: "Dribbble",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Feather-logos-dribbble.svg",
+    link: "https://dribbble.com/lingeshwarma",
+    color: "#ff5500",
+    description: "Design showcase"
+  },
+  {
+    name: "LinkedIn",
+    icon: "/TechIcons/LinkedIn.svg",
+    link: "https://www.linkedin.com/in/lingeshwarma19/",
+    color: "#ff5500",
+    description: "Professional network"
+  },
+  {
+    name: "GitHub",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg",
+    link: "https://github.com/lw-108",
+    color: "#ff5500",
+    description: "Code repository"
+  },
+  {
+    name: "Calendly",
+    icon: "https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/logos/calendly-jbjluknocqbqwyil7anw9.png/calendly-093vyga7bn0gcn3gt31dbhp.png?_a=DATAiZAAZAA0",
+    link: "https://calendly.com/lw19",
+    color: "#ff5500",
+    description: "Schedule a meeting"
+  },
+  {
+    name: "Peerlist",
+    icon: "https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/logos/peerlist-9912eo532tk7s5eqn07emr.png/peerlist-ov1892aql2lb1lxr57lcer.png?_a=DATAg1AAZAA0",
+    link: "https://peerlist.io/",
+    color: "#ff5500",
+    description: "Developer community"
+  },
+];
 
-// Inline SVGs for social platforms to ensure compatibility
-const MailIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="16" x="2" y="4" rx="2" />
-    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-  </svg>
-);
+const LiveISTClock: React.FC<{ resolvedTheme: "dark" | "light" }> = ({ resolvedTheme }) => {
+  const [timeStr, setTimeStr] = useState('');
+  const [dateStr, setDateStr] = useState('');
+  const [dayStr, setDayStr] = useState('');
 
-const InstagramIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-  </svg>
-);
+  useEffect(() => {
+    const updateTime = () => {
+      const date = new Date();
 
-const FacebookIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-  </svg>
-);
+      const optionsTime: Intl.DateTimeFormatOptions = {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      };
+      const optionsDate: Intl.DateTimeFormatOptions = {
+        timeZone: 'Asia/Kolkata',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      };
+      const optionsDay: Intl.DateTimeFormatOptions = {
+        timeZone: 'Asia/Kolkata',
+        weekday: 'long'
+      };
 
-const LinkedInIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-    <rect width="4" height="12" x="2" y="9" />
-    <circle cx="4" cy="4" r="2" />
-  </svg>
-);
+      const tFormatter = new Intl.DateTimeFormat('en-US', optionsTime);
+      const dFormatter = new Intl.DateTimeFormat('en-US', optionsDate);
+      const dayFormatter = new Intl.DateTimeFormat('en-US', optionsDay);
 
-const YouTubeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17z" />
-    <polygon points="9.7 15 9.7 9 14.3 12 9.7 15" />
-  </svg>
-);
+      setTimeStr(tFormatter.format(date));
+      setDateStr(dFormatter.format(date));
+      setDayStr(dayFormatter.format(date));
+    };
 
-const XIcon = () => (
-  <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-  </svg>
-);
-
-const ThreadsIcon = () => (
-  <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-    <path d="M12.012 0C5.398 0 0 5.398 0 12.012s5.398 12.012 12.012 12.012c6.614 0 12.012-5.398 12.012-12.012S18.626 0 12.012 0zm3.87 16.59c-.66.66-1.59.99-2.79.99-.9 0-1.68-.21-2.34-.63-.66-.42-1.14-1.02-1.44-1.8-.3-.78-.45-1.74-.45-2.88s.15-2.1.45-2.88c.3-.78.78-1.38 1.44-1.8.66-.42 1.44-.63 2.34-.63 1.2 0 2.13.33 2.79.99s.99 1.59.99 2.79v1.23c0 .87-.3 1.56-.9 2.07s-1.38.75-2.34.75c-.75 0-1.35-.18-1.8-.54s-.69-.9-.72-1.62c-.42.6-.96 1.05-1.62 1.35s-1.38.45-2.16.45c-1.14 0-2.04-.33-2.7-.99s-.99-1.59-.99-2.79c0-1.23.33-2.16.99-2.79s1.56-.99 2.7-.99c.78 0 1.5.15 2.16.45s1.2.75 1.62 1.35v-.63c0-.75.21-1.35.63-1.8s.99-.69 1.71-.72V5.1c-.93 0-1.68.21-2.25.63s-.93 1.02-1.08 1.8c-.45-.63-1.02-1.08-1.71-1.35s-1.44-.41-2.25-.41c-1.5 0-2.7.45-3.6 1.35s-1.35 2.1-1.35 3.6v1.8c0 1.5.45 2.7 1.35 3.6s2.1 1.35 3.6 1.35c.81 0 1.56-.14 2.25-.41s1.26-.72 1.71-1.35c.15.78.51 1.38 1.08 1.8s1.32.63 2.25.63v-.54c-.72-.03-1.29-.27-1.71-.72s-.63-1.05-.63-1.8v-1.23c0-1.2.33-2.13.99-2.79s1.59-.99 2.79-.99c.9 0 1.68.21 2.34.63s.99 1.05.99 1.89v1.23c0 1.2-.33 2.13-.99 2.79z"/>
-  </svg>
-);
-
-const WhatsAppIcon = () => (
-  <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.66.986 3.298 1.448 5.356 1.449 5.514 0 10.002-4.487 10.005-10.007.001-2.673-1.036-5.186-2.922-7.071C17.202 1.636 14.69 0.6 12.012 0.6 6.498 0.6 2.01 5.088 2.008 10.604c-.001 2.062.547 3.655 1.577 5.334L2.592 21.41l5.882-1.54c-.496.3-1.243.684-1.827-.716zM17.06 14.12c-.274-.137-1.62-.8-1.87-.892-.252-.093-.437-.137-.62.137-.182.274-.707.892-.867 1.075-.16.182-.32.206-.593.07-1.042-.52-1.72-.924-2.42-2.128-.152-.258.152-.24.436-.8.084-.168.042-.314-.02-.45-.064-.138-.62-1.49-.85-2.04-.223-.538-.45-.465-.62-.473-.16-.008-.344-.01-.528-.01-.184 0-.485.07-.74.343-.254.274-.97.948-.97 2.31 0 1.363.99 2.68 1.104 2.835.114.156 1.948 2.973 4.718 4.168.658.285 1.173.454 1.574.58.662.21 1.265.18 1.742.11.53-.08 1.62-.663 1.85-1.272.23-.61.23-1.13.16-1.24-.07-.11-.253-.18-.528-.316z"/>
-  </svg>
-);
-
-const BehanceIcon = () => (
-  <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-    <path d="M22 13.5h-8c0-1.748 1.252-2.5 3.75-2.5 2.5 0 3.75.752 3.75 2.5zm1-3.25c-.244-.24-.582-.366-.998-.366h-6.004c-.416 0-.754.126-.998.366s-.366.574-.366.99v4.528c0 .416.122.746.366.99.244.244.582.366.998.366H22c.416 0 .754-.122.998-.366s.366-.574.366-.99v-4.528c0-.416-.122-.75-.366-.99zm-13.75-6.5C8.366 3.75 7.25 3.75 5.5 3.75H2v15.5h3.5c1.75 0 2.866 0 3.75-.95 1-.95 1.5-2.2 1.5-3.8 0-1.25-.374-2.25-1.12-2.75.746-.5 1.12-1.5 1.12-2.75 0-1.6-.5-2.85-1.5-3.8zm-.75 3.5c0 .6-.2.95-.6 1.1-.4.15-1 .15-1.8.15H4.25V6.75h1.6c.8 0 1.4 0 1.8.15.4.15.6.5.6 1.1zm.5 6.5c0 .6-.2.95-.6 1.1-.4.15-1 .15-1.8.15H4.25v-3.5h1.6c.8 0 1.4 0 1.8.15.4.15.6.5.6 1.1zm11-.5c.828 0 1.5.672 1.5 1.5S19.828 16 19 16s-1.5-.672-1.5-1.5.672-1.5 1.5-1.5z"/>
-  </svg>
-);
-
-interface NavigationItem {
-  name: string;
-  href: string;
-  external?: boolean;
-}
-
-interface NavigationSection {
-  id: string;
-  name: string;
-  items: NavigationItem[];
-}
-
-interface NavigationCategory {
-  id: string;
-  name: string;
-  sections: NavigationSection[];
-}
-
-interface NavigationData {
-  categories: NavigationCategory[];
-}
-
-const navigation: NavigationData = {
-  categories: [
-    {
-      id: "portfolio",
-      name: "Portfolio Navigation",
-      sections: [
-        {
-          id: "about",
-          name: "About",
-          items: [
-            { name: "Home", href: "/" },
-            { name: "About", href: "/about" },
-            { name: "Resume", href: "/resume" },
-          ],
-        },
-        {
-          id: "features",
-          name: "Features",
-          items: [
-            { name: "Projects", href: "/projects" },
-            { name: "Skills", href: "/skills" },
-            { name: "Contact", href: "/contact" },
-          ],
-        },
-        {
-          id: "socials-list",
-          name: "Social Profiles",
-          items: [
-            { name: "GitHub", href: "https://github.com/LW-8877", external: true },
-            { name: "LinkedIn", href: "https://linkedin.com/in/lingeshwarma-mk", external: true },
-            { name: "Mail", href: "mailto:lingeshwarma8877@gmail.com", external: true },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
-const Underline = `hover:-translate-y-1 border border-dotted border-neutral-600 dark:border-neutral-800 rounded-xl p-2.5 transition-transform text-muted-foreground hover:text-[#f54900] hover:border-[#f54900] duration-300`;
-
-export const Theme = () => {
-  const { setTheme } = useTheme();
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="flex items-center justify-center select-none font-clash">
-      <div className="flex items-center rounded-full border border-dotted border-neutral-700 p-1 bg-background/50 backdrop-blur-sm">
-        <button
-          onClick={() => setTheme("light")}
-          className="dark:bg-background mr-3 rounded-full bg-black p-2 text-white dark:text-white cursor-pointer hover:scale-105 active:scale-95 transition-all"
-        >
-          <Sun className="h-5 w-5" strokeWidth={1.5} />
-          <span className="sr-only">Light Theme</span>
-        </button>
-
-        <button type="button" onClick={handleScrollTop} className="cursor-pointer text-foreground hover:text-[#f54900] transition-colors p-1">
-          <ArrowUp className="h-4 w-4" />
-          <span className="sr-only">Top</span>
-        </button>
-
-        <button
-          onClick={() => setTheme("dark")}
-          className="ml-3 rounded-full p-2 text-black dark:bg-black dark:text-white cursor-pointer hover:scale-105 active:scale-95 transition-all"
-        >
-          <Moon className="h-5 w-5" strokeWidth={1.5} />
-          <span className="sr-only">Dark Theme</span>
-        </button>
+    <div className="flex flex-col items-start md:items-end font-clash text-left md:text-right gap-3 select-none md:pl-4">
+      <div className={`text-2xl sm:text-3xl font-extrabold tracking-tight uppercase leading-none ${resolvedTheme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
+        {timeStr} <span className="text-[#FF5500] text-sm sm:text-base font-extrabold ml-1.5">IST</span>
+      </div>
+      <div className={`text-xs sm:text-sm font-semibold uppercase tracking-widest ${resolvedTheme === 'light' ? 'text-neutral-500' : 'text-neutral-400'}`}>
+        {dayStr} &mdash; {dateStr}
       </div>
     </div>
   );
 };
 
 export function Footer() {
+  const { theme } = useTheme();
+  const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const updateTheme = () => {
+      setResolvedTheme(root.classList.contains('dark') ? 'dark' : 'light');
+    };
+    updateTheme();
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(root, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, [theme]);
+
+  const isLight = resolvedTheme === 'light';
+
   return (
-    <footer className="mx-auto mt-20 flex h-full w-full flex-col items-center justify-center font-clash bg-background border-t border-dashed border-neutral-800/60 pb-12 select-none z-10 relative">
-      
-      {/* Repeating Stripe Background Overlay */}
-      <div
-        className="absolute inset-x-0 top-0 h-4 opacity-[0.06] dark:opacity-[0.04] pointer-events-none select-none z-0"
-        style={{
-          backgroundImage: "url('/stripe.svg')",
-          backgroundRepeat: 'repeat',
-          backgroundSize: '16px 16px',
-        }}
-      />
+    <footer className="relative z-10 w-full bg-transparent py-0 px-0 overflow-hidden select-none font-clash">
+      <div className={`w-[97%] max-w-384 mx-auto relative transition-colors duration-300 ${isLight ? 'bg-[#ffffe3] text-neutral-900' : 'bg-[#0b0a0a] text-white'}`}>
 
-      <div className="relative mx-auto grid max-w-7xl items-center justify-center gap-6 p-10 pb-0 md:flex z-10">
-        <Link to="/" className="flex items-center justify-center rounded-full shrink-0">
-          <img src="/logo-dark.svg" alt="Logo" className="w-16 h-auto dark:block hidden" />
-          <img src="/logo-light.svg" alt="Logo" className="w-16 h-auto dark:hidden block" />
-        </Link>
-        <p className="text-muted-foreground text-center text-xs leading-5 md:text-left font-clash max-w-3xl">
-          Welcome to my portfolio, where creativity meets strategy to bring your
-          vision to life. I am passionate about transforming ideas into
-          compelling visual experiences. I specialize in crafting unique brand
-          identities, immersive digital experiences, and engaging content that
-          resonates with your audience. My mission is to empower businesses and
-          brands to stand out in a crowded market. I believe in quality, not quantity.
-          This portfolio represents a collection of full-stack implementations, React components, 
-          and creative animations tailored to deliver delightful UX.
-        </p>
-      </div>
+        {/* Main Grid: Left Logo + Right Content */}
+        <div className="grid grid-cols-1 md:grid-cols-12">
 
-      <div className="mx-auto w-full max-w-7xl px-6 py-8 z-10">
-        <div className="border-b border-dotted border-neutral-700 dark:border-neutral-800"></div>
-        <div className="py-10">
-          {navigation.categories.map((category) => (
+          {/* Left Section: LW Logo Container */}
+          <div className={`col-span-1 md:col-span-4 flex items-center justify-center py-16 md:py-0 md:pr-10 min-h-[220px] md:min-h-[300px] relative transition-colors duration-300 ${isLight ? 'bg-[#f5f4dc]' : 'bg-black'}`}>
+            <StickerPeel
+              imageSrc={logo}
+              width={260}
+              rotate={0}
+              peelBackHoverPct={30}
+              peelBackActivePct={40}
+              shadowIntensity={0.5}
+              lightingIntensity={0.1}
+              initialPosition={{ x: -100, y: 100 }}
+              peelDirection={0}
+            />
+            {/* Vertical Stripe Divider */}
             <div
-              key={category.name}
-              className="grid grid-cols-3 flex-row justify-between gap-6 leading-6 md:flex"
-            >
-              {category.sections.map((section) => (
-                <div key={section.name} className="flex flex-col items-center md:items-start">
-                  <h4 className="text-[10px] uppercase font-bold tracking-widest text-[#f54900] mb-3">{section.name}</h4>
-                  <ul
-                    role="list"
-                    className="flex flex-col space-y-2 text-center md:text-left"
-                  >
-                    {section.items.map((item) => (
-                      <li key={item.name} className="flow-root">
-                        {item.external ? (
-                          <a
-                            href={item.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs text-neutral-600 hover:text-[#f54900] dark:text-neutral-400 hover:dark:text-white transition-colors font-semibold uppercase tracking-wider"
-                          >
-                            {item.name}
-                          </a>
-                        ) : (
-                          <Link
-                            to={item.href}
-                            className="text-xs text-neutral-600 hover:text-[#f54900] dark:text-neutral-400 hover:dark:text-white transition-colors font-semibold uppercase tracking-wider"
-                          >
-                            {item.name}
-                          </Link>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              className={`hidden md:block absolute right-0 top-0 bottom-0 w-10 border-l border-r border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}
+              style={{
+                background: isLight
+                  ? 'repeating-linear-gradient(135deg, #eae9d0, #eae9d0 6px, #f5f4dc 6px, #f5f4dc 12px)'
+                  : 'repeating-linear-gradient(135deg, #161616, #161616 6px, #000000 6px, #000000 12px)'
+              }}
+            />
+          </div>
+
+          {/* Right Section: Navigation Links & Subheader */}
+          <div className="col-span-1 md:col-span-8 flex flex-col justify-between">
+
+            {/* Top Row: Tagline */}
+            <div className={`px-6 py-6 sm:px-8 border-b border-dashed flex items-center ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+              <span className={`text-[11px] sm:text-xs font-medium tracking-[0.2em] uppercase ${isLight ? 'text-neutral-600' : 'text-neutral-400'}`}>
+                LW19, FROM IDEA TO IMPACT, WITHOUT THE NOISE.
+              </span>
             </div>
-          ))}
-        </div>
-        <div className="border-b border-dotted border-neutral-700 dark:border-neutral-800"></div>
-      </div>
 
-      {/* Social Network Section */}
-      <div className="flex flex-wrap justify-center gap-y-6 z-10 w-full px-6">
-        <div className="flex flex-wrap items-center justify-center gap-6 gap-y-4 px-6">
-          <a
-            aria-label="Email"
-            href="mailto:lingeshwarma8877@gmail.com"
-            className={Underline}
-          >
-            <MailIcon />
-          </a>
-          <a
-            aria-label="X / Twitter"
-            href="https://x.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={Underline}
-          >
-            <XIcon />
-          </a>
-          <a
-            aria-label="Instagram"
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={Underline}
-          >
-            <InstagramIcon />
-          </a>
-          <a
-            aria-label="Threads"
-            href="https://threads.net"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={Underline}
-          >
-            <ThreadsIcon />
-          </a>
-          <a
-            aria-label="WhatsApp"
-            href="https://wa.me"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={Underline}
-          >
-            <WhatsAppIcon />
-          </a>
-          <a
-            aria-label="Behance"
-            href="https://behance.net"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={Underline}
-          >
-            <BehanceIcon />
-          </a>
-          <a
-            aria-label="Facebook"
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={Underline}
-          >
-            <FacebookIcon />
-          </a>
-          <a
-            aria-label="LinkedIn"
-            href="https://linkedin.com/in/lingeshwarma-mk"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={Underline}
-          >
-            <LinkedInIcon />
-          </a>
-          <a
-            aria-label="YouTube"
-            href="https://youtube.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={Underline}
-          >
-            <YouTubeIcon />
-          </a>
-        </div>
-        <Theme />
-      </div>
+            {/* Middle Row: Links Columns */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 flex-1">
 
-      <div className="mx-auto mt-10 flex flex-col justify-between text-center text-xs md:max-w-7xl z-10">
-        <div className="flex flex-row items-center justify-center gap-1 text-slate-600 dark:text-slate-400">
-          <span> © </span>
-          <span>{new Date().getFullYear()}</span>
-          <span>Made with</span>
-          <Heart className="mx-1 h-4 w-4 animate-pulse text-red-600 fill-red-600" />
-          <span> by </span>
-          <span className="hover:text-[#f54900] cursor-pointer text-black dark:text-white font-bold transition-colors">
-            Lingeshwarma MK
-          </span>
-        </div>
-      </div>
+              {/* Column 1: Your Launchpad */}
+              <div className={`px-6 py-8 sm:px-8 border-b sm:border-b-0 sm:border-r border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+                <h4 className={`text-sm font-bold uppercase tracking-wider mb-6 ${isLight ? 'text-neutral-900' : 'text-white'}`}>Your Launchpad</h4>
+                <ul className="space-y-4">
+                  <li>
+                    <Link to="/" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Home</Link>
+                  </li>
+                  <li>
+                    <a href="#works" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Projects</a>
+                  </li>
+                  <li>
+                    <a href="#contact" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Get Started</a>
+                  </li>
+                </ul>
+              </div>
 
-      {/* World Map Section at very bottom - full width */}
-      <div className="w-full z-10 mt-12">
-        <WorldMap />
+              {/* Column 2: Meet the Creator */}
+              <div className={`px-6 py-8 sm:px-8 border-b sm:border-b-0 sm:border-r border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+                <h4 className={`text-sm font-bold uppercase tracking-wider mb-6 ${isLight ? 'text-neutral-900' : 'text-white'}`}>Meet the Creator</h4>
+                <ul className="space-y-4">
+                  <li>
+                    <a href="#about" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>About</a>
+                  </li>
+                  <li>
+                    <a href="/resume" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Resume</a>
+                  </li>
+                  <li>
+                    <a href="#contact" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Contact</a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Column 3: Let's Connect */}
+              <div className={`px-6 py-8 sm:px-8 border-b sm:border-b-0 border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+                <h4 className={`text-sm font-bold uppercase tracking-wider mb-6 ${isLight ? 'text-neutral-900' : 'text-white'}`}>Let's Connect</h4>
+                <ul className="space-y-4">
+                  <li>
+                    <a href="https://x.com/lingeshwarma19" target="_blank" rel="noopener noreferrer" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Twitter / X</a>
+                  </li>
+                  <li>
+                    <a href="https://www.linkedin.com/in/lingeshwarma19/" target="_blank" rel="noopener noreferrer" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>LinkedIn</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/lw-108" target="_blank" rel="noopener noreferrer" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>GitHub</a>
+                  </li>
+                  <li>
+                    <a href="mailto:lingeshwarma108@gmail.com" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Mail</a>
+                  </li>
+                  <li>
+                    <a href="https://stackoverflow.com/users/31676920/lingeshwarma" target="_blank" rel="noopener noreferrer" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Stackoverflow</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+
+            {/* Social Network Row */}
+            <div className={`px-6 py-5 sm:px-8 border-t border-dashed flex flex-col md:flex-row justify-between items-start md:items-center gap-6 z-10 ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+              {/* Social Icons Column */}
+              <div className="flex flex-wrap items-center justify-start gap-4">
+                {contacts.map((c) => (
+                  <a
+                    key={c.name}
+                    aria-label={c.name}
+                    href={c.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:-translate-y-1 p-2 transition-transform duration-300 flex items-center justify-center cursor-pointer select-none"
+                    title={`${c.name} - ${c.description}`}
+                  >
+                    <div
+                      className="w-5 h-5 bg-[#FF5500] opacity-75 hover:opacity-100 transition-opacity"
+                      style={{
+                        WebkitMask: `url(${c.icon}) no-repeat center / contain`,
+                        mask: `url(${c.icon}) no-repeat center / contain`,
+                      }}
+                    />
+                  </a>
+                ))}
+              </div>
+
+              {/* Time / Date / Day Column */}
+              <LiveISTClock resolvedTheme={resolvedTheme} />
+            </div>
+
+            {/* Bottom Row: Copyright & Policy Links */}
+            <div className={`px-6 py-6 sm:px-8 border-t border-dashed flex flex-col sm:flex-row justify-between items-center gap-4 ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+              <span className={`text-[10px] tracking-widest uppercase ${isLight ? 'text-neutral-500' : 'text-neutral-500'}`}>
+                LW19, ALL RIGHTS RESERVED 2026
+              </span>
+              <div className="flex gap-6">
+                <a href="#terms" className="text-[10px] tracking-widest font-semibold text-[#FF5500] hover:underline uppercase">Terms</a>
+                <a href="#conditions" className="text-[10px] tracking-widest font-semibold text-[#FF5500] hover:underline uppercase">Conditions</a>
+                <a href="#privacy" className="text-[10px] tracking-widest font-semibold text-[#FF5500] hover:underline uppercase">Privacy Policy</a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* World Map Section at very bottom - inside the 97% container */}
+        <div className={`w-full z-10 border-t border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+          <WorldMap />
+        </div>
+
       </div>
     </footer>
   );

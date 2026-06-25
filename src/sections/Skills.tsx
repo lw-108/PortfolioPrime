@@ -65,10 +65,10 @@ const Skills: React.FC = () => {
     <section
       ref={sectionRef}
       id="skills"
-      className="relative z-10 w-full min-h-screen bg-background overflow-hidden select-none font-clash"
+      className="relative z-10 w-full min-h-screen bg-transparent overflow-hidden select-none font-clash"
     >
       {/* Side border rails */}
-      <div className="max-w-384 mx-auto w-full min-h-screen border-x border-dashed border-neutral-800 relative flex flex-col">
+      <div className="w-[97%] max-w-384 mx-auto bg-background min-h-screen relative flex flex-col">
 
         {/* Section Header */}
         <div className="w-full z-20 px-6 sm:px-8 lg:px-16 pt-10 sm:pt-14 relative">
@@ -119,7 +119,7 @@ const Skills: React.FC = () => {
         </div>
 
         {/* Infinite Menu Container */}
-        <div className="flex-1 relative min-h-[450px] sm:min-h-[500px] lg:min-h-[600px] mt-8">
+        <div className="flex-1 relative min-h-0 mt-4">
           <InfiniteMenu
             key={activeCategory}
             items={filteredItems}
@@ -129,8 +129,8 @@ const Skills: React.FC = () => {
         </div>
 
         {/* Bottom Footer with Creepy Button */}
-        <div className="w-full border-t border-dashed border-neutral-800 mt-auto">
-          <div className="flex justify-end items-center py-6 px-6 sm:px-8 lg:px-16">
+        <div className="w-full border-t border-dashed border-neutral-800">
+          <div className="flex justify-end items-center py-4 px-6 sm:px-8 lg:px-16">
             <CreepyButton onClick={() => window.open('https://github.com', '_blank')}>
               View More
             </CreepyButton>

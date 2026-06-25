@@ -315,6 +315,7 @@ interface DitherProps {
   disableAnimation?: boolean;
   enableMouseInteraction?: boolean;
   mouseRadius?: number;
+  children?: React.ReactNode;
 }
 
 export default function Dither({
@@ -326,7 +327,8 @@ export default function Dither({
   pixelSize = 2,
   disableAnimation = false,
   enableMouseInteraction = true,
-  mouseRadius = 1
+  mouseRadius = 1,
+  children
 }: DitherProps) {
   const [bgColor, setBgColor] = useState<[number, number, number]>([0.063, 0.063, 0.055]);
   const [isMobile, setIsMobile] = useState(false);
@@ -343,25 +345,15 @@ export default function Dither({
     return () => observer.disconnect();
   }, []);
 
-  if (isMobile) {
-    return (
-      <div 
-        className="w-full h-full relative" 
-        style={{
-          background: `linear-gradient(135deg, rgb(${waveColor[0]*255}, ${waveColor[1]*255}, ${waveColor[2]*255}) 0%, rgb(${bgColor[0]*255}, ${bgColor[1]*255}, ${bgColor[2]*255}) 100%)`,
-          opacity: 0.85
-        }}
-      />
-    );
-  }
-
   return (
     <Canvas
       className="w-full h-full relative"
       camera={{ position: [0, 0, 6] }}
-      dpr={1}
-      gl={{ antialias: true, preserveDrawingBuffer: true }}
+      dpr={isMobile ? 0.6 : 1}
+      gl={{ antialias: !isMobile, preserveDrawingBuffer: true }}
     >
+      <ambientLight intensity={1.5} />
+      <directionalLight position={[2, 2, 5]} intensity={2.0} />
       <DitheredWaves
         waveSpeed={waveSpeed}
         waveFrequency={waveFrequency}
@@ -369,11 +361,12 @@ export default function Dither({
         waveColor={waveColor}
         bgColor={bgColor}
         colorNum={colorNum}
-        pixelSize={pixelSize}
+        pixelSize={isMobile ? 4 : pixelSize}
         disableAnimation={disableAnimation}
         enableMouseInteraction={enableMouseInteraction}
         mouseRadius={mouseRadius}
       />
+      {children}
     </Canvas>
   );
 }

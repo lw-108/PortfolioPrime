@@ -89,6 +89,16 @@ export const techStackItems: TechItem[] = [
     tools: ["ES6+", "DOM Manipulation", "Async/Await"],
   },
   {
+    title: "TypeScript",
+    image: "/TechIcons/TypeScript.svg",
+    link: "https://www.typescriptlang.org",
+    level: 88,
+    experience: 82,
+    category: "Frontend",
+    description: "Strongly typed programming language that builds on JavaScript.",
+    tools: ["Static Typing", "Interfaces", "Generics"],
+  },
+  {
     title: "Bootstrap",
     image: "/TechIcons/Bootstrap.svg",
     link: "https://getbootstrap.com",
@@ -117,6 +127,16 @@ export const techStackItems: TechItem[] = [
     category: "Frontend",
     description: "Utility-first CSS framework for rapid custom UI development.",
     tools: ["Utility Classes", "Responsive", "Customization"],
+  },
+  {
+    title: "Rest API",
+    image: "/TechIcons/RestAPI.svg",
+    link: "https://restfulapi.net/",
+    level: 88,
+    experience: 82,
+    category: "Backend",
+    description: "REST API development for web applications.",
+    tools: ["REST API", "HTTP", "JSON"],
   },
   {
     title: "SCSS/SASS",

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Moon, Sun } from 'lucide-react';
 import gsap from 'gsap';
 
@@ -193,6 +193,7 @@ const Navbar: React.FC = () => {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const location = useLocation();
   
   const menuRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -330,6 +331,7 @@ const Navbar: React.FC = () => {
     { label: 'About', url: '/about' },
     { label: 'Projects', url: '/projects' },
     { label: 'Skills', url: '/skills' },
+    { label: 'Blogs', url: '/blogs' },
     { label: 'Contact', url: '/contact' },
     { label: 'Resume', url: '/resume' },
   ];
@@ -502,42 +504,39 @@ const Navbar: React.FC = () => {
             </a>
           </div>
 
-          {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center space-x-12 h-full">
-            <RouterLink
-              to="/"
-              className="relative font-medium text-foreground hover:text-primary transition-colors duration-300 py-1"
-            >
-              Home
-              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary transform scale-x-100 transition-transform duration-300" />
-            </RouterLink>
-            <RouterLink
-              to="/about"
-              className="relative font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 group py-1"
-            >
-              About
-              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-foreground transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-            </RouterLink>
-            <RouterLink
-              to="/projects"
-              className="relative font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 group py-1"
-            >
-              Projects
-              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-foreground transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-            </RouterLink>
-            <RouterLink
-              to="/skills"
-              className="relative font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 group py-1"
-            >
-              Skills
-              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-foreground transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-            </RouterLink>
+            {[
+              { label: 'Home', url: '/' },
+              { label: 'About', url: '/about' },
+              { label: 'Projects', url: '/projects' },
+              { label: 'Skills', url: '/skills' },
+              { label: 'Blogs', url: '/blogs' },
+            ].map((link) => {
+              const isActive = location.pathname === link.url;
+              return (
+                <RouterLink
+                  key={link.label}
+                  to={link.url}
+                  className={`font-medium transition-colors duration-300 py-1 ${
+                    isActive
+                      ? 'text-primary'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {link.label}
+                </RouterLink>
+              );
+            })}
 
             {/* More Dropdown Link */}
             <div className="relative h-full flex items-center">
               <button
                 onClick={() => setIsMoreOpen(!isMoreOpen)}
-                className="flex items-center gap-1.5 font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 focus:outline-none cursor-pointer"
+                className={`flex items-center gap-1.5 font-medium transition-colors duration-300 focus:outline-none cursor-pointer ${
+                  location.pathname === '/contact' || location.pathname === '/resume'
+                    ? 'text-primary'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
                 More <span className="text-2xl font-clash transition-colors duration-300">{isMoreOpen ? '×' : '+'}</span>
               </button>
@@ -555,14 +554,22 @@ const Navbar: React.FC = () => {
                     <RouterLink
                       to="/contact"
                       onClick={() => setIsMoreOpen(false)}
-                      className="px-4 py-2.5 text-lg font-medium text-muted-foreground hover:text-primary transition-all duration-200"
+                      className={`px-4 py-2.5 text-lg font-medium transition-all duration-200 ${
+                        location.pathname === '/contact'
+                          ? 'text-primary'
+                          : 'text-muted-foreground hover:text-primary'
+                      }`}
                     >
                       Contact
                     </RouterLink>
                     <RouterLink
                       to="/resume"
                       onClick={() => setIsMoreOpen(false)}
-                      className="px-4 py-2.5 text-lg font-medium text-muted-foreground hover:text-primary transition-all duration-200"
+                      className={`px-4 py-2.5 text-lg font-medium transition-all duration-200 ${
+                        location.pathname === '/resume'
+                          ? 'text-primary'
+                          : 'text-muted-foreground hover:text-primary'
+                      }`}
                     >
                       Resume
                     </RouterLink>

@@ -81,44 +81,17 @@ export default function Lanyard({
     );
   }
 
-  if (isMobile) {
-    return (
-      <div className={`relative z-0 w-full h-full min-h-[400px] flex justify-center items-center transform scale-100 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <div className="relative w-64 h-96 bg-linear-to-b from-[#f54900] to-[#b33500] rounded-2xl border border-neutral-800 p-6 flex flex-col justify-between shadow-2xl overflow-hidden group hover:rotate-3 transition-transform duration-300">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
-          <div className="flex justify-between items-start">
-            <img src="/logo-dark.svg" alt="LW" className="h-10 w-auto invert" />
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-          </div>
-          <div className="mt-8 flex flex-col gap-1 text-[#ffffe3]">
-            <h4 className="text-xl font-bold uppercase tracking-tight font-fancy leading-tight">M.K. LINGESHWARMA</h4>
-            <p className="text-[10px] uppercase tracking-widest text-[#ffffe3]/85 font-semibold font-clash">Full-Stack Developer</p>
-          </div>
-          <div className="flex justify-between items-end mt-auto pt-8 border-t border-[#ffffe3]/20">
-            <div className="text-[9px] text-[#ffffe3]/85 uppercase tracking-wider font-semibold font-clash">
-              <p>📍 TN, India</p>
-              <p className="mt-0.5">mca &bull; 2026</p>
-            </div>
-            <div className="h-10 w-10 bg-[#ffffe3] text-[#f54900] flex items-center justify-center font-black rounded-lg text-lg select-none">
-              LW
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className={`relative z-0 w-full h-full min-h-[500px] flex justify-center items-center transform scale-100 origin-center transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0 pointer-events-none'} ${isDragging ? 'touch-none' : 'touch-auto'}`}>
       <Canvas
         camera={{ position, fov }}
-        dpr={isMobile ? 1 : [1, 1.5]}
+        dpr={isMobile ? 0.75 : [1, 1.5]}
         gl={{ alpha: transparent, powerPreference: "high-performance", antialias: !isMobile }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <Suspense fallback={null}>
           <ambientLight intensity={Math.PI} />
-          <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+          <Physics gravity={gravity} timeStep={1 / 60}>
             <Band
               isLoaded={isLoaded}
               isMobile={isMobile}
@@ -322,9 +295,10 @@ function Band({
       [j1, j2].forEach(ref => {
         if (!ref.current.lerped) ref.current.lerped = new THREE.Vector3().copy(ref.current.translation());
         const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())));
+        const lerpAlpha = Math.min(0.95, delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
         ref.current.lerped.lerp(
           ref.current.translation(),
-          delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
+          lerpAlpha
         );
       });
       curve.points[0].copy(j3.current.translation());

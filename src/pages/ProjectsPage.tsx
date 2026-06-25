@@ -1,240 +1,205 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { motion } from 'motion/react';
+import { projectsData } from '../lib/projects-data';
+import { techStackItems } from '../lib/tech-data';
+import { CreepyButton } from '../components/ui/creepy-button';
 import { AnimatedTitle } from '../components/ui/AnimatedTitle';
-import { projectsData, type Project } from '../lib/projects-data';
+import { ArrowUpRight, RadioTower } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ── Tag Icon Map ──
-const tagIcons: Record<string, string> = {
-  'React': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-  'Tailwind': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
-  'Tailwind CSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
-  'GSAP': 'https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg',
-  'TypeScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
-  'Next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
-  'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-  'AWS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg',
-  'Figma': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
-  'Supabase': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg',
-  'Firebase': 'https://brandlogos.net/wp-content/uploads/2025/03/firebase_icon-logo_brandlogos.net_tcvck-512x646.png',
-  'PostgreSQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
-};
+export const ProjectsPage: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollSectionRef = useRef<HTMLDivElement>(null);
 
-// ── Main Component ──
-const Projects: React.FC = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const indexRef = useRef<HTMLSpanElement>(null);
-  const numberRef = useRef<HTMLSpanElement>(null);
-  const activeIndexRef = useRef(0);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Helper to fetch SVG icon path for a given technology tag
+  const getTechIcon = (tag: string) => {
+    const normalizedTag = tag.toLowerCase().trim();
+    const match = techStackItems.find(item => {
+      const titleLower = item.title.toLowerCase().trim();
+      if (titleLower === normalizedTag) return true;
+
+      // Safe, specific overrides
+      if (titleLower === 'tailwind css' && normalizedTag === 'tailwind') return true;
+      if (titleLower === 'postgresql' && (normalizedTag === 'postgres' || normalizedTag === 'postgresql')) return true;
+
+      return false;
+    });
+    return match ? match.image : null;
+  };
 
   useEffect(() => {
-    if (window.innerWidth < 768) return;
-
-    const updateIndex = (targetDigit: number, direction: 'forward' | 'backward') => {
-      const currentVal = numberRef.current ? numberRef.current.innerText : '1';
-      if (currentVal === String(targetDigit)) return;
-
-      if (direction === 'forward') {
-        gsap.timeline({ defaults: { duration: 0.3 } })
-          .to(indexRef.current, {
-            yPercent: -100,
-            ease: 'power4.inOut',
-            onComplete: () => {
-              if (numberRef.current) numberRef.current.innerText = String(targetDigit);
-              activeIndexRef.current = targetDigit - 1;
-              gsap.set(indexRef.current, { yPercent: 100 });
-            },
-          })
-          .to(indexRef.current, {
-            yPercent: 0,
-            ease: 'power1.inOut',
-          });
-      } else {
-        gsap.timeline({ defaults: { duration: 0.3 } })
-          .to(indexRef.current, {
-            yPercent: 100,
-            ease: 'power4.inOut',
-            onComplete: () => {
-              if (numberRef.current) numberRef.current.innerText = String(targetDigit);
-              activeIndexRef.current = targetDigit - 1;
-              gsap.set(indexRef.current, { yPercent: -100 });
-            },
-          })
-          .to(indexRef.current, {
-            yPercent: 0,
-            ease: 'power1.inOut',
-          });
-      }
-    };
-
     const ctx = gsap.context(() => {
-      cardRefs.current.forEach((card, i) => {
-        if (!card) return;
+      const pinSections = gsap.utils.toArray('.project-slide');
+      if (pinSections.length === 0) return;
 
-        ScrollTrigger.create({
-          trigger: card,
-          start: 'top 25%',
-          end: 'bottom 25%',
-          onEnter: () => {
-            updateIndex(i + 1, 'forward');
+      gsap.to(pinSections, {
+        xPercent: -100 * (pinSections.length - 1),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: scrollSectionRef.current,
+          pin: true,
+          scrub: 1,
+          snap: {
+            snapTo: 1 / (pinSections.length - 1),
+            inertia: false,
+            delay: 0.0,
+            duration: 0.3
           },
-          onEnterBack: () => {
-            updateIndex(i + 1, 'backward');
-          },
-        });
+          start: 'top top',
+          end: () => `+=${scrollSectionRef.current?.offsetWidth || 1000}`,
+          invalidateOnRefresh: true,
+        },
       });
-    }, sectionRef);
+    }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="projects"  
-      className="relative z-10 overflow-y-clip will-change-auto font-clash select-none"
-    >
-      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bg-background py-16 px-6 sm:px-8 lg:py-24 lg:px-16">
+    <div ref={containerRef} className="w-full bg-transparent text-white font-clash selection:bg-[#f54900] selection:text-white overflow-x-hidden">
 
-        {/* ── Header ── */}
-        <div className="flex flex-col">
-          <header className="mb-6 border-b border-dashed border-neutral-800 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-            <div>
-              <span className="text-[#f54900] text-sm uppercase tracking-widest font-semibold">
-                Projects
+      {/* Top Welcome Title Section - Configured to match ContactPage header style */}
+      <section className="w-[97%] max-w-384 mx-auto bg-background pt-10 pb-8 px-4 sm:px-8 lg:px-12 relative">
+        <div className="border-b border-dashed border-neutral-800/60 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-[#f54900] text-sm uppercase tracking-widest font-semibold font-clash">
+                MY INITIATIVES
               </span>
-              <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none">
-                <AnimatedTitle text="Selected Works /" />
-              </h2>
+              <RadioTower className="w-8 h-8 pb-2 text-[#f54900] animate-pulse" />
             </div>
-            <p className="text-muted-foreground/50 text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold hidden sm:block leading-none">
-              ( {projectsData.length} )
-            </p>
-          </header>
-
-          {/* Subheader row */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-muted-foreground mt-[5%] grid grid-cols-12 justify-end gap-x-4 md:gap-x-8"
-          >
-            <p className="text-xs sm:text-sm text-muted-foreground/85 col-span-4 text-center text-nowrap uppercase tracking-widest font-semibold lg:col-start-2">
-              (
-              <span className="inline sm:hidden">{projectsData.length} </span>
-              PROJECTS )
-            </p>
-            <p className="font-clash text-base sm:text-lg col-span-8 w-full text-balance sm:font-semibold lg:col-span-7">
-              Featured client projects that have been meticulously crafted with
-              passion and purpose over the years.
-            </p>
-          </motion.div>
-        </div>
-
-        {/* ── Grid: Sticky Index + Project Cards ── */}
-        <div className="relative mt-12 grid w-full grid-cols-12 gap-x-4 sm:gap-x-8 lg:mt-[10%]">
-
-          {/* Sticky large index number — desktop only */}
-          <div className="text-foreground/10 sticky top-12 col-span-5 hidden h-fit w-full overflow-hidden text-[22vw] leading-[0.8] font-semibold md:flex items-baseline">
-            {/* Static "0" — never animates */}
-            <span className="font-clash relative tracking-tighter">0</span>
-            {/* Only the second digit flips */}
-            <span
-              ref={indexRef}
-              className="font-clash relative tracking-tighter will-change-transform inline-block overflow-hidden"
-              style={{ height: '1em', lineHeight: '0.8', minWidth: '0.7em' }}
-            >
-              <span ref={numberRef} className="inline-block w-full">1</span>
-            </span>
+            <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight text-white leading-none font-clash">
+              <AnimatedTitle text="Selected Works /" />
+            </h2>
           </div>
+          <p className="text-neutral-400 max-w-md font-clash text-sm sm:text-base text-left md:text-right leading-relaxed">
+            Scroll down to explore interactive previews of full-stack projects, design systems, and web apps.
+          </p>
+        </div>
+        <div className="flex flex-col items-center gap-2 text-neutral-500 mt-12 animate-bounce">
+          <span className="text-[10px] tracking-[0.3em] uppercase">Scroll Down to view</span>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </div>
+      </section>
 
-          {/* Project cards column */}
-          <aside className="relative col-span-full flex flex-col space-y-12 md:col-span-7">
-            {projectsData.map((work: Project, i: number) => (
-              <div
-                key={i}
-                ref={(el) => { cardRefs.current[i] = el; }}
-                className="work-card border-b border-dashed border-neutral-800 pb-10"
-              >
-                <a
-                  className="group block"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={work.url}
-                >
-                  {/* Image container */}
-                  <div className="relative w-full h-auto rounded-lg flex flex-col justify-start border border-neutral-200/50 dark:border-neutral-800/50 p-4">
-                    {/* Background repeating stripe pattern */}
-                    <div
-                      className="absolute inset-0 w-full h-full opacity-35 dark:opacity-20 pointer-events-none select-none rounded-lg"
-                      style={{
-                        backgroundImage: "url('/stripe.svg')",
-                        backgroundRepeat: 'repeat',
-                        backgroundSize: '16px 16px',
-                      }}
-                    />
-                    {/* Foreground project screenshot */}
-                    <img
-                      alt={work.name}
-                      loading="lazy"
-                      className="z-10 w-full object-contain h-auto shadow-md transition-transform duration-500 ease-in-out group-hover:scale-[1.01] group-hover:shadow-2xl"
-                      src={work.image}
-                    />
-                  </div>
-
-                  {/* Card info */}
-                  <div className="mt-3">
-                    <div className="flex justify-between items-end mb-1">
-                      <p className="font-clash text-xs sm:text-sm text-muted-foreground uppercase tracking-widest leading-none">
-                        {work.category}
-                      </p>
-                      <span className="md:hidden text-foreground/10 text-3xl font-semibold font-clash tracking-tighter leading-none select-none">
-                        0{i + 1}
-                      </span>
-                    </div>
-                    <div className="items-center justify-between sm:flex">
-                      <h3 className="font-clash text-2xl sm:text-3xl font-bold uppercase text-foreground">
-                        {work.name}
-                      </h3>
-                      <div className="flex gap-1.5 select-none mt-2 sm:mt-0 flex-wrap">
-                        {work.tags.map((tag: string) => {
-                          if (!tag.trim()) return null;
-                          const iconUrl = tagIcons[tag];
-                          return (
-                            <span
-                              key={tag}
-                              className="bg-[#f54900] text-white text-xs sm:text-sm font-semibold px-3 py-1 flex items-center gap-1.5 cursor-default hover:bg-[#d43f00] transition-colors duration-300"
-                            >
-                              {iconUrl && (
-                                <img
-                                  src={iconUrl}
-                                  alt={tag}
-                                  className="w-4 h-4 object-contain"
-                                />
-                              )}
-                              <span>{tag}</span>
-                            </span>
-                          );
-                        })}
-                        <span className="bg-foreground text-background text-xs sm:text-sm font-semibold px-3 py-1 flex items-center cursor-default">
-                          {work.year}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+      {/* GSAP Pin Section */}
+      <div ref={scrollSectionRef} className="w-[97%] max-w-384 mx-auto relative h-screen overflow-hidden flex items-center bg-background">
+        <div className="flex h-full" style={{ width: `${projectsData.length * 100}%` }}>
+          {projectsData.map((project, i) => (
+            <section
+              key={i}
+              className="project-slide w-full h-full flex flex-col justify-center items-center px-4 sm:px-12 md:px-20 lg:px-32 relative shrink-0 py-8 bg-background"
+            >
+              {/* Centered Flex Container Showing Full Image (object-contain) - Border/Radius Removed */}
+              <div className="relative w-full max-w-6xl h-[50vh] sm:h-[55vh] md:h-[65vh] overflow-hidden shadow-2xl group bg-neutral-950 flex items-center justify-center">
+                <a href={project.url} target="_blank" rel="noopener noreferrer" className="w-full h-full flex items-center justify-center overflow-hidden relative">
+                  {/* Full image display with object-contain (no hover scale up) */}
+                  <img
+                    src={project.image}
+                    alt={project.name}
+                    className="project-img max-w-full max-h-full object-contain"
+                  />
+                  {/* Dark overlay shield */}
+                  <div className="absolute inset-0 bg-black/25 group-hover:bg-black/15 transition-colors duration-300 pointer-events-none" />
                 </a>
+
+                {/* Mixed-Blend Mode Serial Number */}
+                <div
+                  className="absolute bottom-2 left-4 sm:bottom-4 sm:left-8 text-[6rem] sm:text-[9rem] md:text-[12rem] font-black leading-none pointer-events-none select-none text-white tracking-tighter"
+                  style={{
+                    mixBlendMode: 'difference',
+                    zIndex: 10
+                  }}
+                >
+                  {`0${i + 1}`}
+                </div>
               </div>
-            ))}
-          </aside>
+
+              {/* Description Panel Row */}
+              <div className="w-full max-w-6xl mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-left border-t border-neutral-900 pt-6">
+
+                {/* Left side: Project Name */}
+                <div className="md:col-span-2 flex flex-col justify-between">
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-white leading-none">
+                      {project.name}
+                    </h2>
+                    <p className="mt-2 text-xs sm:text-sm text-neutral-400 max-w-lg  leading-relaxed font-clash">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  {/* Launch button */}
+                  <div className="mt-6 flex gap-4">
+                    <a href={project.url} target="_blank" rel="noopener noreferrer">
+                      <CreepyButton coverClassName="text-sm uppercase text-[#fffe3] bg-[#f54900]">
+                        <span>Visit</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </CreepyButton>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Right side: Other Details (Meta & Tags) */}
+                <div className="flex flex-col justify-between border-t md:border-t-0 md:border-l border-neutral-900 pt-4 md:pt-0 md:pl-6">
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase tracking-widest block font-clash font-bold">Service / Category</span>
+                    <span className="text-sm font-bold uppercase text-[#f54900] mt-1 block">
+                      {project.category}
+                    </span>
+                  </div>
+
+                  <div className="mt-4">
+                    <span className="text-[10px] text-neutral-500 font-clash font-bold uppercase tracking-widest block mb-2">Technologies Used</span>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag, j) => {
+                        const icon = getTechIcon(tag);
+                        return (
+                          <span
+                            key={j}
+                            className="text-[10px] bg-neutral-900 text-[#fffe3] border border-neutral-850 px-2.5 py-1 rounded-none uppercase font-clash font-bold flex items-center tracking-widest gap-1.5"
+                          >
+                            {icon && <img src={icon} alt={tag} className="w-3.5 h-3.5 object-contain" />}
+                            <span>{tag}</span>
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <span className="text-[10px] text-neutral-500 uppercase tracking-widest block font-clash font-bold">Year</span>
+                    <span className="text-xs text-[#f54900] mt-1 block font-clash font-bold">
+                      {project.year || '2026'}
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+
+            </section>
+          ))}
         </div>
       </div>
-    </section>
+
+      {/* Bottom section spacing / footer transition */}
+      <section className="min-h-[40vh] w-[97%] max-w-384 mx-auto flex flex-col justify-center items-center text-center px-4 py-20 border-t border-neutral-900 bg-background">
+        <h3 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-white mb-4">
+          Want to build something together?
+        </h3>
+        <a href="/#/contact">
+          <CreepyButton coverClassName="text-xs uppercase tracking-wider text-white bg-transparent border border-white px-8 py-3.5 hover:bg-white hover:text-black transition-colors font-semibold">
+            Get in touch
+          </CreepyButton>
+        </a>
+      </section>
+
+    </div>
   );
 };
 
-export default Projects;
+export default ProjectsPage;

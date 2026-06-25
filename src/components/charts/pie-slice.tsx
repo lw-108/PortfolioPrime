@@ -1,7 +1,7 @@
 "use client";
 
 import { arc as arcGenerator } from "@visx/shape";
-import { motion, useSpring, useTransform } from "motion/react";
+import { motion } from "motion/react";
 import { memo, useEffect } from "react";
 import { usePieHover, usePieStable } from "./pie-context";
 import { useEnterComplete } from "./use-enter-complete";
@@ -85,6 +85,8 @@ interface AnimatedSliceTranslateProps {
   hoverOffset: number;
 }
 
+// AnimatedSliceTranslate: entry via opacity fade, hover via CSS translate.
+// Uses only a static d string — no MotionValue d, no refs, no conditional hooks.
 function AnimatedSliceTranslate({
   index,
   innerRadius,
@@ -101,33 +103,8 @@ function AnimatedSliceTranslate({
   showGlow,
   hoverOffset,
 }: AnimatedSliceTranslateProps) {
-  const {
-    enterTransition,
-    enterStaggerScale,
-    animationKey: pieAnimationKey,
-  } = usePieStable();
+  const { enterStaggerScale } = usePieStable();
   const animationDelay = (0.1 + index * 0.08) * enterStaggerScale;
-  const mountProgress = useMountProgress(
-    enterTransition,
-    animationDelay,
-    pieAnimationKey
-  );
-  const enterComplete = useEnterComplete(mountProgress);
-
-  const animatedPath = useTransform(mountProgress, (mount) => {
-    const currentEndAngle = startAngle + (endAngle - startAngle) * mount;
-    if (currentEndAngle <= startAngle + 0.01) {
-      return "";
-    }
-    return generateArcPath(
-      innerRadius,
-      outerRadius,
-      startAngle,
-      currentEndAngle,
-      cornerRadius,
-      padAngle
-    );
-  });
 
   const offset = getSliceOffset(startAngle, endAngle, hoverOffset);
   const glowColor = color;
@@ -140,50 +117,23 @@ function AnimatedSliceTranslate({
     padAngle
   );
 
-  if (enterComplete) {
-    const shouldTranslate = isHovered;
-    return (
-      <motion.path
-        animate={{
-          opacity: isFaded ? 0.4 : 1,
-          x: shouldTranslate ? offset.x : 0,
-          y: shouldTranslate ? offset.y : 0,
-        }}
-        d={hitboxPath}
-        fill={fill}
-        pointerEvents="none"
-        style={{
-          filter:
-            showGlow && isHovered
-              ? `drop-shadow(0 0 12px ${glowColor})`
-              : "none",
-        }}
-        transition={{
-          opacity: { duration: 0.15 },
-          x: { type: "spring", stiffness: 400, damping: 25 },
-          y: { type: "spring", stiffness: 400, damping: 25 },
-        }}
-      />
-    );
-  }
-
   return (
     <motion.path
+      key={`slice-${animationKey}-${index}`}
+      initial={{ opacity: 0 }}
       animate={{
         opacity: isFaded ? 0.4 : 1,
         x: isHovered ? offset.x : 0,
         y: isHovered ? offset.y : 0,
       }}
-      d={animatedPath}
+      d={hitboxPath}
       fill={fill}
-      key={`slice-${animationKey}-${index}`}
       pointerEvents="none"
       style={{
-        filter:
-          showGlow && isHovered ? `drop-shadow(0 0 12px ${glowColor})` : "none",
+        filter: showGlow && isHovered ? `drop-shadow(0 0 12px ${glowColor})` : "none",
       }}
       transition={{
-        opacity: { duration: 0.15 },
+        opacity: { duration: 0.3, delay: animationDelay },
         x: { type: "spring", stiffness: 400, damping: 25 },
         y: { type: "spring", stiffness: 400, damping: 25 },
       }}
@@ -208,6 +158,8 @@ interface AnimatedSliceGrowProps {
   hoverOffset: number;
 }
 
+// AnimatedSliceGrow: entry via opacity fade, hover via outer-radius grow.
+// Uses only a static d string — no MotionValue d, no refs, no conditional hooks.
 function AnimatedSliceGrow({
   index,
   innerRadius,
@@ -224,46 +176,8 @@ function AnimatedSliceGrow({
   showGlow,
   hoverOffset,
 }: AnimatedSliceGrowProps) {
-  const {
-    enterTransition,
-    enterStaggerScale,
-    animationKey: pieAnimationKey,
-  } = usePieStable();
+  const { enterStaggerScale } = usePieStable();
   const animationDelay = (0.1 + index * 0.08) * enterStaggerScale;
-  const mountProgress = useMountProgress(
-    enterTransition,
-    animationDelay,
-    pieAnimationKey
-  );
-  const enterComplete = useEnterComplete(mountProgress);
-
-  const growSpring = useSpring(outerRadius, {
-    stiffness: 400,
-    damping: 25,
-  });
-
-  useEffect(() => {
-    growSpring.set(isHovered ? outerRadius + hoverOffset : outerRadius);
-  }, [isHovered, hoverOffset, outerRadius, growSpring]);
-
-  const animatedPath = useTransform(
-    [mountProgress, growSpring],
-    ([mount, currentOuterRadius]) => {
-      const currentEndAngle =
-        startAngle + (endAngle - startAngle) * (mount as number);
-      if (currentEndAngle <= startAngle + 0.01) {
-        return "";
-      }
-      return generateArcPath(
-        innerRadius,
-        currentOuterRadius as number,
-        startAngle,
-        currentEndAngle,
-        cornerRadius,
-        padAngle
-      );
-    }
-  );
 
   const glowColor = color;
   const grownOuterRadius = isHovered ? outerRadius + hoverOffset : outerRadius;
@@ -276,45 +190,21 @@ function AnimatedSliceGrow({
     padAngle
   );
 
-  if (enterComplete) {
-    return (
-      <motion.path
-        animate={{
-          opacity: isFaded ? 0.4 : 1,
-          d: grownPath,
-        }}
-        d={grownPath}
-        fill={fill}
-        pointerEvents="none"
-        style={{
-          filter:
-            showGlow && isHovered
-              ? `drop-shadow(0 0 12px ${glowColor})`
-              : "none",
-        }}
-        transition={{
-          opacity: { duration: 0.15 },
-          d: { type: "spring", stiffness: 400, damping: 25 },
-        }}
-      />
-    );
-  }
-
   return (
     <motion.path
+      key={`slice-${animationKey}-${index}`}
+      initial={{ opacity: 0 }}
       animate={{
         opacity: isFaded ? 0.4 : 1,
       }}
-      d={animatedPath}
+      d={grownPath}
       fill={fill}
-      key={`slice-${animationKey}-${index}`}
       pointerEvents="none"
       style={{
-        filter:
-          showGlow && isHovered ? `drop-shadow(0 0 12px ${glowColor})` : "none",
+        filter: showGlow && isHovered ? `drop-shadow(0 0 12px ${glowColor})` : "none",
       }}
       transition={{
-        opacity: { duration: 0.15 },
+        opacity: { duration: 0.3, delay: animationDelay },
       }}
     />
   );

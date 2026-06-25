@@ -74,8 +74,8 @@ const ServicesBento: React.FC = () => {
   ];
 
   return (
-    <section className="relative w-full font-clash select-none overflow-hidden">
-      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bento-section-bg py-16 px-8 lg:p-12">
+    <section className="relative w-full font-clash select-none overflow-hidden bg-transparent">
+      <div className="w-[97%] max-w-384 mx-auto bento-section-bg py-16 px-8 lg:p-12">
         {/* Header */}
         <div className="mb-12 border-b border-dashed border-neutral-800 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>

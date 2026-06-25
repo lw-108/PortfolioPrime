@@ -8,6 +8,7 @@ import { PieSlice } from '../components/charts/pie-slice';
 import { PieCenter } from '../components/charts/pie-center';
 import { PatternLines } from '@visx/pattern';
 import { techStackItems, getTechDetails, type TechMetric } from '../lib/tech-data';
+import { Grab } from 'lucide-react';
 
 /* ─── Texture Cache and Loader ─── */
 const loadedTextures: Record<string, THREE.Texture> = {};
@@ -54,28 +55,36 @@ const loadAndRasterizeIcon = (url: string, size = 128): Promise<THREE.Texture> =
 };
 
 /* ─── Animated Section Title ─── */
-const AnimatedTitle: React.FC<{ text: string }> = ({ text }) => (
-  <motion.span
-    variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.02 } } }}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true }}
-    className="inline"
-  >
-    {text.split('').map((c, i) => (
-      <motion.span
-        key={i}
-        variants={{
-          hidden: { opacity: 0, y: 60 },
-          visible: { opacity: 1, y: 0, transition: { type: 'spring', damping: 12, stiffness: 100 } },
-        }}
-        className="inline-block"
-      >
-        {c === ' ' ? '\u00A0' : c}
-      </motion.span>
-    ))}
-  </motion.span>
-);
+const AnimatedTitle: React.FC<{ text: string }> = ({ text }) => {
+  const words = text.split(' ');
+  return (
+    <motion.span
+      variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.02 } } }}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="inline-block"
+    >
+      {words.map((word, wordIdx) => (
+        <span key={wordIdx} className="inline-block whitespace-nowrap">
+          {word.split('').map((c, i) => (
+            <motion.span
+              key={i}
+              variants={{
+                hidden: { opacity: 0, y: 60 },
+                visible: { opacity: 1, y: 0, transition: { type: 'spring', damping: 12, stiffness: 100 } },
+              }}
+              className="inline-block"
+            >
+              {c}
+            </motion.span>
+          ))}
+          {wordIdx < words.length - 1 && <span className="inline-block">&nbsp;</span>}
+        </span>
+      ))}
+    </motion.span>
+  );
+};
 
 /* ─── SVG Dynamic Pie Chart Component ─── */
 const DynamicPieChart: React.FC<{ metrics: TechMetric[] }> = ({ metrics }) => {
@@ -283,8 +292,6 @@ const Ball: React.FC<{
   const [isReady, setIsReady] = useState(false);
   const [loadError, setLoadError] = useState(false);
 
-  const { size } = useThree();
-  const { meshSize } = useMemo(() => getResponsiveSizes(window.innerWidth), [size.width]);
 
   const canvasRef = useRef<HTMLElement | null>(null);
 
@@ -328,7 +335,7 @@ const Ball: React.FC<{
 
     group.position.set(ball.x, ball.y, 0);
     // Keep ball completely upright (no rotation)
-    group.rotation.z = 0;
+    group.rotation.set(0, 0, 0);
 
     let displayScale = ball.scale;
     if (ball.isCaptured && !selectedTech) {
@@ -380,6 +387,26 @@ const Ball: React.FC<{
     draggedIndexRef.current = null;
   };
 
+  const [stripeTexture, setStripeTexture] = useState<THREE.Texture | null>(null);
+
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    loader.load("/stripe.svg", (tex) => {
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+          tex.repeat.set(8, 8);
+      setStripeTexture(tex);
+    });
+  }, []);
+
+  const ballRadius = useMemo(() => {
+    const ball = ballsRef.current.find((b) => b.title === item.title);
+    return ball ? ball.radius : 0.38;
+  }, [ballsRef, item.title]);
+
+  const visualBallScale = ballRadius * 0.85; // Compact size to prevent visual merging
+  const logoScale = ballRadius * 1.15; // Compact readable logo stamp
+
   return (
     <group
       ref={groupRef}
@@ -389,18 +416,25 @@ const Ball: React.FC<{
       onPointerOver={() => { document.body.style.cursor = 'grab'; }}
       onPointerOut={() => { document.body.style.cursor = 'auto'; }}
     >
-      {/* Bg-less rendering of texture if loaded, otherwise render clean text markup */}
       {texture && isReady && !loadError ? (
         <group>
-          {/* Subtle back silhouette to outline logo in dark backgrounds */}
-          <mesh position={[0, 0, -0.001]} scale={[meshSize * 1.03, meshSize * 1.03, 1]}>
-            <planeGeometry args={[1, 1]} />
-            <meshBasicMaterial map={texture} color="#ffffff" transparent opacity={0.25} />
+          {/* Flat 2D Circle Ball base with stripe texture */}
+          <mesh>
+            <circleGeometry args={[visualBallScale, 32]} />
+            <meshBasicMaterial 
+              map={stripeTexture || undefined} 
+              color="#f54900" 
+              transparent
+              opacity={1.0}
+            />
           </mesh>
-          {/* Actual logo */}
-          <mesh position={[0, 0, 0]} scale={[meshSize, meshSize, 1]}>
+          {/* Flat logo mesh layered on the front of the ball */}
+          <mesh position={[0, 0, 0.01]} scale={[logoScale, logoScale, 1]}>
             <planeGeometry args={[1, 1]} />
-            <meshBasicMaterial map={texture} transparent />
+            <meshBasicMaterial 
+              map={texture} 
+              transparent 
+            />
           </mesh>
         </group>
       ) : (
@@ -543,10 +577,12 @@ const PhysicsBallroom: React.FC<{
   items: typeof techStackItems;
   onSelectTech: (item: typeof techStackItems[0]) => void;
   selectedTech: typeof techStackItems[0] | null;
-}> = ({ items, onSelectTech, selectedTech }) => {
+  onInteract?: () => void;
+}> = ({ items, onSelectTech, selectedTech, onInteract }) => {
   const { viewport } = useThree();
   const ballsRef = useRef<BallState[]>([]);
   const draggedIndexRef = useRef<number | null>(null);
+  const interactedRef = useRef(false);
 
   const portalX = 0;
   const portalY = viewport.height / 3.4;
@@ -610,6 +646,13 @@ const PhysicsBallroom: React.FC<{
     const damping = 0.985;
     const restitution = 0.55;
     const wallFriction = 0.95;
+
+    if (draggedIndex !== null && !interactedRef.current) {
+      interactedRef.current = true;
+      if (onInteract) {
+        setTimeout(() => onInteract(), 0);
+      }
+    }
 
     const { radius: activeRadius } = getResponsiveSizes(window.innerWidth);
 
@@ -892,6 +935,19 @@ const PhysicsBallroom: React.FC<{
 export const SkillsPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedTech, setSelectedTech] = useState<typeof techStackItems[0] | null>(null);
+  const [hasInteracted, setHasInteracted] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('portfolio_skills_interacted') === 'true';
+    }
+    return false;
+  });
+
+  const handleInteract = () => {
+    setHasInteracted(true);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('portfolio_skills_interacted', 'true');
+    }
+  };
 
   const filteredItems = useMemo(() => {
     return activeCategory === 'All' 
@@ -905,8 +961,8 @@ export const SkillsPage: React.FC = () => {
   }, [selectedTech]);
 
   return (
-    <section id="skills" className="w-full relative z-10 min-h-screen bg-background overflow-hidden font-clash select-none">
-      <div className="max-w-384 mx-auto w-full min-h-screen border-x border-dashed border-neutral-800 relative flex flex-col pb-16">
+    <section id="skills" className="w-full relative z-10 min-h-screen bg-transparent overflow-hidden font-clash select-none">
+      <div className="w-[97%] max-w-384 mx-auto bg-background min-h-screen relative flex flex-col pb-16">
         {/* Section Header */}
         <div className="w-full z-20 px-6 sm:px-8 lg:px-16 pt-10 sm:pt-14 relative">
           <header className="border-b border-dashed border-neutral-800 pb-6 sm:pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -969,9 +1025,49 @@ export const SkillsPage: React.FC = () => {
                 items={filteredItems}
                 onSelectTech={setSelectedTech}
                 selectedTech={selectedTech}
+                onInteract={handleInteract}
               />
             </Canvas>
           </div>
+
+          {!hasInteracted && (
+            <div className="absolute inset-0 pointer-events-none z-30 flex items-center justify-center">
+              {/* Animated Drag Demo Guide */}
+              <motion.div
+                className="absolute flex flex-col items-center justify-center text-[#f54900]"
+                initial={{ x: 0, y: 120, opacity: 0 }}
+                animate={{
+                  x: [0, 0, 0, 0, 0],
+                  y: [120, 120, 120, -120, -120],
+                  scale: [1, 1, 0.85, 0.85, 1],
+                  opacity: [0, 1, 1, 1, 0],
+                }}
+                transition={{
+                  duration: 4.0,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  times: [0, 0.12, 0.28, 0.72, 0.88],
+                }}
+              >
+                <div className="bg-background/95 border border-border px-3 py-1.5 rounded-md flex items-center gap-2 shadow-lg mb-2 backdrop-blur-xs">
+                  <Grab className="w-4 h-4 animate-pulse text-[#f54900]" />
+                  <span className="text-[10px] uppercase font-bold tracking-widest font-clash text-foreground">
+                    Drag tech to Pulsar
+                  </span>
+                </div>
+                {/* Arrow helper pointing direction */}
+                <svg
+                  className="w-5 h-5 animate-bounce mt-1 text-[#f54900]/80"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+              </motion.div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -1089,5 +1185,7 @@ export const SkillsPage: React.FC = () => {
     </section>
   );
 };
+
+
 
 export default SkillsPage;

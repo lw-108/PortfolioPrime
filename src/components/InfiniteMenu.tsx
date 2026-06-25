@@ -1070,17 +1070,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, onItemCl
     };
   };
 
-  const handlePointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!pointerStartRef.current) return;
-    const dx = e.clientX - pointerStartRef.current.x;
-    const dy = e.clientY - pointerStartRef.current.y;
-    const dt = Date.now() - pointerStartRef.current.time;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    // If it was a quick tap/click with minimal movement, treat it as a click on the active icon
-    if (distance < 6 && dt < 300) {
-      handleButtonClick();
-    }
+  const handlePointerUp = () => {
     pointerStartRef.current = null;
   };
 
@@ -1113,15 +1103,14 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, onItemCl
           <div
             className={`
               absolute
-              bottom-6
+              bottom-4
               left-1/2
               -translate-x-1/2
               z-10
               w-[90%]
               max-w-md
               bg-transparent
-              p-4
-              rounded-xl
+              p-2
               flex
               items-center
               justify-between
@@ -1135,15 +1124,15 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, onItemCl
               }
             `}
           >
-            <div className="flex-1 min-w-0 text-left">
-              <h3 className="text-base font-bold text-foreground truncate">{activeItem.title}</h3>
-              <p className="text-xs text-muted-foreground mt-1 truncate">{activeItem.description}</p>
+            <div className="flex-1 min-w-0 text-left pr-2 mix-blend-difference">
+              <h3 className="text-base font-bold text-white truncate">{activeItem.title}</h3>
+              <p className="text-xs text-white mt-1 whitespace-normal wrap-break-word leading-relaxed max-w-[70%]">{activeItem.description}</p>
             </div>
             <button
               onClick={handleButtonClick}
-              className="shrink-0 w-10 h-10 rounded-full bg-[#f54900] flex items-center justify-center font-bold text-lg hover:scale-105 active:scale-95 transition-all"
+              className="shrink-0 w-10 h-10 rounded-full bg-[#f54900] flex items-center justify-center font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-md"
             >
-              <p className="select-none relative text-[#ffffe3] top-px text-[18px]">&#x2197;</p>
+              <p className="select-none relative text-[#ffffe3] top-px text-[18px] font-clash font-extrabold">&#x2197;</p>
             </button>
           </div>
 
@@ -1154,6 +1143,8 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, onItemCl
               absolute
               font-black
               text-[4rem]
+              text-white
+              mix-blend-difference
               left-[1.6em]
               top-1/2
               transform
@@ -1178,6 +1169,8 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, onItemCl
               absolute
               max-w-[10ch]
               text-[1.5rem]
+              text-white
+              mix-blend-difference
               top-1/2
               right-[1%]
               transition-all
@@ -1193,7 +1186,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, onItemCl
             {activeItem.description}
           </p>
 
-          <div
+          <button
             onClick={handleButtonClick}
             className={`
               absolute
@@ -1208,6 +1201,9 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, onItemCl
               rounded-full
               cursor-pointer
               transition-all
+              border-none
+              outline-none
+              focus:outline-none
               ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
               ${isMoving
                 ? 'bottom-[-80px] opacity-0 pointer-events-none duration-100 scale-0 -translate-x-1/2'
@@ -1215,8 +1211,8 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, onItemCl
               }
             `}
           >
-            <p className="select-none relative text-[#ffffe3] top-[2px] text-[26px]">&#x2197;</p>
-          </div>
+            <p className="select-none relative text-[#ffffe3] top-[2px] text-[26px] font-clash font-extrabold">&#x2197;</p>
+          </button>
         </>
       )}
     </div>

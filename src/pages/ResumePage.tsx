@@ -3,8 +3,8 @@ import { AnimatedTitle } from '../components/ui/AnimatedTitle';
 
 export const ResumePage: React.FC = () => {
   return (
-    <section id="resume-page" className="relative z-10 w-full min-h-screen bg-background py-20 px-6 sm:px-8 lg:px-16 overflow-hidden select-none font-clash">
-      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800/60 min-h-[85vh] flex flex-col justify-between relative px-4 sm:px-8 lg:px-12">
+    <section id="resume-page" className="relative z-10 w-full min-h-screen bg-transparent py-20 px-0 overflow-hidden select-none font-clash">
+      <div className="w-[97%] max-w-384 mx-auto bg-background min-h-[85vh] flex flex-col justify-between relative px-4 sm:px-8 lg:px-12">
         
         {/* Header */}
         <div className="border-b border-dashed border-border pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">

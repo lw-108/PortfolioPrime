@@ -172,7 +172,7 @@ export const WorldMap: React.FC = () => {
           {/* Mouse Follow Tooltip */}
           {hoveredCountry && (
             <div
-              className="absolute pointer-events-none bg-black/95 dark:bg-black/95 text-[#f54900] border border-neutral-700 dark:border-neutral-800 text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 z-50 rounded-md shadow-2xl font-clash animate-in fade-in zoom-in-95 duration-100"
+              className="absolute pointer-events-none bg-[#ffffe3] dark:bg-black/95 text-[#f54900] border border-neutral-300 dark:border-neutral-800 text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 z-50 rounded-md shadow-2xl font-clash animate-in fade-in zoom-in-95 duration-100"
               style={{
                 top: mousePos.y + 15,
                 left: mousePos.x + 15,
@@ -198,14 +198,14 @@ export const WorldMap: React.FC = () => {
       )}
       <style dangerouslySetInnerHTML={{ __html: `
         .dark {
-          --map-border: #10100e;
-          --map-hovered: #f54900;
-          --map-unvisited: rgba(255, 255, 255, 0.32);
+          --map-border: rgba(16, 16, 14, 0.8);
+          --map-hovered: #ff6a22;
+          --map-unvisited: rgba(255, 255, 255, 0.75);
         }
         .light {
-          --map-border: #ffffe3;
+          --map-border: rgba(255, 255, 227, 0.8);
           --map-hovered: #f54900;
-          --map-unvisited: rgba(16, 16, 14, 0.32);
+          --map-unvisited: rgba(16, 16, 14, 0.75);
         }
       `}} />
     </div>

@@ -7,6 +7,7 @@ export const CustomCursor = () => {
   const posRef = useRef({ x: -100, y: -100 });
   const hoveredRef = useRef(false);
   const rafRef = useRef<number>(0);
+  const maskRadiusRef = useRef({ value: 0 });
 
   useEffect(() => {
     // Skip on touch devices
@@ -25,43 +26,51 @@ export const CustomCursor = () => {
     style.textContent = `*, *::before, *::after { cursor: none !important; }`;
     document.head.appendChild(style);
 
-    // ── Theme-aware color update ──
-    const circle = dot.querySelector('circle');
-    
-    const updateCursorColor = () => {
-      if (!circle) return;
-      const isDark = document.documentElement.classList.contains('dark');
-      circle.setAttribute('fill', isDark ? '#f54900' : '#00ffff');
-    };
-
-    // Initial color set
-    updateCursorColor();
-
-    // Watch for theme changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'class') {
-          updateCursorColor();
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
     // ── Smooth follow loop using rAF + GSAP set ──
     const render = () => {
       gsap.set(blob, {
         left: posRef.current.x,
         top: posRef.current.y,
       });
+
+      // Update cursor styling dynamically based on light/dark theme
+      const isDark = document.documentElement.classList.contains('dark');
+      const circle = dot.querySelector('circle');
+      if (circle) {
+        blob.style.mixBlendMode = 'difference';
+        dot.style.mixBlendMode = 'difference';
+        if (isDark) {
+          circle.setAttribute('fill', '#f54900');
+        } else {
+          circle.setAttribute('fill', '#ffffff');
+        }
+      }
+
+      // Synchronize Tamil text mask perfectly with the smooth cursor position
+      const tamilText = document.querySelector('.footer-masked-text p:last-child') as HTMLElement;
+      if (tamilText) {
+        if (hoveredFooterRef.current) {
+          const rect = tamilText.getBoundingClientRect();
+          const relX = posRef.current.x - rect.left;
+          const relY = posRef.current.y - rect.top;
+          const clip = `circle(${maskRadiusRef.current.value}px at ${relX}px ${relY}px)`;
+          tamilText.style.opacity = '1';
+          tamilText.style.clipPath = clip;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (tamilText.style as any).WebkitClipPath = clip;
+        } else {
+          tamilText.style.opacity = '0';
+          tamilText.style.clipPath = 'circle(0px at 0px 0px)';
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (tamilText.style as any).WebkitClipPath = 'circle(0px at 0px 0px)';
+        }
+      }
+
       rafRef.current = requestAnimationFrame(render);
     };
     rafRef.current = requestAnimationFrame(render);
 
-    // ── Track pointer position with lerp for smoothness ──
+    const hoveredFooterRef = { current: false };
     const target = { x: -100, y: -100 };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -70,6 +79,7 @@ export const CustomCursor = () => {
 
       const t = e.target as HTMLElement;
       if (t) {
+        const footerMasked = typeof t.closest === 'function' && t.closest('.footer-masked-text');
         const interactive = typeof t.closest === 'function' && (
           t.closest('a') ||
           t.closest('button') ||
@@ -78,23 +88,55 @@ export const CustomCursor = () => {
           t.closest('.work-card')
         );
 
-        if (interactive) {
-          if (!hoveredRef.current) {
+        if (footerMasked) {
+          if (!hoveredFooterRef.current) {
+            hoveredFooterRef.current = true;
+            // Hide cursor — the Tamil clip-path overlay IS the visual circle
+            gsap.to(dot, {
+              scale: 0.04375,
+              opacity: 0,
+              duration: 0.3,
+              ease: 'power2.out',
+              overwrite: 'auto',
+            });
+            gsap.to(maskRadiusRef.current, {
+              value: 200,
+              duration: 0.3,
+              ease: 'power2.out',
+              overwrite: 'auto',
+            });
+          }
+        } else if (interactive) {
+          if (hoveredFooterRef.current || !hoveredRef.current) {
+            hoveredFooterRef.current = false;
             hoveredRef.current = true;
             gsap.to(dot, {
-              scale: 1,
+              scale: 0.175, // 400px * 0.175 = 70px
               opacity: 0.9,
+              duration: 0.3,
+              ease: 'power2.out',
+              overwrite: 'auto',
+            });
+            gsap.to(maskRadiusRef.current, {
+              value: 0,
               duration: 0.3,
               ease: 'power2.out',
               overwrite: 'auto',
             });
           }
         } else {
-          if (hoveredRef.current) {
+          if (hoveredRef.current || hoveredFooterRef.current) {
             hoveredRef.current = false;
+            hoveredFooterRef.current = false;
             gsap.to(dot, {
-              scale: 0.25,
+              scale: 0.04375, // 400px * 0.04375 = 17.5px
               opacity: 0.7,
+              duration: 0.3,
+              ease: 'power2.out',
+              overwrite: 'auto',
+            });
+            gsap.to(maskRadiusRef.current, {
+              value: 0,
               duration: 0.3,
               ease: 'power2.out',
               overwrite: 'auto',
@@ -112,16 +154,10 @@ export const CustomCursor = () => {
 
     window.addEventListener('mousemove', onMouseMove);
 
-    // Also listen for storage changes (if theme is persisted)
-    const handleStorageChange = () => updateCursorColor();
-    window.addEventListener('storage', handleStorageChange);
-
     return () => {
       cancelAnimationFrame(rafRef.current);
       gsap.ticker.remove(lerpTick);
       window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('storage', handleStorageChange);
-      observer.disconnect();
       document.documentElement.style.removeProperty('cursor');
       const s = document.getElementById('custom-cursor-hide');
       if (s) s.remove();
@@ -131,7 +167,7 @@ export const CustomCursor = () => {
   return (
     <div
       ref={blobRef}
-      className="pointer-events-none fixed z-9999 mix-blend-difference"
+      className="pointer-events-none fixed z-9999"
       style={{
         left: -100,
         top: -100,
@@ -144,12 +180,11 @@ export const CustomCursor = () => {
         viewBox="0 0 100 100"
         xmlns="http://www.w3.org/2000/svg"
         style={{
-          width: 70,
-          height: 70,
+          width: 400,
+          height: 400,
           opacity: 0.7,
-          transform: 'scale(0.25)',
+          transform: 'scale(0.04375)',
           transformOrigin: 'center',
-          willChange: 'transform, opacity',
         }}
       >
         <circle cx="50" cy="50" r="50" fill="#f54900" />

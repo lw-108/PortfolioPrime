@@ -35,9 +35,9 @@ const About: React.FC = () => {
   return (
     <section
       id="about-me-section"
-      className="about-section relative z-10 overflow-y-clip will-change-auto font-clash select-none"
+      className="about-section relative z-10 overflow-y-clip will-change-auto font-clash select-none w-full bg-transparent"
     >
-      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bg-background py-16 px-6 sm:px-8 lg:py-24 lg:px-16">
+      <div className="w-[97%] max-w-384 mx-auto bg-background py-16 px-6 sm:px-8 lg:py-24 lg:px-16">
 
         {/* Header */}
         <header className="mb-12 border-b border-dashed border-neutral-800 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">

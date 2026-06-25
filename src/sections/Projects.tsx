@@ -3,8 +3,51 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'motion/react';
 import { CreepyButton } from '../components/ui/creepy-button';
-import { AnimatedTitle } from '../components/ui/AnimatedTitle';
-import { projectsData, type Project } from '../lib/projects-data';
+
+gsap.registerPlugin(ScrollTrigger);
+
+import { projectsData } from '../lib/projects-data';
+
+
+// ── Animated Title Characters ──
+const AnimatedTitle: React.FC<{ text: string }> = ({ text }) => {
+  const words = text.split(' ');
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: { staggerChildren: 0.02, delayChildren: 0 },
+    },
+  };
+  const charVariants = {
+    hidden: { opacity: 0, y: 60 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: 'spring', damping: 12, stiffness: 100 },
+    },
+  } as const;
+
+  return (
+    <motion.span
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="inline-block"
+    >
+      {words.map((word, wordIdx) => (
+        <span key={wordIdx} className="inline-block whitespace-nowrap">
+          {word.split('').map((char, i) => (
+            <motion.span key={i} variants={charVariants} className="inline-block">
+              {char}
+            </motion.span>
+          ))}
+          {wordIdx < words.length - 1 && <span className="inline-block">&nbsp;</span>}
+        </span>
+      ))}
+    </motion.span>
+  );
+};
 
 // ── Tag Icon Map ──
 const tagIcons: Record<string, string> = {
@@ -25,79 +68,116 @@ const tagIcons: Record<string, string> = {
 // ── Main Component ──
 const Projects: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const indexRef = useRef<HTMLSpanElement>(null);
+  const indexRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLSpanElement>(null);
-  const activeIndexRef = useRef(0);
+  const activeIndexRef = useRef(1);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     if (window.innerWidth < 768) return;
 
-    const updateIndex = (targetDigit: number, direction: 'forward' | 'backward') => {
-      const currentVal = numberRef.current ? numberRef.current.innerText : '1';
-      if (currentVal === String(targetDigit)) return;
+    // Keep track of the active animation timeline to kill it properly
+    let activeTween: gsap.core.Timeline | null = null;
 
-      if (direction === 'forward') {
-        gsap.timeline({ defaults: { duration: 0.3 } })
-          .to(indexRef.current, {
-            yPercent: -100,
-            ease: 'power4.inOut',
-            onComplete: () => {
-              if (numberRef.current) numberRef.current.innerText = String(targetDigit);
-              activeIndexRef.current = targetDigit - 1;
-              gsap.set(indexRef.current, { yPercent: 100 });
-            },
+    const updateIndex = (targetDigit: number, direction: 'forward' | 'backward') => {
+      if (activeIndexRef.current === targetDigit) return;
+      activeIndexRef.current = targetDigit;
+
+      if (activeTween) {
+        activeTween.kill();
+      }
+
+      // Ensure the element is clean before animating
+      gsap.killTweensOf(indexRef.current);
+
+      const tl = gsap.timeline();
+      activeTween = tl;
+
+      if (direction === "forward") {
+        tl.to(indexRef.current, {
+          yPercent: -100,
+          duration: 0.15,
+          ease: "power2.inOut"
+        })
+          .set(indexRef.current, {
+            yPercent: 100
+          })
+          .call(() => {
+            if (numberRef.current) numberRef.current.innerText = String(targetDigit);
           })
           .to(indexRef.current, {
             yPercent: 0,
-            ease: 'power1.inOut',
+            duration: 0.3,
+            ease: "power1.inOut"
           });
       } else {
-        gsap.timeline({ defaults: { duration: 0.3 } })
-          .to(indexRef.current, {
-            yPercent: 100,
-            ease: 'power4.inOut',
-            onComplete: () => {
-              if (numberRef.current) numberRef.current.innerText = String(targetDigit);
-              activeIndexRef.current = targetDigit - 1;
-              gsap.set(indexRef.current, { yPercent: -100 });
-            },
+        tl.to(indexRef.current, {
+          yPercent: 100,
+          duration: 0.15,
+          ease: "power2.inOut"
+        })
+          .set(indexRef.current, {
+            yPercent: -100
+          })
+          .call(() => {
+            if (numberRef.current) numberRef.current.innerText = String(targetDigit);
           })
           .to(indexRef.current, {
             yPercent: 0,
-            ease: 'power1.inOut',
+            duration: 0.3,
+            ease: "power1.inOut"
           });
       }
     };
 
     const ctx = gsap.context(() => {
-      cardRefs.current.forEach((card, i) => {
+      cardRefs.current.forEach((card) => {
         if (!card) return;
+        const imageTrigger = card.querySelector('.project-image-trigger') || card;
 
         ScrollTrigger.create({
-          trigger: card,
-          start: 'top 25%',
-          end: 'bottom 25%',
+          trigger: imageTrigger,
+          start: 'top 50%',
+          end: 'bottom 50%',
           onEnter: () => {
-            updateIndex(i + 1, 'forward');
+            const targetDigit = parseInt(card.getAttribute('data-index') || '1', 10);
+            const direction = targetDigit > activeIndexRef.current ? 'forward' : 'backward';
+            updateIndex(targetDigit, direction);
           },
           onEnterBack: () => {
-            updateIndex(i + 1, 'backward');
+            const targetDigit = parseInt(card.getAttribute('data-index') || '1', 10);
+            const direction = targetDigit > activeIndexRef.current ? 'forward' : 'backward';
+            updateIndex(targetDigit, direction);
+          },
+          onToggle: (self) => {
+            if (self.isActive) {
+              const targetDigit = parseInt(card.getAttribute('data-index') || '1', 10);
+              const direction = targetDigit > activeIndexRef.current ? 'forward' : 'backward';
+              updateIndex(targetDigit, direction);
+            }
           },
         });
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    // Refresh ScrollTrigger as delayed fallbacks for layout calculations
+    const timer1 = setTimeout(() => ScrollTrigger.refresh(), 500);
+    const timer2 = setTimeout(() => ScrollTrigger.refresh(), 1200);
+
+    return () => {
+      ctx.revert();
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
   }, []);
 
   return (
     <section
       ref={sectionRef}
       id="works"
-      className="relative z-10 overflow-y-clip will-change-auto font-clash select-none"
+      className="relative z-10 overflow-y-clip will-change-auto font-clash select-none w-full bg-transparent"
     >
-      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bg-background py-16 px-6 sm:px-8 lg:py-24 lg:px-16">
+      <div className="w-[97%] max-w-384 mx-auto bg-background py-16 px-6 sm:px-8 lg:py-24 lg:px-16">
 
         {/* ── Header ── */}
         <div className="flex flex-col">
@@ -139,94 +219,108 @@ const Projects: React.FC = () => {
         <div className="relative mt-12 grid w-full grid-cols-12 gap-x-4 sm:gap-x-8 lg:mt-[10%]">
 
           {/* Sticky large index number — desktop only */}
-          <div className="text-foreground/10 sticky top-12 col-span-5 hidden h-fit w-full overflow-hidden text-[22vw] leading-[0.8] font-semibold md:flex items-baseline">
+          <div className="text-foreground/10 sticky top-12 col-span-5 hidden h-fit w-full overflow-visible text-[25vw] leading-none font-semibold md:flex items-baseline">
             {/* Static "0" — never animates */}
-            <span className="font-clash relative tracking-tighter">0</span>
+            <span className="font-clash relative tracking-tighter leading-none select-none">0</span>
             {/* Only the second digit flips */}
-            <span
-              ref={indexRef}
-              className="font-clash relative tracking-tighter will-change-transform inline-block overflow-hidden"
-              style={{ height: '1em', lineHeight: '0.8', minWidth: '0.7em' }}
+            <div
+              className="font-clash relative tracking-tighter will-change-transform inline-block overflow-visible leading-none select-none"
+              style={{ height: '0.9em', minWidth: '0.6em' }}
             >
-              <span ref={numberRef} className="inline-block w-full">1</span>
-            </span>
+              <span
+                ref={indexRef}
+                className="inline-block w-full"
+              >
+                <span ref={numberRef}>1</span>
+              </span>
+            </div>
           </div>
 
+          {/* Project cards column */}
           <aside className="relative col-span-full flex flex-col space-y-12 md:col-span-7">
-            {projectsData.map((work: Project, i: number) => (
-              <div
-                key={i}
-                ref={(el) => { cardRefs.current[i] = el; }}
-                className="work-card border-b border-dashed border-neutral-800 pb-10"
-              >
-                <a
-                  className="group block"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={work.url}
+            {projectsData.map((work, i) => (
+              <React.Fragment key={i}>
+                {i > 0 && <div className="border-t border-dashed border-neutral-300 dark:border-neutral-800 my-4" />}
+                <div
+                  ref={(el) => { cardRefs.current[i] = el; }}
+                  data-index={i + 1}
+                  className="work-card pb-10"
                 >
-                  {/* Image container */}
-                  <div className="relative w-full h-auto rounded-lg flex flex-col justify-start border border-neutral-200/50 dark:border-neutral-800/50 p-4">
-                    {/* Background repeating stripe pattern */}
-                    <div
-                      className="absolute inset-0 w-full h-full opacity-35 dark:opacity-20 pointer-events-none select-none rounded-lg"
-                      style={{
-                        backgroundImage: "url('/stripe.svg')",
-                        backgroundRepeat: 'repeat',
-                        backgroundSize: '16px 16px',
-                      }}
-                    />
-                    {/* Foreground project screenshot */}
-                    <img
-                      alt={work.name}
-                      loading="lazy"
-                      className="z-10 w-full object-contain h-auto shadow-md transition-transform duration-500 ease-in-out group-hover:scale-[1.01] group-hover:shadow-2xl"
-                      src={work.image}
-                    />
-                  </div>
-
-                  {/* Card info */}
-                  <div className="mt-3">
-                    <div className="flex justify-between items-end mb-1">
-                      <p className="font-clash text-xs sm:text-sm text-muted-foreground uppercase tracking-widest leading-none">
-                        {work.category}
-                      </p>
-                      <span className="md:hidden text-foreground/10 text-3xl font-semibold font-clash tracking-tighter leading-none select-none">
-                        0{i + 1}
-                      </span>
+                  <a
+                    className="group block"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={work.url}
+                  >
+                    {/* Image container */}
+                    <div className="project-image-trigger relative w-full h-auto rounded-lg flex flex-col justify-start border border-neutral-200/50 dark:border-neutral-800/50 p-4">
+                      {/* Background repeating stripe pattern */}
+                      <div
+                        className="absolute inset-0 w-full h-full opacity-35 dark:opacity-20 pointer-events-none select-none rounded-lg"
+                        style={{
+                          backgroundImage: "url('/stripe.svg')",
+                          backgroundRepeat: 'repeat',
+                          backgroundSize: '16px 16px',
+                        }}
+                      />
+                      {/* Foreground project screenshot */}
+                      <img
+                        alt={work.name}
+                        loading="lazy"
+                        className="z-10 w-full object-contain h-auto shadow-md transition-transform duration-500 ease-in-out group-hover:scale-[1.01] group-hover:shadow-2xl"
+                        src={work.image}
+                        onLoad={() => {
+                          ScrollTrigger.refresh();
+                        }}
+                      />
                     </div>
-                    <div className="items-center justify-between sm:flex">
-                      <h3 className="font-clash text-2xl sm:text-3xl font-bold uppercase text-foreground">
-                        {work.name}
-                      </h3>
-                      <div className="flex gap-1.5 select-none mt-2 sm:mt-0 flex-wrap">
-                        {work.tags.map((tag: string) => {
-                          if (!tag.trim()) return null;
-                          const iconUrl = tagIcons[tag];
-                          return (
-                            <span
-                              key={tag}
-                              className="bg-[#f54900] text-white text-xs sm:text-sm font-semibold px-3 py-1 flex items-center gap-1.5 cursor-default hover:bg-[#d43f00] transition-colors duration-300"
-                            >
-                              {iconUrl && (
-                                <img
-                                  src={iconUrl}
-                                  alt={tag}
-                                  className="w-4 h-4 object-contain"
-                                />
-                              )}
-                              <span>{tag}</span>
-                            </span>
-                          );
-                        })}
-                        <span className="bg-foreground text-background text-xs sm:text-sm font-semibold px-3 py-1 flex items-center cursor-default">
-                          {work.year}
+
+                    {/* Card info */}
+                    <div className="mt-3">
+                      <div className="flex justify-between items-end mb-1">
+                        <p className="font-clash text-xs sm:text-sm text-muted-foreground uppercase tracking-widest leading-none">
+                          {work.category}
+                        </p>
+                        <span className="md:hidden text-foreground/10 text-3xl font-semibold font-clash tracking-tighter leading-none select-none">
+                          0{i + 1}
                         </span>
                       </div>
+                      <div className="items-center justify-between sm:flex">
+                        <h3 className="font-clash text-2xl sm:text-3xl font-bold uppercase text-foreground">
+                          {work.name}
+                        </h3>
+                        <div className="flex gap-1.5 select-none mt-2 sm:mt-0 flex-wrap">
+                          {work.tags.map((tag) => {
+                            if (!tag.trim()) return null;
+                            const iconUrl = tagIcons[tag];
+                            return (
+                              <span
+                                key={tag}
+                                className="bg-[#f54900] text-white text-xs sm:text-sm font-semibold px-3 py-1 flex items-center gap-1.5 cursor-default hover:bg-[#d43f00] transition-colors duration-300"
+                              >
+                                {iconUrl && (
+                                  <img
+                                    src={iconUrl}
+                                    alt={tag}
+                                    className="w-4 h-4 object-contain"
+                                  />
+                                )}
+                                <span>{tag}</span>
+                              </span>
+                            );
+                          })}
+                          <span className="bg-foreground text-background text-xs sm:text-sm font-semibold px-3 py-1 flex items-center cursor-default">
+                            {work.year}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="mt-2 text-xs sm:text-sm text-neutral-400 font-sans leading-relaxed max-w-xl">
+                        {work.description}
+                      </p>
                     </div>
-                  </div>
-                </a>
-              </div>
+                  </a>
+                </div>
+              </React.Fragment>
             ))}
           </aside>
         </div>

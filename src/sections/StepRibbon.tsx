@@ -15,7 +15,7 @@ const SVGStar = ({ className = "" }) => (
 
 const SVGFourStar = ({ className = "" }) => (
   <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M100 0C103.395 53.7596 146.24 96.6052 200 100C146.24 103.395 103.395 146.24 100 200C96.6052 146.24 53.7596 103.395 0 100C53.7596 96.6052 96.6052 53.7596 100 0Z" fill="currentColor"/>
+    <path d="M100 0C103.395 53.7596 146.24 96.6052 200 100C146.24 103.395 103.395 146.24 100 200C96.6052 146.24 53.7596 103.395 0 100C53.7596 96.6052 96.6052 53.7596 100 0Z" fill="currentColor" />
   </svg>
 );
 
@@ -209,11 +209,11 @@ function Ribbon() {
       className="relative w-full h-[180px] sm:h-[240px] overflow-hidden flex items-center justify-center select-none bg-background"
     >
       {/* Ribbon 1: Slanted Left to Right - Border and Shadow removed */}
-      <div 
+      <div
         className="absolute w-[150%] h-14 sm:h-20 bg-primary text-black flex items-center overflow-hidden rotate-[-5deg] sm:rotate-[-4deg] z-20 origin-center"
       >
-        <div 
-          ref={marquee1Ref} 
+        <div
+          ref={marquee1Ref}
           className="flex whitespace-nowrap items-center font-clash text-lg sm:text-2xl md:text-3xl font-bold uppercase tracking-wider"
         >
           <div className="flex items-center shrink-0">
@@ -236,11 +236,11 @@ function Ribbon() {
       </div>
 
       {/* Ribbon 2: Slanted Right to Left - Border and Shadow removed */}
-      <div 
+      <div
         className="absolute w-[150%] h-14 sm:h-20 bg-primary text-black flex items-center overflow-hidden rotate-[5deg] sm:rotate-[4deg] z-10 origin-center"
       >
-        <div 
-          ref={marquee2Ref} 
+        <div
+          ref={marquee2Ref}
           className="flex whitespace-nowrap items-center font-clash text-lg sm:text-2xl md:text-3xl font-bold uppercase tracking-wider"
         >
           <div className="flex items-center shrink-0">
@@ -270,8 +270,8 @@ const StepRibbon: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section ref={containerRef} className="relative w-full font-clash select-none ">
-      <div className="max-w-384 mx-auto w-full border-x border-dashed border-neutral-800 bg-background pt-10 pb-6 px-4 sm:px-8 lg:pt-12 lg:pb-8">
+    <section ref={containerRef} className="relative w-full font-clash select-none bg-transparent">
+      <div className="w-[97%] max-w-384 mx-auto bg-background pt-10 pb-6 px-4 sm:px-8 lg:pt-12 lg:pb-8">
         {/* Header */}
         <header className="stepper__header mb-8 sm:mb-12 border-b border-dashed border-neutral-800 pb-6 sm:pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 bg-background ">
           <div>
