@@ -1,0 +1,2 @@
+// Neutralized: infinite-canvas is no longer used in the app.
+export {};
