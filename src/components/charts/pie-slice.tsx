@@ -2,10 +2,8 @@
 
 import { arc as arcGenerator } from "@visx/shape";
 import { motion } from "motion/react";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import { usePieHover, usePieStable } from "./pie-context";
-import { useEnterComplete } from "./use-enter-complete";
-import { useMountProgress } from "./use-mount-progress";
 
 // Helper to generate arc path using d3 arc generator
 function generateArcPath(

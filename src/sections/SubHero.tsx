@@ -8,7 +8,6 @@ const SubHero: React.FC = () => {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
   const [hasEntered, setHasEntered] = useState(false);
 
   // IntersectionObserver: trigger entrance and autoplay once when section enters viewport

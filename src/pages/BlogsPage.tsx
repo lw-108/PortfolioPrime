@@ -102,15 +102,6 @@ interface ExtendedSongMetadata {
   lyrics: string[];
 }
 
-const getYouTubeEmbedUrl = (url: string) => {
-  if (!url) return "";
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) 
-    ? `https://www.youtube.com/embed/${match[2]}` 
-    : url;
-};
-
 export const BlogsPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const blogIdParam = searchParams.get("id");
@@ -631,7 +622,7 @@ export const BlogsPage: React.FC = () => {
               {/* Central typography content wrapper */}
               <div 
                 onClick={handleCopyCode}
-                className="flex-1 max-w-3xl prose prose-invert prose-orange text-foreground/80 font-sans text-base leading-relaxed break-words relative blog-canvas"
+                className="flex-1 max-w-3xl prose prose-invert prose-orange text-foreground/80 font-sans text-base leading-relaxed wrap-break-word relative blog-canvas"
               >
                 {/* Visual styling overrides to ensure neobrutalist/medium publishing layout */}
                 <style dangerouslySetInnerHTML={{ __html: `

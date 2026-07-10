@@ -7,9 +7,9 @@ import * as THREE from 'three';
 import Dither from '../components/Dither';
 import CreepyButton from '../components/ui/creepy-button';
 import { AnimatedTitle } from '../components/ui/AnimatedTitle';
-import { motion } from 'motion/react';
+import { motion, type Variants } from 'motion/react';
 
-const revealVariants = {
+const revealVariants: Variants = {
   visible: (i: number) => ({
     y: 0,
     opacity: 1,
@@ -25,7 +25,7 @@ const revealVariants = {
     y: 15,
     opacity: 0,
   },
-} as const;
+};
 
 // 3D Spinning & Interactive Omnitrix Model Component
 function OmnitrixModel() {
