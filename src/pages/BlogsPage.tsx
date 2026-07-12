@@ -789,7 +789,7 @@ export const BlogsPage: React.FC = () => {
                             <img 
                               src={blog.thumbnail} 
                               alt={blog.title} 
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-contain"
                             />
                             <div className="absolute top-4 left-4">
                               <span className="text-[10px] font-black uppercase tracking-wider px-3 py-1 bg-primary text-white"
