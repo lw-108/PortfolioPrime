@@ -39,7 +39,6 @@ import {
   X,
   Repeat,
   Shuffle,
-  Music3,
   SkipBack,
   SkipForward
 } from "lucide-react";
@@ -303,7 +302,9 @@ export const BlogsPage: React.FC = () => {
         const data = doc.data();
         list.push({
           id: doc.id,
-          ...data
+          ...data,
+          // Dashboard saves artwork as `artworkUrl` — map it to `artwork` here
+          artwork: data.artworkUrl || data.artwork || "",
         } as MediaItem);
       });
       setMediaItems(list);
@@ -326,7 +327,7 @@ export const BlogsPage: React.FC = () => {
         album: song.album || "Single",
         composer: song.composer || "Unknown Artist",
         year: song.year || "2026",
-        artwork: song.artwork || `https://res.cloudinary.com/demo/image/upload/w_600,h_600,c_fill,g_auto,f_auto/co_rgb:fffe3,l_text:Arial_36_bold:${encodeURIComponent(song.name.slice(0, 15))}/sample.jpg`,
+        artwork: song.artwork || `https://res.cloudinary.com/demo/image/upload/w_600,h_600,c_fill,g_auto,f_auto/co_rgb:ffffe3,l_text:Arial_36_bold:${encodeURIComponent(song.name.slice(0, 15))}/sample.jpg`,
         lyrics: [
           "Lyrics loaded from media registry...",
           "Playing live synth waves.",
@@ -344,7 +345,7 @@ export const BlogsPage: React.FC = () => {
     const composer = composers[seed % composers.length];
     const year = years[seed % years.length];
     
-    const artwork = `https://res.cloudinary.com/demo/image/upload/w_600,h_600,c_fill,g_auto,f_auto/co_rgb:fffe3,l_text:Arial_36_bold:${encodeURIComponent(song.name.slice(0, 15))}/sample.jpg`;
+    const artwork = `https://res.cloudinary.com/demo/image/upload/w_600,h_600,c_fill,g_auto,f_auto/co_rgb:ffffe3,l_text:Arial_36_bold:${encodeURIComponent(song.name.slice(0, 15))}/sample.jpg`;
     
     const lyrics = [
       "Running loops in the main thread...",
@@ -530,7 +531,7 @@ export const BlogsPage: React.FC = () => {
   const currentSongMeta = activeSong ? getSongMetadata(activeSong) : null;
 
   return (
-    <div className="w-full bg-transparent select-none font-clash">
+    <div className="w-full bg-transparent select-none font-clash relative z-[100]">
       <motion.div 
         custom={0}
         variants={revealVariants}
@@ -565,7 +566,7 @@ export const BlogsPage: React.FC = () => {
 
         {selectedBlog ? (
           /* Blog Reader View */
-          <article className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+          <article className="max-w-4xl mx-auto space-y-8 animate-fade-in w-full">
             <div className="flex justify-start">
               <button 
                 onClick={() => setSelectedBlog(null)}
@@ -610,7 +611,7 @@ export const BlogsPage: React.FC = () => {
                   {selectedBlog.views + 1} views
                 </span>
               </div>
-              <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight uppercase border-b border-dashed border-border pb-6">
+              <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight border-b border-dashed border-border pb-6 font-dmsans normal-case">
                 {selectedBlog.title}
               </h1>
             </div>
@@ -650,29 +651,31 @@ export const BlogsPage: React.FC = () => {
               {/* Central typography content wrapper */}
               <div 
                 onClick={handleCopyCode}
-                className="flex-1 max-w-3xl prose prose-invert prose-orange text-foreground/80 font-sans text-base leading-relaxed wrap-break-word relative blog-canvas"
+                className="w-full lg:flex-1 max-w-3xl prose prose-invert prose-orange text-foreground/80 font-sans text-base leading-relaxed wrap-break-word overflow-x-hidden relative blog-canvas"
               >
                 {/* Visual styling overrides to ensure neobrutalist/medium publishing layout */}
                 <style dangerouslySetInnerHTML={{ __html: `
-                  .blog-canvas p { margin-bottom: 24px; font-size: 16.5px; line-height: 1.85; color: #d4d4d8; }
-                  .blog-canvas h1, .blog-canvas h2, .blog-canvas h3 { font-family: 'Montserrat Variable', sans-serif; font-weight: 900; text-transform: uppercase; margin-top: 48px; margin-bottom: 20px; color: #ffffff; letter-spacing: -0.01em; }
-                  .blog-canvas h1 { font-size: 26px; border-b: 2px solid #222; padding-bottom: 8px; }
-                  .blog-canvas h2 { font-size: 20px; }
-                  .blog-canvas h3 { font-size: 16px; }
-                  .blog-canvas ul, .blog-canvas ol { margin-left: 24px; margin-bottom: 28px; list-style-position: outside; }
-                  .blog-canvas ul { list-style-type: square; }
+                  .blog-canvas { max-width: 100%; overflow-x: hidden; }
+                  .blog-canvas p { margin-bottom: 24px; font-family: var(--font-dmsans), var(--font-sans), system-ui, sans-serif; font-size: 16px; line-height: 1.7; color: #d4d4d8; text-align: left; }
+                  .blog-canvas h1, .blog-canvas h2, .blog-canvas h3 { font-family: var(--font-dmsans), var(--font-sans), system-ui, sans-serif; font-weight: 700; text-transform: none; margin-top: 40px; margin-bottom: 16px; color: #ffffff; letter-spacing: -0.01em; }
+                  .blog-canvas h1 { font-size: 28px; border-b: 2px solid #222; padding-bottom: 8px; }
+                  .blog-canvas h2 { font-size: 22px; }
+                  .blog-canvas h3 { font-size: 18px; }
+                  .blog-canvas ul, .blog-canvas ol { margin-left: 20px; margin-bottom: 24px; list-style-position: outside; }
+                  .blog-canvas ul { list-style-type: disc; }
                   .blog-canvas ol { list-style-type: decimal; }
-                  .blog-canvas li { margin-bottom: 10px; color: #d4d4d8; font-size: 16px; }
-                  .blog-canvas blockquote { border-left: 4px solid var(--primary); padding-left: 20px; font-style: italic; color: #a1a1aa; margin: 36px 0; font-size: 17px; }
-                  .blog-canvas table { width: 100%; border-collapse: collapse; margin: 36px 0; border: 2px solid #333; }
-                  .blog-canvas th, .blog-canvas td { padding: 12px; border: 1px solid #333; }
+                  .blog-canvas li { margin-bottom: 8px; color: #d4d4d8; font-family: var(--font-dmsans), var(--font-sans), system-ui, sans-serif; font-size: 16px; line-height: 1.6; }
+                  .blog-canvas blockquote { border-left: 4px solid var(--primary); padding-left: 20px; font-style: italic; font-family: var(--font-dmsans), var(--font-sans), system-ui, sans-serif; color: #a1a1aa; margin: 32px 0; font-size: 17px; line-height: 1.65; }
+                  .blog-canvas table { width: 100%; border-collapse: collapse; margin: 32px 0; border: 2px solid #333; display: block; overflow-x: auto; }
+                  .blog-canvas th, .blog-canvas td { padding: 10px; border: 1px solid #333; }
                   .blog-canvas th { background: #111; font-weight: bold; text-transform: uppercase; font-size: 12px; tracking-wider; }
-                  .blog-canvas hr { border: none; border-top: 2px dashed #333; margin: 48px 0; }
+                  .blog-canvas hr { border: none; border-top: 2px dashed #333; margin: 40px 0; }
                   .blog-canvas a { color: var(--primary); text-decoration: underline; font-weight: bold; }
                   .blog-canvas a:hover { color: #ff8833; }
+                  .blog-canvas pre, .blog-canvas code { max-width: 100%; overflow-x: auto; word-break: break-all; }
                 `}} />
                 
-                <div dangerouslySetInnerHTML={{ __html: getProcessedHtml(selectedBlog.htmlContent) }} />
+                <div className="w-full overflow-x-hidden" dangerouslySetInnerHTML={{ __html: getProcessedHtml(selectedBlog.htmlContent) }} />
               </div>
             </div>
           </article>
@@ -861,78 +864,143 @@ export const BlogsPage: React.FC = () => {
                       <p className="text-sm font-bold uppercase tracking-wider">No media items in this category.</p>
                     </div>
                   ) : (
-                    filteredMediaItems.map(item => (
-                      <div 
-                        key={item.id} 
-                        className="group cursor-pointer relative"
-                      >
-                        {/* 3D shadow layer */}
-                        <div className="absolute inset-0 translate-x-2 translate-y-2 bg-foreground transition-transform duration-300 ease-out group-hover:translate-x-0 group-hover:translate-y-0" />
-                        
-                        {/* Primary Card face */}
-                        <div className="relative bg-background p-4 flex flex-col justify-between space-y-4 h-full border border-foreground">
-                          {/* Media Display Area - Clicking opens modal for premium sizing */}
-                          <div 
-                            className="relative h-44 overflow-hidden bg-neutral-900 flex items-center justify-center cursor-pointer group"
-                            onClick={() => {
-                              if (item.type === "video") {
-                                setActiveVideo(item);
-                                trackMediaClick(item.id, item.name, "video");
-                              } else if (item.type === "song") {
-                                handlePlaySong(item);
-                              }
-                            }}
-                          >
-                            {item.type === "image" && (
-                              <img src={item.url} alt={item.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                            )}
+                    filteredMediaItems.map(item => {
+                      const songMeta = item.type === "song" ? getSongMetadata(item) : null;
+                      const artworkSrc = item.type === "song" ? songMeta?.artwork : (item.type === "image" ? item.url : "");
+
+                      return (
+                        <div 
+                          key={item.id} 
+                          className="group cursor-pointer relative col-span-full lg:col-span-2"
+                        >
+                          {/* 3D shadow layer */}
+                          <div className="absolute inset-0 translate-x-2 translate-y-2 bg-foreground transition-transform duration-300 ease-out group-hover:translate-x-0 group-hover:translate-y-0" />
+                          
+                          {/* Primary Card face: Horizontal layout */}
+                          <div className="relative bg-background flex border border-foreground min-h-[110px] overflow-hidden">
                             
-                            {item.type === "video" && (
-                              <div className="relative w-full h-full">
-                                <video src={item.url} className="w-full h-full object-cover" muted />
-                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity group-hover:bg-black/50">
-                                  <div className="w-12 h-12 rounded-full border-2 border-white bg-primary text-white flex items-center justify-center transform group-hover:scale-110 transition-transform">
-                                    <Play className="w-5 h-5 fill-current ml-0.5" />
+                            {/* Left Side: Artwork/Thumbnail (Square, stands tall, stays visible) */}
+                            <div 
+                              className="w-[110px] sm:w-[130px] shrink-0 border-r border-foreground bg-neutral-900 flex items-center justify-center relative overflow-hidden group/media"
+                              onClick={() => {
+                                if (item.type === "video") {
+                                  setActiveVideo(item);
+                                  trackMediaClick(item.id, item.name, "video");
+                                } else if (item.type === "song") {
+                                  handlePlaySong(item);
+                                }
+                              }}
+                            >
+                              {item.type === "image" && artworkSrc && (
+                                <img src={artworkSrc} alt={item.name} className="w-full h-full object-cover transition-transform duration-300 group-hover/media:scale-105" />
+                              )}
+                              
+                              {item.type === "video" && (
+                                <div className="relative w-full h-full flex items-center justify-center">
+                                  <video src={item.url} className="w-full h-full object-cover" muted />
+                                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity group-hover/media:bg-black/50">
+                                    <div className="w-9 h-9 rounded-full border-2 border-white bg-primary text-white flex items-center justify-center transform group-hover/media:scale-110 transition-transform">
+                                      <Play className="w-4 h-4 fill-current ml-0.5" />
+                                    </div>
                                   </div>
                                 </div>
-                                <span className="absolute bottom-2 right-2 text-[8px] font-bold uppercase bg-black text-white px-2 py-0.5">
-                                  Watch
-                                </span>
-                              </div>
-                            )}
+                              )}
 
-                            {item.type === "song" && (
-                              <div className="flex flex-col items-center justify-center space-y-3">
-                                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary transform group-hover:scale-110 transition-transform">
-                                  <Music className="w-5 h-5" />
-                                </div>
-                                <span className="px-4 py-1.5 bg-foreground text-background hover:bg-primary hover:text-white transition-all text-xs font-bold uppercase flex items-center gap-1.5">
-                                  {activeSong?.id === item.id && isPlaying ? (
-                                    <>
-                                      <Pause className="w-3.5 h-3.5" />
-                                      Playing
-                                    </>
+                              {item.type === "song" && (
+                                <div className="relative w-full h-full flex items-center justify-center">
+                                  {artworkSrc ? (
+                                    <img src={artworkSrc} alt={item.name} className="w-full h-full object-cover transition-transform duration-300 group-hover/media:scale-105" />
                                   ) : (
-                                    <>
-                                      <Play className="w-3.5 h-3.5" />
-                                      Listen
-                                    </>
+                                    <div className="w-full h-full flex items-center justify-center bg-primary/10 text-primary">
+                                      <Music className="w-6 h-6" />
+                                    </div>
                                   )}
-                                </span>
-                              </div>
-                            )}
-                          </div>
+                                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover/media:opacity-100 flex items-center justify-center transition-opacity">
+                                    <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center transform group-hover/media:scale-110 transition-transform">
+                                      {activeSong?.id === item.id && isPlaying ? (
+                                        <Pause className="w-4 h-4 fill-current" />
+                                      ) : (
+                                        <Play className="w-4 h-4 fill-current ml-0.5" />
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
 
-                          <div>
-                            <p className="text-xs font-bold uppercase truncate text-foreground" title={item.name}>{item.name}</p>
-                            <div className="flex items-center justify-between mt-2 text-[10px] text-foreground/60 uppercase font-mono font-bold tracking-wider">
-                              <span>{item.type}</span>
-                              <span>{item.clicks || 0} plays/clicks</span>
+                            {/* Right Side: Metadata, Type Tag, Interactions & Play action button */}
+                            <div className="flex-1 p-3 flex flex-col justify-between min-w-0">
+                              <div>
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className="text-[8px] font-black uppercase tracking-widest text-primary">
+                                    {item.type === "song" ? "Audio" : item.type}
+                                  </span>
+                                  <span className="text-[8px] font-mono font-bold text-muted-foreground uppercase">
+                                    {item.clicks || 0} clicks
+                                  </span>
+                                </div>
+                                <h4 className="text-xs font-black uppercase text-foreground truncate mt-1" title={item.name}>
+                                  {item.name}
+                                </h4>
+                                {item.type === "song" && songMeta && (
+                                  <p className="text-[9px] uppercase tracking-wide text-muted-foreground truncate mt-0.5">
+                                    {songMeta.composer}
+                                  </p>
+                                )}
+                              </div>
+
+                              {/* Card Action footer button inside right pane */}
+                              <div className="flex justify-end pt-1">
+                                {item.type === "song" && (
+                                  <button
+                                    onClick={() => handlePlaySong(item)}
+                                    className="px-2.5 py-1 bg-foreground text-background hover:bg-primary hover:text-white transition-all text-[9px] font-black uppercase tracking-wider flex items-center gap-1 cursor-pointer"
+                                  >
+                                    {activeSong?.id === item.id && isPlaying ? (
+                                      <>
+                                        <Pause className="w-2.5 h-2.5 fill-current" />
+                                        Pause
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
+                                        Listen
+                                      </>
+                                    )}
+                                  </button>
+                                )}
+
+                                {item.type === "video" && (
+                                  <button
+                                    onClick={() => {
+                                      setActiveVideo(item);
+                                      trackMediaClick(item.id, item.name, "video");
+                                    }}
+                                    className="px-2.5 py-1 bg-foreground text-background hover:bg-primary hover:text-white transition-all text-[9px] font-black uppercase tracking-wider flex items-center gap-1 cursor-pointer"
+                                  >
+                                    <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
+                                    Watch
+                                  </button>
+                                )}
+
+                                {item.type === "image" && (
+                                  <a
+                                    href={item.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-2.5 py-1 bg-foreground text-background hover:bg-primary hover:text-white transition-all text-[9px] font-black uppercase tracking-wider flex items-center gap-1 cursor-pointer"
+                                    onClick={() => trackMediaClick(item.id, item.name, "image")}
+                                  >
+                                    View Image
+                                  </a>
+                                )}
+                              </div>
+
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))
+                      );
+                    })
                   )}
                 </div>
               </div>
@@ -944,84 +1012,125 @@ export const BlogsPage: React.FC = () => {
                 View More Github
               </CreepyButton>
             </div>
+        </div>
 
-          </div>
-        )}
+        )} {/* END selectedBlog ternary */}
+
+      </motion.div>
+
+      {/* ── Mini Player & Fullscreen Player: outside motion.div so CSS fixed works ── */}
 
       {activeSong && audioRef.current && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 p-4 select-none animate-fade-in">
-          <div className="max-w-4xl mx-auto bg-background border-3 border-foreground p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-[6px_6px_0px_0px_var(--foreground)] transition-all duration-300 ease-out hover:shadow-none hover:translate-x-[6px] hover:translate-y-[6px]"
-          >
-            <div className="flex items-center gap-4 w-full sm:w-auto cursor-pointer"
+        <div className="fixed bottom-0 left-0 right-0 z-[9999] select-none animate-fade-in">
+          {/* Slim progress bar rail at very top of player */}
+          <div className="w-full h-1 bg-foreground/10 relative">
+            <div
+              className="h-full bg-primary transition-none"
+              style={{ width: `${audioDuration ? (audioCurrentTime / audioDuration) * 100 : 0}%` }}
+            />
+            {/* Invisible full-width scrubber on top of bar */}
+            <input
+              type="range"
+              min="0"
+              max={audioDuration || 100}
+              value={audioCurrentTime}
+              onChange={(e) => handleScrubAudio(parseFloat(e.target.value))}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              style={{ margin: 0 }}
+            />
+          </div>
+
+          {/* Main player body */}
+          <div className="bg-background border-t-2 border-foreground px-4 py-3 flex items-center gap-3 sm:gap-5">
+
+            {/* Album art thumbnail */}
+            <div
+              className="w-11 h-11 sm:w-12 sm:h-12 shrink-0 border-2 border-foreground overflow-hidden bg-primary/10 cursor-pointer relative"
               onClick={() => setIsFullscreenAudio(true)}
-              title="Expand to Fullscreen Player"
+              title="Open full player"
             >
-              {/* Stable square artwork indicator */}
-              <div className="w-12 h-12 bg-primary/10 border-2 border-foreground flex items-center justify-center text-primary shrink-0 relative overflow-hidden">
-                {currentSongMeta?.artwork ? (
-                  <img src={currentSongMeta!.artwork} alt="Artwork" className="w-full h-full object-cover" />
-                ) : (
-                  <Music className="w-5 h-5" />
-                )}
-              </div>
-              <div className="min-w-0">
-                <span className="text-[8px] font-black uppercase tracking-widest text-primary flex items-center gap-1">
-                  <Music3 className="w-2.5 h-2.5 animate-pulse" />
-                  Now Playing
-                </span>
-                <h4 className="text-xs font-black uppercase truncate text-foreground leading-none mt-1 max-w-[200px]" title={activeSong!.name}>
-                  {activeSong!.name}
-                </h4>
-                <p className="text-[9px] uppercase tracking-wider text-muted-foreground truncate mt-0.5">
-                  {currentSongMeta?.composer} &bull; {currentSongMeta?.album}
-                </p>
-              </div>
+              {currentSongMeta?.artwork ? (
+                <img src={currentSongMeta.artwork} alt="Art" className="w-full h-full object-cover" />
+              ) : (
+                <Music className="w-5 h-5 text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+              )}
             </div>
 
-            {/* playback scrubber & timers */}
-            <div className="flex items-center gap-3 w-full sm:flex-1 max-w-md">
-              <span className="text-[10px] font-bold text-muted-foreground font-mono tabular-nums">{formatTime(audioCurrentTime)}</span>
-              <input
-                type="range"
-                min="0"
-                max={audioDuration || 100}
-                value={audioCurrentTime}
-                onChange={(e) => handleScrubAudio(parseFloat(e.target.value))}
-                className="flex-1 h-1.5 bg-neutral-800 accent-primary cursor-pointer outline-none rounded-none"
-              />
-              <span className="text-[10px] font-bold text-muted-foreground font-mono tabular-nums">{formatTime(audioDuration)}</span>
+            {/* Song info */}
+            <div
+              className="flex-1 min-w-0 cursor-pointer"
+              onClick={() => setIsFullscreenAudio(true)}
+              title="Open full player"
+            >
+              <p className="text-[11px] sm:text-xs font-black uppercase truncate text-foreground leading-tight">
+                {activeSong.name}
+              </p>
+              <p className="text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground truncate mt-0.5">
+                {currentSongMeta?.composer}{currentSongMeta?.album ? ` · ${currentSongMeta.album}` : ""}
+              </p>
             </div>
 
-            {/* Dock controls */}
-            <div className="flex items-center gap-3 shrink-0">
+            {/* Time display — hidden on very small screens */}
+            <span className="hidden sm:block text-[10px] font-mono tabular-nums text-muted-foreground shrink-0">
+              {formatTime(audioCurrentTime)} / {formatTime(audioDuration)}
+            </span>
+
+            {/* Controls */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* Previous */}
               <button
-                onClick={() => handleToggleLoop()}
-                className={`p-2 border-2 border-foreground bg-background transition-all cursor-pointer ${isLooping ? 'text-primary border-primary' : 'text-foreground'}`}
-                title="Repeat Track"
+                onClick={handlePlayPrevSong}
+                className="p-2 sm:p-2.5 text-foreground hover:text-primary transition-colors cursor-pointer"
+                title="Previous"
               >
-                <Repeat className="w-4 h-4" />
+                <SkipBack className="w-4 h-4 fill-current" />
               </button>
+
+              {/* Play / Pause — most prominent */}
               <button
-                onClick={() => handlePlaySong(activeSong!)}
-                className="p-2 border-2 border-foreground bg-primary text-white hover:bg-foreground hover:text-background transition-all cursor-pointer"
+                onClick={() => handlePlaySong(activeSong)}
+                className="w-10 h-10 sm:w-11 sm:h-11 border-2 border-foreground bg-primary text-white flex items-center justify-center hover:bg-foreground transition-colors cursor-pointer active:scale-95 transform shrink-0"
+                title={isPlaying ? "Pause" : "Play"}
               >
                 {isPlaying ? (
-                  <Pause className="w-4 h-4 fill-current" />
+                  <Pause className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
                 ) : (
-                  <Play className="w-4 h-4 fill-current" />
+                  <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-current ml-0.5" />
                 )}
               </button>
+
+              {/* Next */}
+              <button
+                onClick={handlePlayNextSong}
+                className="p-2 sm:p-2.5 text-foreground hover:text-primary transition-colors cursor-pointer"
+                title="Next"
+              >
+                <SkipForward className="w-4 h-4 fill-current" />
+              </button>
+
+              {/* Expand to fullscreen */}
               <button
                 onClick={() => setIsFullscreenAudio(true)}
-                className="p-2 border-2 border-foreground bg-background text-foreground hover:bg-primary hover:text-white transition-all cursor-pointer hidden sm:block"
-                title="Expand Screen"
+                className="p-2 sm:p-2.5 text-foreground hover:text-primary transition-colors cursor-pointer hidden sm:block"
+                title="Expand player"
               >
                 <Maximize2 className="w-4 h-4" />
               </button>
+
+              {/* Loop toggle */}
+              <button
+                onClick={handleToggleLoop}
+                className={`p-2 sm:p-2.5 transition-colors cursor-pointer hidden sm:block ${isLooping ? "text-primary" : "text-foreground/40 hover:text-foreground"}`}
+                title={isLooping ? "Loop: On" : "Loop: Off"}
+              >
+                <Repeat className="w-4 h-4" />
+              </button>
+
+              {/* Close */}
               <button
                 onClick={handleCloseAudioPlayer}
-                className="p-2 border-2 border-foreground bg-background text-foreground hover:bg-[#f54900] hover:text-white transition-all cursor-pointer"
-                title="Stop & Close Player"
+                className="p-2 sm:p-2.5 text-foreground/50 hover:text-red-500 transition-colors cursor-pointer"
+                title="Close player"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1202,7 +1311,6 @@ export const BlogsPage: React.FC = () => {
         </div>
       )}
 
-      </motion.div>
     </div>
   );
 };

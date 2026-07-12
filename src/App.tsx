@@ -55,7 +55,7 @@ const Layout = () => {
           backgroundSize: '10px',
         }}
       />
-      <main className="flex-1 w-full relative z-10">
+      <main className="flex-1 w-full relative z-30">
         <Outlet />
       </main>
       <Footer />

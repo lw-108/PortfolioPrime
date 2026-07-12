@@ -31,6 +31,14 @@ const revealVariants = {
 export const ProjectsPage: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollSectionRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  // current active slide index
+  const indexRef = useRef<number>(0);
+  // lock flag — ignores events while tween is in flight
+  const lockRef = useRef<boolean>(false);
+
+  const totalSlides = projectsData.length;
 
   // Helper to fetch SVG icon path for a given technology tag
   const getTechIcon = (tag: string) => {
@@ -38,44 +46,129 @@ export const ProjectsPage: React.FC = () => {
     const match = techStackItems.find(item => {
       const titleLower = item.title.toLowerCase().trim();
       if (titleLower === normalizedTag) return true;
-
-      // Safe, specific overrides
       if (titleLower === 'tailwind css' && normalizedTag === 'tailwind') return true;
       if (titleLower === 'postgresql' && (normalizedTag === 'postgres' || normalizedTag === 'postgresql')) return true;
-
       return false;
     });
     return match ? match.image : null;
   };
 
+  /* ── Tween to a specific index ── */
+  const goTo = (idx: number) => {
+    if (lockRef.current) return;
+    const next = Math.max(0, Math.min(idx, totalSlides - 1));
+    if (next === indexRef.current) return;
+
+    lockRef.current = true;
+    indexRef.current = next;
+
+    gsap.to(trackRef.current, {
+      xPercent: -100 * next,
+      duration: 0.72,
+      ease: 'power3.inOut',
+      onComplete: () => {
+        lockRef.current = false;
+      },
+    });
+  };
+
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const pinSections = gsap.utils.toArray('.project-slide');
-      if (pinSections.length === 0) return;
+    const section = scrollSectionRef.current;
+    if (!section) return;
 
-      gsap.to(pinSections, {
-        xPercent: -100 * (pinSections.length - 1),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: scrollSectionRef.current,
-          pin: true,
-          scrub: 0.3,
-          snap: {
-            snapTo: 1 / (pinSections.length - 1),
-            inertia: false,
-            delay: 0.02,
-            duration: { min: 0.1, max: 0.3 },
-            ease: 'power2.out'
-          },
-          start: 'top top',
-          end: () => `+=${scrollSectionRef.current?.offsetWidth || 1000}`,
-          invalidateOnRefresh: true,
-        },
-      });
-    }, containerRef);
+    /* ── Wheel (desktop) ── */
+    const onWheel = (e: WheelEvent) => {
+      // Only hijack when the section is in viewport
+      const rect = section.getBoundingClientRect();
+      const inView = rect.top <= 10 && rect.bottom >= window.innerHeight - 10;
+      if (!inView) return;
 
-    return () => ctx.revert();
+      e.preventDefault();
+      e.stopPropagation();
+
+      const dir = e.deltaY > 0 ? 1 : -1;
+      goTo(indexRef.current + dir);
+    };
+
+    /* ── Keyboard ── */
+    const onKey = (e: KeyboardEvent) => {
+      const rect = section.getBoundingClientRect();
+      const inView = rect.top <= 10 && rect.bottom >= window.innerHeight - 10;
+      if (!inView) return;
+
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        goTo(indexRef.current + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        goTo(indexRef.current - 1);
+      }
+    };
+
+    /* ── Touch (mobile) ── */
+    let touchStartY = 0;
+    let touchStartX = 0;
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      const rect = section.getBoundingClientRect();
+      const inView = rect.top <= 10 && rect.bottom >= window.innerHeight - 10;
+      if (!inView) return;
+
+      const dy = touchStartY - e.changedTouches[0].clientY;
+      const dx = touchStartX - e.changedTouches[0].clientX;
+      const threshold = 40;
+
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold) {
+        // horizontal swipe
+        goTo(indexRef.current + (dx > 0 ? 1 : -1));
+      } else if (Math.abs(dy) > threshold) {
+        // vertical swipe
+        goTo(indexRef.current + (dy > 0 ? 1 : -1));
+      }
+    };
+
+    /* ── Pin the section in place while slides exist ── */
+    const st = ScrollTrigger.create({
+      trigger: section,
+      pin: true,
+      start: 'top top',
+      // Hold pinned for (totalSlides - 1) × viewport-heights so normal scroll budget exists
+      end: () => `+=${(totalSlides - 1) * window.innerHeight}`,
+      onUpdate: (self) => {
+        // Map scroll progress to slide index in a snap fashion
+        const raw = self.progress * (totalSlides - 1);
+        const snapped = Math.round(raw);
+        if (snapped !== indexRef.current && !lockRef.current) {
+          lockRef.current = true;
+          indexRef.current = snapped;
+          gsap.to(trackRef.current, {
+            xPercent: -100 * snapped,
+            duration: 0.72,
+            ease: 'power3.inOut',
+            onComplete: () => { lockRef.current = false; },
+          });
+        }
+      },
+    });
+
+    section.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('keydown', onKey);
+    section.addEventListener('touchstart', onTouchStart, { passive: true });
+    section.addEventListener('touchend', onTouchEnd, { passive: true });
+
+    return () => {
+      st.kill();
+      section.removeEventListener('wheel', onWheel);
+      window.removeEventListener('keydown', onKey);
+      section.removeEventListener('touchstart', onTouchStart);
+      section.removeEventListener('touchend', onTouchEnd);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   return (
     <div ref={containerRef} className="w-full bg-transparent text-white font-clash selection:bg-[#f54900] selection:text-white overflow-x-hidden">
@@ -109,7 +202,8 @@ export const ProjectsPage: React.FC = () => {
       {/* GSAP Pin Section */}
       <div className="w-[97%] max-w-384 mx-auto bg-background">
         <div ref={scrollSectionRef} className="w-full relative h-screen overflow-hidden flex items-center bg-background">
-          <div className="flex flex-row flex-nowrap h-full w-full">
+          {/* Slide track — GSAP tweens xPercent on this */}
+          <div ref={trackRef} className="flex flex-row flex-nowrap h-full w-full">
           {projectsData.map((project, i) => (
             <section
               key={i}
@@ -154,49 +248,52 @@ export const ProjectsPage: React.FC = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className="w-full max-w-6xl mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center border-t border-neutral-900 pt-6"
+                className="w-full max-w-6xl mt-6 sm:mt-8 flex flex-col md:flex-row justify-between items-start gap-6 border-t border-border pt-6"
               >
 
-                {/* Left side: Project Name */}
-                <div className="md:col-span-2 flex flex-col items-center text-center justify-between">
+                {/* LEFT — Project name, description, Visit button */}
+                <div className="flex flex-col items-start gap-4 md:max-w-[55%]">
                   <div>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-foreground leading-none">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-foreground leading-none text-left">
                       {project.name}
                     </h2>
-                    <p className="mt-2 text-xs sm:text-sm text-foreground max-w-lg mx-auto leading-relaxed font-clash text-left">
+                    <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed font-clash text-left max-w-md">
                       {project.description}
                     </p>
                   </div>
-
-                  {/* Launch button */}
-                  <div className="mt-6 flex justify-center gap-4">
-                    <a href={project.url} target="_blank" rel="noopener noreferrer">
-                      <CreepyButton coverClassName="text-sm uppercase text-[#fffe3] bg-[#f54900]">
-                        <span>Visit</span>
-                        <ArrowUpRight className="w-4 h-4" />
-                      </CreepyButton>
-                    </a>
-                  </div>
+                  {/* Visit button — anchored left */}
+                  <a href={project.url} target="_blank" rel="noopener noreferrer">
+                    <CreepyButton coverClassName="text-sm uppercase text-[#ffffe3] bg-[#f54900]">
+                      <span>Visit</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </CreepyButton>
+                  </a>
                 </div>
 
-                {/* Right side: Other Details (Meta & Tags) */}
-                <div className="flex flex-col items-center text-center justify-between border-t md:border-t-0 md:border-l border-neutral-900 pt-4 md:pt-0 md:pl-6">
-                  <div>
-                    <span className="text-[10px] text-neutral-500 uppercase tracking-widest block font-clash font-bold">Service / Category</span>
-                    <span className="text-sm font-bold uppercase text-[#f54900] mt-1 block">
+                {/* RIGHT — Category, tags, year — all right-aligned */}
+                <div className="flex flex-col items-end gap-4 border-t md:border-t-0 md:border-l border-border pt-4 md:pt-0 md:pl-6 md:min-w-[38%]">
+                  {/* Category */}
+                  <div className="text-right">
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest block font-clash font-bold">
+                      Service / Category
+                    </span>
+                    <span className="text-sm font-bold uppercase text-primary mt-1 block">
                       {project.category}
                     </span>
                   </div>
 
-                  <div className="mt-4">
-                    <span className="text-[10px] text-neutral-500 font-clash font-bold uppercase tracking-widest block mb-2">Technologies Used</span>
-                    <div className="flex flex-wrap justify-center gap-2">
+                  {/* Tech tags */}
+                  <div className="text-right">
+                    <span className="text-[10px] text-muted-foreground font-clash font-bold uppercase tracking-widest block mb-2">
+                      Technologies Used
+                    </span>
+                    <div className="flex flex-wrap justify-end gap-2">
                       {project.tags.map((tag, j) => {
                         const icon = getTechIcon(tag);
                         return (
                           <span
                             key={j}
-                            className="text-[10px] bg-primary text-[#ffffe3] border border-primary px-2.5 py-1 rounded-none uppercase font-clash font-bold flex items-center tracking-widest gap-1.5"
+                            className="text-[10px] bg-primary text-[#ffffe3] border border-primary px-2.5 py-1 uppercase font-clash font-bold flex items-center tracking-widest gap-1.5"
                           >
                             {icon && <img src={icon} alt={tag} className="w-3.5 h-3.5 object-contain" />}
                             <span>{tag}</span>
@@ -206,9 +303,10 @@ export const ProjectsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-4">
-                    <span className="text-[10px] text-neutral-500 uppercase tracking-widest block font-clash font-bold">Year</span>
-                    <span className="text-xs text-[#f54900] mt-1 block font-clash font-bold">
+                  {/* Year */}
+                  <div className="text-right">
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest block font-clash font-bold">Year</span>
+                    <span className="text-xs text-primary mt-1 block font-clash font-bold">
                       {project.year || '2026'}
                     </span>
                   </div>
