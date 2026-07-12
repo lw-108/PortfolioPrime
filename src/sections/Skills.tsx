@@ -80,7 +80,7 @@ const Skills: React.FC = () => {
                 Expertise
               </span>
               <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 leading-none text-foreground">
-                <AnimatedTitle text="Tech Stack /" />
+                <AnimatedTitle text="Tech Stack" />
               </h2>
             </div>
             <div className="flex flex-col items-end gap-2 text-right">

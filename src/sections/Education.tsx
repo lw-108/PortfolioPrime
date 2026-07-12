@@ -219,7 +219,7 @@ export const Education: React.FC = () => {
               Academics
             </span>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none">
-              <AnimatedTitle text="Education /" />
+              <AnimatedTitle text="Education" />
             </h2>
           </div>
           <p className="text-muted-foreground max-w-xs text-sm sm:text-base text-left md:text-right">

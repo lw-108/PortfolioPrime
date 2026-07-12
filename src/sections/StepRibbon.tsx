@@ -58,7 +58,7 @@ interface StepperData {
 // Data with custom SVG markups for animations (now static/non-rotating inside card headers)
 const onboardingData: StepperData = {
   subtitle: "How I Work",
-  title: "Build. Ship. Iterate.",
+  title: "Build. Ship. Iterate",
   steps: [
     {
       id: "step-1",
@@ -237,7 +237,7 @@ function Ribbon() {
 
       {/* Ribbon 2: Slanted Right to Left - Border and Shadow removed */}
       <div
-        className="absolute w-[150%] h-14 sm:h-20 bg-primary text-black flex items-center overflow-hidden rotate-[-10deg] sm:rotate-[4deg] z-10 origin-center"
+        className="absolute w-[150%] h-14 sm:h-20 bg-primary text-black flex items-center overflow-hidden rotate-10 sm:rotate-[4deg] z-10 origin-center"
       >
         <div
           ref={marquee2Ref}

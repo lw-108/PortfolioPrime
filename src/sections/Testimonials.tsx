@@ -95,7 +95,7 @@ export const Testimonials: React.FC = () => {
                 Endorsements
               </span>
               <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none font-clash">
-                <AnimatedTitle text="Reviews /" />
+                <AnimatedTitle text="Reviews" />
               </h2>
             </div>
             <p className="text-muted-foreground max-w-xs text-sm sm:text-base text-left md:text-right font-clash leading-relaxed">

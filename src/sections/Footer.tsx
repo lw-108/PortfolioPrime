@@ -130,13 +130,13 @@ export function Footer() {
 
   return (
     <footer className="relative z-10 w-full bg-transparent py-0 px-0 overflow-hidden select-none font-clash">
-      <div className={`w-[97%] max-w-384 mx-auto relative transition-colors duration-300 ${isLight ? 'bg-[#ffffe3] text-neutral-900' : 'bg-[#0b0a0a] text-white'}`}>
+    <div className="w-[97%] max-w-384 mx-auto relative bg-background text-foreground transition-colors duration-300">
 
         {/* Main Grid: Left Logo + Right Content */}
         <div className="grid grid-cols-1 md:grid-cols-12">
 
           {/* Left Section: LW Logo Container */}
-          <div className={`col-span-1 md:col-span-4 flex items-center justify-center py-16 md:py-0 md:pr-10 min-h-[220px] md:min-h-[300px] relative transition-colors duration-300 ${isLight ? 'bg-[#f5f4dc]' : 'bg-black'}`}>
+          <div className="col-span-1 md:col-span-4 flex items-center justify-center py-16 md:py-0 md:pr-10 min-h-[220px] md:min-h-[300px] relative bg-background transition-colors duration-300">
             <StickerPeel
               imageSrc={logo}
               width={260}
@@ -153,8 +153,8 @@ export function Footer() {
               className={`hidden md:block absolute right-0 top-0 bottom-0 w-10 border-l border-r border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}
               style={{
                 background: isLight
-                  ? 'repeating-linear-gradient(135deg, #eae9d0, #eae9d0 6px, #f5f4dc 6px, #f5f4dc 12px)'
-                  : 'repeating-linear-gradient(135deg, #161616, #161616 6px, #000000 6px, #000000 12px)'
+                  ? 'repeating-linear-gradient(135deg, rgba(0,0,0,0.04), rgba(0,0,0,0.04) 6px, transparent 6px, transparent 12px)'
+                  : 'repeating-linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.03) 6px, transparent 6px, transparent 12px)'
               }}
             />
           </div>

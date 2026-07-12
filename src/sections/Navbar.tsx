@@ -117,77 +117,7 @@ const Link: React.FC<{
   );
 };
 
-// Custom animated button
-const Button: React.FC<{
-  label: string;
-  url?: string;
-  className?: string;
-  onClick?: () => void;
-}> = ({ label, url, className = '', onClick }) => {
-  const Component = url ? 'a' : 'button';
 
-  return (
-    <Component
-      href={url}
-      onClick={onClick}
-      className={`leading-base group pointer-events-auto relative h-full max-w-full transform-none overflow-clip rounded-full bg-neutral-900 border border-neutral-800 dark:bg-neutral-950 px-5 py-2 text-[1rem] font-semibold uppercase tracking-normal text-neutral-100 sm:text-sm cursor-pointer ${className}`}
-    >
-      <span
-        className="ease-expo flex items-center justify-center absolute bottom-0 left-0 z-10 my-auto h-full w-full will-change-auto translate-y-full text-nowrap rounded-t-[15rem] bg-[#f54900] text-white font-fancy transition-all duration-700 group-hover:translate-y-0 group-hover:rounded-none"
-        style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
-      >
-        {label}
-      </span>
-
-      <span
-        className="ease-expo relative z-20 overflow-hidden transition-all flex items-center justify-center"
-      >
-        <span
-          className="ease-expo text-nowrap font-fancy transition-all duration-700 group-hover:-translate-y-full block"
-          style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
-        >
-          {label}
-        </span>
-      </span>
-    </Component>
-  );
-};
-
-// Circles SVG pattern component
-const Circles: React.FC<{ className?: string; id?: string }> = ({ className = '', id }) => (
-  <div id={id} className={className}>
-    <svg
-      width="245"
-      height="327"
-      viewBox="0 0 245 327"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M124.649 288.937C35.0401 224.32 14.7804 99.2946 79.3978 9.68556C144.015 -79.9235 269.04 -100.183 358.649 -35.5658C448.258 29.0516 468.518 154.077 403.901 243.686C339.283 333.295 214.258 353.555 124.649 288.937Z"
-        fill="url(#paint0_linear_4980_800)"
-      />
-      <path
-        d="M92.75 234.997C-6.70156 163.282 -29.1866 24.5246 42.5283 -74.927C114.243 -174.379 253.001 -196.864 352.453 -125.149C451.904 -53.4338 474.389 85.324 402.674 184.776C330.959 284.227 192.202 306.712 92.75 234.997Z"
-        fill="#AFAF9D"
-        className="opacity-20"
-      />
-      <defs>
-        <linearGradient
-          id="paint0_linear_4980_800"
-          x1="424.09"
-          y1="215.688"
-          x2="35.1898"
-          y2="-64.7502"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop stopColor="#AFAF9D" />
-          <stop offset="1" stopColor="#AFAF9D" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-    </svg>
-  </div>
-);
 
 const Navbar: React.FC = () => {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
@@ -328,7 +258,7 @@ const Navbar: React.FC = () => {
 
   const navbarLinks = [
     { label: 'Home', url: '/' },
-    { label: 'About', url: '/aboutpage' },
+    { label: 'About', url: '/about' },
     { label: 'Projects', url: '/projects' },
     { label: 'Skills', url: '/skills' },
     { label: 'Blogs', url: '/blogs' },
@@ -398,94 +328,126 @@ const Navbar: React.FC = () => {
         ref={overlayRef}
         onClick={toggleBtnClickAnimation}
         className="fixed inset-0 z-40 bg-black/60 pointer-events-auto opacity-0"
+        style={{ display: 'none' }}
       />
 
       {/* Sliding Navbar Panel */}
       <div
         ref={menuRef}
         tabIndex={0}
-        className="bg-[#ffffe3] dark:bg-[#10100e] text-neutral-900 dark:text-neutral-100 fixed top-[1dvh] right-0 z-40 h-[98dvh] w-full rounded-s-lg p-5 sm:p-10 md:w-3/5 md:px-20 lg:w-2/5 will-change-auto select-none focus:outline-hidden max-md:w-[98%] shadow-2xl overflow-y-auto"
+        className="fixed top-0 right-0 z-50 h-full w-full sm:w-[480px] bg-background text-foreground will-change-transform select-none focus:outline-none overflow-hidden flex flex-col"
+        style={{ display: 'none' }}
       >
-        <Circles id="circles" className="absolute top-0 right-0 opacity-10 pointer-events-none" />
-        
-        <div className="flex h-full flex-col items-center justify-between min-h-[500px]">
-          <div className="relative z-10 w-full">
-            {/* Header section in sidebar containing logo-dark.svg and theme toggle */}
-            <div className="flex items-center w-full pb-4 border-b border-neutral-300 dark:border-neutral-800 gap-4">
-              <RouterLink to="/">
-                <img
-                  src="/logo-dark.svg"
-                  alt="LW"
-                  className="h-20 w-auto cursor-pointer"
-                />
-              </RouterLink>
-              {/* Position theme toggle near logo's right side */}
-              <div className="flex items-center">
-                <button
-                  onClick={() => setIsDarkMode(!isDarkMode)}
-                  className="text-primary hover:text-primary/80 transition-colors p-1.5 focus:outline-none cursor-pointer hover:rotate-12"
-                >
-                  {isDarkMode ? <Moon size={20} /> : <Sun size={20} />}
-                </button>
-              </div>
-            </div>
+        {/* Left accent stripe */}
+        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-primary z-20" />
 
-            {/* Grid layout for Navlinks - 2 rows with grid lines */}
-            <div className="grid grid-cols-2 mt-8 border-t border-l border-neutral-300 dark:border-neutral-800" id="navLinks">
-              {navbarLinks.map((l) => (
-                <div 
-                  key={l.label} 
-                  className="border-r border-b border-neutral-300 dark:border-neutral-800 flex items-center justify-center p-6 sm:p-10 transition-all duration-300 group relative overflow-hidden"
-                  style={{
-                    // Inline CSS variables or hover styles can be controlled via utility classes, but custom css for repeating bg is cleaner:
-                  }}
+        {/* Subtle grid dot background */}
+        <div
+          className="absolute inset-0 opacity-[0.03] dark:opacity-[0.06] pointer-events-none"
+          style={{
+            backgroundImage: "url('/dot.svg')",
+            backgroundRepeat: 'repeat',
+            backgroundSize: '28px 28px',
+          }}
+        />
+
+        {/* ── Header ── */}
+        <div className="relative z-10 flex items-center justify-between px-8 pt-8 pb-6 border-b border-dashed border-border">
+          <RouterLink to="/" onClick={toggleBtnClickAnimation} className="flex items-center gap-3">
+            <img
+              src={isDarkMode ? '/logo-dark.svg' : '/logo-light.svg'}
+              alt="LW"
+              className="h-12 w-auto"
+            />
+          </RouterLink>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="text-muted-foreground hover:text-primary transition-colors p-1.5 focus:outline-none cursor-pointer"
+            >
+              {isDarkMode ? <Moon size={16} /> : <Sun size={16} />}
+            </button>
+            {/* Close X */}
+            <button
+              onClick={toggleBtnClickAnimation}
+              className="w-9 h-9 border border-border hover:border-primary hover:text-primary flex items-center justify-center transition-all duration-200 cursor-pointer text-muted-foreground"
+              aria-label="Close menu"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* ── Primary Nav Links ── */}
+        <nav className="relative z-10 flex-1 overflow-y-auto" id="navLinks">
+        {navbarLinks.map((l, i) => {
+            const isActive = location.pathname === l.url;
+            return (
+              <div
+                key={l.label}
+                className="group relative border-b border-dashed border-border"
+              >
+                {/* Filled hover overlay */}
+                <div className="absolute inset-0 bg-primary scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none" />
+
+                <RouterLink
+                  to={l.url}
+                  onClick={toggleBtnClickAnimation}
+                  className="relative z-10 flex items-center px-8 py-5 overflow-hidden"
                 >
-                  {/* Stripe svg repeated bg layer that shows on hover */}
-                  <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-300 pointer-events-none"
-                    style={{
-                      backgroundImage: "url('/stripe.svg')",
-                      backgroundRepeat: 'repeat',
-                      backgroundSize: '24px',
-                    }}
-                  />
-                  <RouterLink
-                    to={l.url}
-                    onClick={toggleBtnClickAnimation}
-                    className="flex h-full w-full items-center justify-center py-2 relative z-10"
-                  >
-                    <p className="font-clash text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold uppercase tracking-wider text-center transition-all duration-300 group-hover:text-primary">
+                  {/* Index + Label — slides right on hover */}
+                  <div className="flex items-baseline gap-4 transition-transform duration-300 ease-out group-hover:translate-x-3">
+                    <span className="text-[10px] font-black tabular-nums text-muted-foreground group-hover:text-[#ffffe3]/60 transition-colors duration-300 font-clash">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className={`text-3xl sm:text-4xl font-extrabold uppercase tracking-tight font-clash transition-colors duration-300 ${
+                      isActive ? 'text-primary group-hover:text-[#ffffe3]' : 'text-foreground group-hover:text-[#ffffe3]'
+                    }`}>
                       {l.label}
-                    </p>
-                  </RouterLink>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="w-full relative z-10">
-            <div className="text-neutral-700 dark:text-neutral-300 mt-2 h-full font-normal">
-              <p className="text-left text-xs font-bold uppercase tracking-widest text-[#f54900] mb-2 font-clash">Email address</p>
-              
-              <Link
-                className="font-medium tracking-wider text-lg font-clash"
-                tag="span"
-                label="lingeshwarma108@gmail.com"
-                url="mailto:ligeshwarma108@gmail.com"
-              />
-
-              <div className="mt-6 flex flex-wrap justify-start gap-2">
-                {socialLinks.map((social) => (
-                  <Button
-                    key={social.label}
-                    className="contact border-neutral-300 dark:border-neutral-800"
-                    label={social.label}
-                    url={social.url}
-                  />
-                ))}
+                    </span>
+                  </div>
+                </RouterLink>
               </div>
-            </div>
+            );
+          })}
+        </nav>
+
+        {/* ── Footer: Email + Social ── */}
+        <div className="relative z-10 border-t border-dashed border-border px-8 py-6 flex flex-col gap-5">
+          {/* Email */}
+          <div>
+            <p className="text-[9px] font-black uppercase tracking-[0.25em] text-primary mb-1.5 font-clash">
+              Get in Touch
+            </p>
+            <Link
+              className="text-sm font-medium tracking-wide font-clash hover:text-primary transition-colors"
+              tag="span"
+              label="lingeshwarma108@gmail.com"
+              url="mailto:lingeshwarma108@gmail.com"
+            />
           </div>
+
+          {/* Social Pill Row */}
+          <div className="flex flex-wrap gap-2">
+            {socialLinks.map((social) => (
+              <a
+                key={social.label}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest border border-border hover:border-primary hover:text-primary text-muted-foreground transition-all duration-200 font-clash"
+              >
+                {social.label}
+              </a>
+            ))}
+          </div>
+
+          {/* Copyright strip */}
+          <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground/50 font-clash">
+            © 2026 Lingeshwarma MK — All rights reserved
+          </p>
         </div>
       </div>
 

@@ -87,7 +87,7 @@ export const Experience: React.FC = () => {
                 Professional Journey
               </span>
               <h2 className="text-[clamp(2.5rem,4.5vw,4rem)] font-extrabold uppercase tracking-tight text-foreground leading-none" style={{ letterSpacing: '0.05em', wordSpacing: '0.1em' }}>
-                <AnimatedTitle text="Experience /" />
+                <AnimatedTitle text="Experience" />
               </h2>
               <p 
                 className="text-muted-foreground text-sm sm:text-base leading-relaxed"

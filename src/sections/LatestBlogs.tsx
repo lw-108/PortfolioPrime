@@ -82,7 +82,7 @@ export const LatestBlogs: React.FC = () => {
               Latest Publications
             </span>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none">
-              <AnimatedTitle text="Insights /" />
+              <AnimatedTitle text="Insights" />
             </h2>
           </div>
           <p className="text-muted-foreground max-w-xs text-sm sm:text-base leading-relaxed">

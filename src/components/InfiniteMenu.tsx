@@ -399,15 +399,17 @@ class ArcballControl {
 
   private pointerPos = vec2.create();
   private previousPointerPos = vec2.create();
+  private smoothPointerPos = vec2.create();
   private _rotationVelocity = 0;
   private _combinedQuat = quat.create();
 
-  private readonly EPSILON = 0.1;
+  private readonly EPSILON = 0.01;
   private readonly IDENTITY_QUAT = quat.create();
 
   private handlePointerDown = (e: PointerEvent) => {
     vec2.set(this.pointerPos, e.clientX, e.clientY);
     vec2.copy(this.previousPointerPos, this.pointerPos);
+    vec2.copy(this.smoothPointerPos, this.pointerPos);
     this.isPointerDown = true;
   };
 
@@ -449,9 +451,14 @@ class ArcballControl {
     const snapRotation = quat.create();
 
     if (this.isPointerDown) {
-      const INTENSITY = 0.3 * timeScale;
-      const ANGLE_AMPLIFICATION = 5 / timeScale;
-      const midPointerPos = vec2.sub(vec2.create(), this.pointerPos, this.previousPointerPos);
+      // Butter-smooth drag interpolation to filter out mouse reporting stutters
+      const dragSmoothFactor = 0.15 * timeScale;
+      this.smoothPointerPos[0] += (this.pointerPos[0] - this.smoothPointerPos[0]) * dragSmoothFactor;
+      this.smoothPointerPos[1] += (this.pointerPos[1] - this.smoothPointerPos[1]) * dragSmoothFactor;
+
+      const INTENSITY = 0.35 * timeScale;
+      const ANGLE_AMPLIFICATION = 5.5 / timeScale;
+      const midPointerPos = vec2.sub(vec2.create(), this.smoothPointerPos, this.previousPointerPos);
       vec2.scale(midPointerPos, midPointerPos, INTENSITY);
 
       if (vec2.sqrLen(midPointerPos) > this.EPSILON) {
@@ -468,18 +475,20 @@ class ArcballControl {
 
         this.quatFromVectors(a, b, this.pointerRotation, angleFactor);
       } else {
-        quat.slerp(this.pointerRotation, this.pointerRotation, this.IDENTITY_QUAT, INTENSITY);
+        quat.slerp(this.pointerRotation, this.pointerRotation, this.IDENTITY_QUAT, 0.04 * timeScale);
       }
     } else {
-      const INTENSITY = 0.1 * timeScale;
+      // Extremely low decay/friction on release to make the rotation glide and coast smoothly
+      const INTENSITY = 0.02 * timeScale;
       quat.slerp(this.pointerRotation, this.pointerRotation, this.IDENTITY_QUAT, INTENSITY);
 
       if (this.snapTargetDirection) {
-        const SNAPPING_INTENSITY = 0.2;
+        // Slow and elegant card snap translation
+        const SNAPPING_INTENSITY = 0.06;
         const a = this.snapTargetDirection;
         const b = this.snapDirection;
         const sqrDist = vec3.squaredDistance(a, b);
-        const distanceFactor = Math.max(0.1, 1 - sqrDist * 10);
+        const distanceFactor = Math.max(0.1, 1 - sqrDist * 8);
         angleFactor *= SNAPPING_INTENSITY * distanceFactor;
         this.quatFromVectors(a, b, snapRotation, angleFactor);
       }
@@ -503,7 +512,7 @@ class ArcballControl {
       this.rotationAxis[2] = this._combinedQuat[2] / s;
     }
 
-    const RV_INTENSITY = 0.5 * timeScale;
+    const RV_INTENSITY = 0.3 * timeScale;
     this._rotationVelocity += (rv - this._rotationVelocity) * RV_INTENSITY;
     this.rotationVelocity = this._rotationVelocity / timeScale;
 
@@ -803,6 +812,9 @@ class InfiniteGridMenu {
           })
       )
     ).then(images => {
+      if (gl.isContextLost && gl.isContextLost()) return;
+      if (!this.tex || !gl.isTexture(this.tex)) return;
+
       images.forEach((img, i) => {
         const x = (i % this.atlasSize) * cellSize;
         const y = Math.floor(i / this.atlasSize) * cellSize;
@@ -878,7 +890,7 @@ class InfiniteGridMenu {
   }
 
   private render(): void {
-    if (!this.gl || !this.discProgram) return;
+    if (!this.gl || !this.discProgram || (this.gl.isContextLost && this.gl.isContextLost())) return;
     const gl = this.gl;
 
     gl.useProgram(this.discProgram);
@@ -1088,11 +1100,11 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, onItemCl
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full flex flex-col">
       <canvas
         id="infinite-grid-menu-canvas"
         ref={canvasRef}
-        className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing"
+        className="cursor-grab w-full flex-1 min-h-[350px] overflow-hidden relative outline-none active:cursor-grabbing"
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
       />
@@ -1102,12 +1114,11 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [], scale = 1.0, onItemCl
           {/* Mobile, Tablet, and Laptop view: compact card overlay */}
           <div
             className={`
-              absolute
-              bottom-4
-              left-1/2
-              -translate-x-1/2
+              relative
+              mt-4
+              mx-auto
               z-10
-              w-[90%]
+              w-[95%]
               max-w-md
               bg-background/95
               backdrop-blur-md

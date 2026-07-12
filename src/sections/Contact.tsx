@@ -146,7 +146,7 @@ export const Contact: React.FC = () => {
               <RadioTower className="w-8 h-8 pb-2 text-[#f54900] animate-pulse" />
             </div>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight text-foreground leading-none font-clash">
-              <AnimatedTitle text="Stay Connected /" />
+              <AnimatedTitle text="Stay Connected" />
             </h2>
           </div>
           <p className="text-muted-foreground max-w-md font-clash text-sm sm:text-base text-left md:text-right leading-relaxed">

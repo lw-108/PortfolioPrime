@@ -334,7 +334,7 @@ export const Certifications: React.FC = () => {
               Journey
             </span>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none font-clash">
-              <AnimatedTitle text="Certifications /" />
+              <AnimatedTitle text="Certifications" />
             </h2>
           </div>
           <p className="text-muted-foreground max-w-xs text-sm sm:text-base text-left md:text-right font-clash-light">

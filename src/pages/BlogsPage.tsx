@@ -39,7 +39,9 @@ import {
   X,
   Repeat,
   Shuffle,
-  Music3
+  Music3,
+  SkipBack,
+  SkipForward
 } from "lucide-react";
 import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import { db } from "../lib/firebase";
@@ -324,7 +326,7 @@ export const BlogsPage: React.FC = () => {
         album: song.album || "Single",
         composer: song.composer || "Unknown Artist",
         year: song.year || "2026",
-        artwork: song.artwork || `https://placehold.co/600x600/f54900/ffffff?text=${encodeURIComponent(song.name.slice(0, 10))}`,
+        artwork: song.artwork || `https://res.cloudinary.com/demo/image/upload/w_600,h_600,c_fill,g_auto,f_auto/co_rgb:fffe3,l_text:Arial_36_bold:${encodeURIComponent(song.name.slice(0, 15))}/sample.jpg`,
         lyrics: [
           "Lyrics loaded from media registry...",
           "Playing live synth waves.",
@@ -342,8 +344,7 @@ export const BlogsPage: React.FC = () => {
     const composer = composers[seed % composers.length];
     const year = years[seed % years.length];
     
-    const colors = ["f54900", "0a0a0a", "333333"];
-    const artwork = `https://placehold.co/600x600/${colors[seed % colors.length]}/ffffff?text=${encodeURIComponent(song.name.slice(0, 10))}`;
+    const artwork = `https://res.cloudinary.com/demo/image/upload/w_600,h_600,c_fill,g_auto,f_auto/co_rgb:fffe3,l_text:Arial_36_bold:${encodeURIComponent(song.name.slice(0, 15))}/sample.jpg`;
     
     const lyrics = [
       "Running loops in the main thread...",
@@ -398,6 +399,34 @@ export const BlogsPage: React.FC = () => {
     }
   }, [audioVolume, isMuted]);
 
+  const handlePlayNextSong = () => {
+    const audioTracks = mediaItems.filter(m => m.type === "song");
+    if (audioTracks.length === 0) return;
+    const currentIndex = activeSong ? audioTracks.findIndex(m => m.id === activeSong.id) : -1;
+    let nextIndex = currentIndex + 1;
+    if (nextIndex >= audioTracks.length || nextIndex < 0) {
+      nextIndex = 0;
+    }
+    const nextSong = audioTracks[nextIndex];
+    if (nextSong) {
+      handlePlaySong(nextSong);
+    }
+  };
+
+  const handlePlayPrevSong = () => {
+    const audioTracks = mediaItems.filter(m => m.type === "song");
+    if (audioTracks.length === 0) return;
+    const currentIndex = activeSong ? audioTracks.findIndex(m => m.id === activeSong.id) : -1;
+    let prevIndex = currentIndex - 1;
+    if (prevIndex < 0) {
+      prevIndex = audioTracks.length - 1;
+    }
+    const prevSong = audioTracks[prevIndex];
+    if (prevSong) {
+      handlePlaySong(prevSong);
+    }
+  };
+
   const handlePlaySong = (song: MediaItem) => {
     if (activeSong && activeSong.id === song.id) {
       if (isPlaying) {
@@ -443,8 +472,7 @@ export const BlogsPage: React.FC = () => {
           handlePlaySong(audioTracks[randomIndex]);
         }
       } else {
-        setIsPlaying(false);
-        setAudioCurrentTime(0);
+        handlePlayNextSong();
       }
     };
   };
@@ -1004,12 +1032,12 @@ export const BlogsPage: React.FC = () => {
 
       {/* PREMIUM FULLSCREEN SPOTIFY-LIKE AUDIO PLAYER MODAL */}
       {isFullscreenAudio && activeSong && currentSongMeta && (
-        <div className="fixed inset-0 z-55 flex flex-col bg-background/98 backdrop-blur-xl animate-fade-in p-6 sm:p-10 font-clash select-none overflow-y-auto">
+        <div className="fixed inset-0 z-55 flex flex-col bg-background animate-fade-in p-6 sm:p-10 font-clash select-none overflow-y-auto w-full min-h-screen">
           {/* Top Bar Header */}
-          <div className="w-full flex items-center justify-between border-b border-dashed border-border pb-6 mb-8">
+          <div className="w-full flex items-center justify-between border-b border-dashed border-border pb-6 mb-4">
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-primary animate-pulse" />
-              <span className="text-xs font-black uppercase tracking-widest text-foreground">Premium Audio Engine</span>
+              <span className="text-xs font-black uppercase tracking-widest text-foreground" style={{ wordSpacing: '0.15em' }}>Premium Audio Engine</span>
             </div>
             <button
               onClick={() => setIsFullscreenAudio(false)}
@@ -1020,61 +1048,36 @@ export const BlogsPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Central Workspace Container */}
-          <div className="flex-1 w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            
-            {/* Left Side: Artwork & Disk */}
-            <div className="flex flex-col items-center justify-center space-y-6">
-              <div className="relative group">
-                {/* Neobrutalist Hard Shadow */}
-                <div className="absolute inset-0 translate-x-4 translate-y-4 bg-foreground border-3 border-foreground" />
-                
-                {/* Stable Square Album Art Body */}
-                <div className="relative w-72 h-72 sm:w-96 sm:h-96 border-3 border-foreground bg-neutral-900 overflow-hidden">
-                  <img
-                    src={currentSongMeta!.artwork}
-                    alt={activeSong!.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Title & Artist details */}
-              <div className="text-center space-y-2 max-w-md pt-4">
-                <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">{activeSong!.name}</h2>
-                <p className="text-sm font-bold uppercase tracking-wider text-primary">{currentSongMeta!.composer}</p>
-                <div className="flex items-center justify-center gap-3 text-xs text-muted-foreground uppercase font-bold tracking-widest pt-2">
-                  <span>{currentSongMeta!.album}</span>
-                  <span>&bull;</span>
-                  <span>{currentSongMeta!.year}</span>
-                </div>
+          {/* Centered Main Player UI */}
+          <div className="flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto w-full py-8 my-auto">
+            <div className="relative group mb-8">
+              {/* Neobrutalist Hard Shadow */}
+              <div className="absolute inset-0 translate-x-4 translate-y-4 bg-foreground border-3 border-foreground" />
+              
+              {/* Stable Square Album Art Body */}
+              <div className="relative w-72 h-72 sm:w-[380px] sm:h-[380px] border-3 border-foreground bg-neutral-900 overflow-hidden">
+                <img
+                  src={currentSongMeta!.artwork}
+                  alt={activeSong!.name}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
 
-            {/* Right Side: Lyrics Panel & Meta */}
-            <div className="h-full flex flex-col justify-center border-t-2 md:border-t-0 md:border-l border-dashed border-border pt-8 md:pt-0 md:pl-12">
-              <div className="space-y-6 text-left">
-                <h3 className="text-lg font-black uppercase tracking-widest text-primary border-b border-dashed border-border pb-3">Scrolling Lyrics</h3>
-                <div className="space-y-4 h-80 overflow-y-auto pr-4 font-sans text-lg sm:text-xl font-bold leading-relaxed text-foreground/40 scrollbar-thin">
-                  {currentSongMeta!.lyrics.map((line, idx) => {
-                    const isHighlighted = idx === Math.floor((audioCurrentTime / (audioDuration || 1)) * currentSongMeta!.lyrics.length);
-                    return (
-                      <p 
-                        key={idx} 
-                        className={`transition-colors duration-300 ${isHighlighted ? 'text-primary scale-[1.02] origin-left' : 'text-foreground/40'}`}
-                      >
-                        {line}
-                      </p>
-                    );
-                  })}
-                </div>
+            {/* Title & Artist details */}
+            <div className="text-center space-y-3 max-w-xl">
+              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-foreground leading-tight" style={{ wordSpacing: '0.15em' }}>{activeSong!.name}</h2>
+              <p className="text-sm sm:text-base font-bold uppercase tracking-wider text-primary" style={{ wordSpacing: '0.15em' }}>{currentSongMeta!.composer}</p>
+              <div className="flex items-center justify-center gap-3 text-xs text-muted-foreground uppercase font-bold tracking-widest pt-1" style={{ wordSpacing: '0.15em' }}>
+                <span>{currentSongMeta!.album}</span>
+                <span>&bull;</span>
+                <span>{currentSongMeta!.year}</span>
               </div>
             </div>
-
           </div>
 
           {/* Bottom Bar: Player Control Center */}
-          <div className="w-full max-w-4xl mx-auto border-t-2 border-dashed border-border pt-8 mt-10">
+          <div className="w-full max-w-3xl mx-auto border-t-2 border-dashed border-border pt-8 mt-4">
             {/* Scrubber Timeline */}
             <div className="flex items-center gap-4 w-full mb-6">
               <span className="text-xs font-bold text-muted-foreground font-mono tabular-nums">{formatTime(audioCurrentTime)}</span>
@@ -1084,7 +1087,7 @@ export const BlogsPage: React.FC = () => {
                 max={audioDuration || 100}
                 value={audioCurrentTime}
                 onChange={(e) => handleScrubAudio(parseFloat(e.target.value))}
-                className="flex-1 h-2 bg-neutral-800 accent-primary cursor-pointer outline-none rounded-none"
+                className="flex-1 h-2.5 bg-neutral-800 accent-primary cursor-pointer outline-none rounded-none"
               />
               <span className="text-xs font-bold text-muted-foreground font-mono tabular-nums">{formatTime(audioDuration)}</span>
             </div>
@@ -1111,14 +1114,31 @@ export const BlogsPage: React.FC = () => {
               {/* Main Playback trigger */}
               <div className="flex items-center gap-4">
                 <button
+                  onClick={handlePlayPrevSong}
+                  className="p-3.5 border-2 border-foreground bg-background text-foreground hover:bg-foreground hover:text-background transition-all cursor-pointer transform active:scale-95"
+                  title="Previous Track"
+                >
+                  <SkipBack className="w-5 h-5 fill-current" />
+                </button>
+
+                <button
                   onClick={() => handlePlaySong(activeSong!)}
                   className="p-5 border-2 border-foreground bg-primary text-white hover:bg-foreground hover:text-background transition-all cursor-pointer transform active:scale-95"
+                  title={isPlaying ? "Pause" : "Play"}
                 >
                   {isPlaying ? (
                     <Pause className="w-6 h-6 fill-current" />
                   ) : (
                     <Play className="w-6 h-6 fill-current" />
                   )}
+                </button>
+
+                <button
+                  onClick={handlePlayNextSong}
+                  className="p-3.5 border-2 border-foreground bg-background text-foreground hover:bg-foreground hover:text-background transition-all cursor-pointer transform active:scale-95"
+                  title="Next Track"
+                >
+                  <SkipForward className="w-5 h-5 fill-current" />
                 </button>
               </div>
 

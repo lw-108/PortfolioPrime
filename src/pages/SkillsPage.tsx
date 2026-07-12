@@ -56,7 +56,11 @@ const loadAndRasterizeIcon = (url: string, size = 128): Promise<THREE.Texture> =
 
 /* ─── Animated Section Title ─── */
 const AnimatedTitle: React.FC<{ text: string }> = ({ text }) => {
-  const words = text.split(' ');
+  let words = text.split(' ');
+  if (words.length > 1 && words[words.length - 1] === '/') {
+    const lastWord = words[words.length - 2] + ' /';
+    words = [...words.slice(0, words.length - 2), lastWord];
+  }
   return (
     <motion.span
       variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.02 } } }}

@@ -136,15 +136,7 @@ export const WorldMap: React.FC = () => {
         <div className="relative w-full flex flex-col items-center aspect-video">
           <svg
             viewBox={`0 0 ${width} ${height}`}
-            className="w-full h-full text-foreground/40"
-            style={{
-              maskImage: "url('/stripe.svg')",
-              WebkitMaskImage: "url('/stripe.svg')",
-              maskRepeat: "repeat",
-              WebkitMaskRepeat: "repeat",
-              maskSize: "14px 14px",
-              WebkitMaskSize: "14px 14px",
-            }}
+            className="w-full h-full text-foreground"
           >
             <g>
               {geoData?.map((feature: any, idx: number) => {
@@ -156,7 +148,7 @@ export const WorldMap: React.FC = () => {
                     d={getPath(feature)}
                     fill={isHovered ? "var(--map-hovered)" : "var(--map-unvisited)"}
                     stroke="var(--map-border)"
-                    strokeWidth={isHovered ? "1.2" : "0.6"}
+                    strokeWidth={isHovered ? "1.5" : "0.8"}
                     className="transition-colors duration-200 cursor-pointer pointer-events-auto"
                     onMouseEnter={() => setHoveredCountry(name)}
                     onMouseLeave={() => setHoveredCountry(null)}
@@ -198,14 +190,14 @@ export const WorldMap: React.FC = () => {
       )}
       <style dangerouslySetInnerHTML={{ __html: `
         .dark {
-          --map-border: rgba(16, 16, 14, 0.8);
-          --map-hovered: #ff6a22;
-          --map-unvisited: rgba(255, 255, 255, 0.75);
+          --map-border: #0b0a0a;
+          --map-hovered: #f54900;
+          --map-unvisited: #ffffff;
         }
         .light {
-          --map-border: rgba(255, 255, 227, 0.8);
+          --map-border: #ffffe3;
           --map-hovered: #f54900;
-          --map-unvisited: rgba(16, 16, 14, 0.75);
+          --map-unvisited: #0b0a0a;
         }
       `}} />
     </div>
