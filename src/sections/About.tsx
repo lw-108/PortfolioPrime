@@ -122,6 +122,7 @@ const About: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.9, ease: "easeOut" }}
               src="/DrManhatten.jpeg"
+              loading="lazy"
               className="about-profile-img aspect-1/1.5 w-full rounded-lg object-cover object-top"
               alt="Headshot of M.K. Lingeshwarma"
             />

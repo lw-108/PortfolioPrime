@@ -335,7 +335,7 @@ const Navbar: React.FC = () => {
       <div
         ref={menuRef}
         tabIndex={0}
-        className="fixed top-0 right-0 z-50 h-full w-full sm:w-[480px] bg-background text-foreground will-change-transform select-none focus:outline-none overflow-hidden flex flex-col"
+        className="fixed top-0 right-0 z-50 h-full w-full sm:w-[480px] bg-background text-foreground will-change-transform select-none focus:outline-none overflow-y-auto flex flex-col"
         style={{ display: 'none' }}
       >
         {/* Left accent stripe */}

@@ -6,6 +6,8 @@ import * as THREE from 'three';
 import Dither from '../components/Dither';
 import CreepyButton from '../components/ui/creepy-button';
 import { AnimatedTitle } from '../components/ui/AnimatedTitle';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 // 3D Spinning & Interactive Omnitrix Model Component
 function OmnitrixModel() {
@@ -49,6 +51,7 @@ function OmnitrixModel() {
 export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', company: '', phone: '', message: '', services: [] as string[] });
   const [loading, setLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [isMobile, setIsMobile] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
@@ -88,27 +91,21 @@ export const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setSubmitStatus('idle');
 
     try {
-      const res = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+      await addDoc(collection(db, 'contactSubmissions'), {
+        ...formData,
+        source: 'home-contact-section',
+        submittedAt: serverTimestamp(),
       });
-
       setLoading(false);
-
-      if (res.ok) {
-        alert('Message sent successfully 🚀');
-        setFormData({ name: '', email: '', company: '', phone: '', message: '', services: [] });
-      } else {
-        alert('Something went wrong 😢');
-      }
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', company: '', phone: '', message: '', services: [] });
     } catch (err) {
+      console.error('Contact form error:', err);
       setLoading(false);
-      alert('Error connecting to email service 😢');
+      setSubmitStatus('error');
     }
   };
 
@@ -290,12 +287,12 @@ export const Contact: React.FC = () => {
                   </label>
                 </div>
 
-                {/* Services Selection Grid (Button style, no checkbox icon, legend included) */}
-                <fieldset className="border border-border p-6 mt-6 rounded-none font-clash relative z-10 text-left bg-white/5 dark:bg-black/10">
+                {/* Services Selection Grid */}
+                <fieldset className="border border-border p-4 mt-6 rounded-none font-clash relative z-10 text-left bg-white/5 dark:bg-black/10">
                   <legend className="px-3 text-xs sm:text-sm font-extrabold uppercase tracking-widest text-[#f54900] bg-background">
                     What services do you need?
                   </legend>
-                  <div className="grid grid-cols-2 gap-3 mt-2">
+                  <div className="grid grid-cols-2 gap-2 mt-2">
                     {['Web Development', 'UI/UX Design', 'Branding', 'Mobile Apps'].map((service) => {
                       const isSelected = formData.services.includes(service);
                       return (
@@ -303,7 +300,7 @@ export const Contact: React.FC = () => {
                           key={service}
                           type="button"
                           onClick={() => toggleService(service)}
-                          className={`px-4 py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all rounded-none border text-center cursor-pointer select-none
+                          className={`px-2 py-3 text-[10px] font-bold uppercase tracking-normal transition-all rounded-none border text-center cursor-pointer select-none leading-tight
                             ${isSelected
                               ? 'bg-[#f54900] border-[#f54900] text-[#ffffe3] shadow-[0_0_15px_rgba(245,73,0,0.25)]'
                               : 'border-border bg-transparent text-foreground hover:bg-neutral-800/10 dark:hover:bg-white/5'
@@ -316,8 +313,18 @@ export const Contact: React.FC = () => {
                   </div>
                 </fieldset>
 
-                {/* Submit Button */}
-                <div className="mt-10 w-full flex relative z-10">
+                {/* Submit Button + Status */}
+                <div className="mt-10 w-full flex flex-col gap-3 relative z-10">
+                  {submitStatus === 'success' && (
+                    <div className="w-full px-4 py-3 border border-green-500/40 bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-widest">
+                      ✓ Message received — I'll get back to you soon!
+                    </div>
+                  )}
+                  {submitStatus === 'error' && (
+                    <div className="w-full px-4 py-3 border border-red-500/40 bg-red-500/10 text-red-400 text-xs font-bold uppercase tracking-widest">
+                      ✕ Something went wrong. Please try again.
+                    </div>
+                  )}
                   <CreepyButton
                     type="submit"
                     disabled={loading}

@@ -531,7 +531,7 @@ export const BlogsPage: React.FC = () => {
   const currentSongMeta = activeSong ? getSongMetadata(activeSong) : null;
 
   return (
-    <div className="w-full bg-transparent select-none font-clash relative z-[100]">
+    <div className="w-full bg-transparent select-none font-clash relative z-100">
       <motion.div 
         custom={0}
         variants={revealVariants}
@@ -1021,7 +1021,7 @@ export const BlogsPage: React.FC = () => {
       {/* ── Mini Player & Fullscreen Player: outside motion.div so CSS fixed works ── */}
 
       {activeSong && audioRef.current && (
-        <div className="fixed bottom-0 left-0 right-0 z-[9999] select-none animate-fade-in">
+        <div className="fixed bottom-0 left-0 right-0 z-9999 select-none animate-fade-in">
           {/* Slim progress bar rail at very top of player */}
           <div className="w-full h-1 bg-foreground/10 relative">
             <div

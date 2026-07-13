@@ -349,8 +349,13 @@ export default function Dither({
     <Canvas
       className="w-full h-full relative"
       camera={{ position: [0, 0, 6] }}
-      dpr={isMobile ? 0.6 : 1}
-      gl={{ antialias: !isMobile, preserveDrawingBuffer: true }}
+      dpr={isMobile ? 0.4 : 0.75}
+      gl={{ 
+        antialias: false, 
+        preserveDrawingBuffer: false,
+        powerPreference: "high-performance",
+        failIfMajorPerformanceCaveat: true
+      }}
     >
       <ambientLight intensity={1.5} />
       <directionalLight position={[2, 2, 5]} intensity={2.0} />

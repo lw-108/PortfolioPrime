@@ -80,8 +80,8 @@ export const CTA: React.FC<CTAProps> = ({
           {/* Bottom details panel (No top border / hr line) */}
           <div className="relative z-10 flex flex-col md:flex-row w-full items-center justify-between gap-6 pt-8 mt-auto">
             {/* Rotating continents globe animation - Glass Card */}
-            <div className="flex items-center backdrop-blur-md bg-white/10 border border-white/20 rounded-md p-1.5 gap-3 shadow-lg">
-              <div className="flex items-center justify-center w-12 h-12 bg-white/5 rounded-md overflow-hidden">
+            <div className="flex items-center backdrop-blur-md bg-white/10 border border-white/20 rounded-none p-1.5 gap-3 shadow-lg">
+              <div className="flex items-center justify-center w-12 h-12 bg-white/5 rounded-none overflow-hidden">
                 <MiniGlobe width={36} height={36} />
               </div>
               <div className="flex flex-col justify-center font-clash text-left pr-3">

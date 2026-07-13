@@ -104,11 +104,11 @@ export const LatestBlogs: React.FC = () => {
               {/* Card Main Body */}
               <div className="relative bg-background border border-border flex flex-col h-full p-4">
                 {/* Thumbnail */}
-                <div className="relative h-48 overflow-hidden bg-neutral-900 mb-4">
+                <div className="relative h-48 overflow-hidden bg-neutral-950 mb-4 flex items-center justify-center">
                   <img
                     src={blog.thumbnail}
                     alt={blog.title}
-                    className="w-full h-full object-cover"
+                    className="max-w-full max-h-full object-contain"
                   />
                   <div className="absolute top-3 left-3">
                     <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 bg-primary text-white"
@@ -133,7 +133,10 @@ export const LatestBlogs: React.FC = () => {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-lg font-bold uppercase tracking-tight group-hover:text-primary transition-colors line-clamp-2 leading-snug mb-6 flex-1">
+                <h3 
+                  className="text-lg font-bold uppercase tracking-normal group-hover:text-primary transition-colors line-clamp-2 leading-snug mb-6 flex-1 font-dmsans"
+                  style={{ wordSpacing: '0.15em' }}
+                >
                   {blog.title}
                 </h3>
 

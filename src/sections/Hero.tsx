@@ -181,37 +181,47 @@ export default function Hero({ isLoaded = false }: { isLoaded?: boolean }) {
             </div>
           </div>
 
-          {/* Right Layout - Lanyard */}
+          {/* Right Layout - Lanyard / Optimized Fallback */}
           <div className="relative min-h-[200px] sm:min-h-[250px] md:min-h-[350px] lg:min-h-full bg-background flex items-center justify-center overflow-hidden">
             <div className="w-full h-full flex items-center justify-center relative z-10 p-2 sm:p-4">
-              {isInView ? (
-                <Lanyard
-                  isLoaded={isLoaded}
-                  lanyardImage="/lanyard.png"
-                  lanyardWidth={1}
-                />
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                  className="w-full max-w-[280px] sm:max-w-[340px] aspect-3/4 flex items-center justify-center relative"
-                >
-                  <motion.img
-                    src="/omnilanyard.png"
-                    alt="Lanyard Mockup"
-                    className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(245,73,0,0.2)]"
-                    animate={{
-                      y: [0, -12, 0],
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  />
-                </motion.div>
-              )}
+              {(() => {
+                // Detect slow network connection (effectiveType: 'slow-2g' | '2g' | '3g' or saveData is on)
+                const conn = (navigator as any).connection;
+                const isSlowNetwork = conn && (conn.saveData || ['slow-2g', '2g', '3g'].includes(conn.effectiveType));
+
+                if (isInView && !isSlowNetwork) {
+                  return (
+                    <Lanyard
+                      isLoaded={isLoaded}
+                      lanyardImage="/lanyard.png"
+                      lanyardWidth={1}
+                    />
+                  );
+                } else {
+                  return (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8, ease: 'easeOut' }}
+                      className="w-full max-w-[280px] sm:max-w-[340px] aspect-3/4 flex items-center justify-center relative"
+                    >
+                      <motion.img
+                        src="/omnilanyard.png"
+                        alt="Lanyard Mockup"
+                        className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(245,73,0,0.2)]"
+                        animate={{
+                          y: [0, -12, 0],
+                        }}
+                        transition={{
+                          duration: 4,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    </motion.div>
+                  );
+                }
+              })()}
             </div>
           </div>
         </div>

@@ -85,9 +85,16 @@ export default function Lanyard({
     <div className={`relative z-0 w-full h-full min-h-[500px] flex justify-center items-center transform scale-100 origin-center transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0 pointer-events-none'} ${isDragging ? 'touch-none' : 'touch-auto'}`}>
       <Canvas
         camera={{ position, fov }}
-        dpr={isMobile ? 0.75 : [1, 1.5]}
-        gl={{ alpha: transparent, powerPreference: "high-performance", antialias: !isMobile }}
-        onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
+        dpr={isMobile ? 0.5 : [1, 1.25]}
+        gl={{ 
+          alpha: transparent, 
+          powerPreference: "high-performance", 
+          antialias: false,
+          failIfMajorPerformanceCaveat: true
+        }}
+        onCreated={({ gl }) => {
+          gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1);
+        }}
       >
         <Suspense fallback={null}>
           <ambientLight intensity={Math.PI} />

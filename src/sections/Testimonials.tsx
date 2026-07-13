@@ -104,7 +104,7 @@ export const Testimonials: React.FC = () => {
           </div>
 
           {/* Card Layout Container */}
-          <div className="w-full max-w-5xl lg:max-w-6xl mx-auto overflow-visible mt-44 md:mt-36 mb-16 px-2 sm:px-4">
+          <div className="w-full max-w-5xl lg:max-w-6xl mx-auto overflow-visible mt-8 md:mt-36 mb-16 px-2 sm:px-4">
             
             {/* Neobrutalist 3D Layered Card Wrapper */}
             <div className="relative group">
@@ -124,15 +124,15 @@ export const Testimonials: React.FC = () => {
                     handlePrev();
                   }
                 }}
-                className="bg-primary p-8 pt-44 md:pt-16 pb-12 md:pl-[330px] lg:pl-[390px] relative flex flex-col items-center md:items-start min-h-[380px] md:min-h-[420px] justify-center overflow-visible transition-transform duration-300 ease-out group-hover:translate-x-3 group-hover:translate-y-3 sm:group-hover:translate-x-5 sm:group-hover:translate-y-5 cursor-grab active:cursor-grabbing select-none"
+                className="bg-primary p-6 md:p-8 pt-6 md:pt-16 pb-8 md:pb-12 md:pl-[330px] lg:pl-[390px] relative flex flex-col items-center md:items-start min-h-[220px] md:min-h-[420px] justify-center overflow-visible transition-transform duration-300 ease-out group-hover:translate-x-3 group-hover:translate-y-3 sm:group-hover:translate-x-5 sm:group-hover:translate-y-5 cursor-grab active:cursor-grabbing select-none"
               >
                 
-                {/* Cut-out Avatar overlapping top border on Desktop (bottom is aligned/hidden) */}
-                <div className="relative md:absolute md:bottom-0 md:left-6 lg:left-12 w-56 sm:w-64 md:w-72 lg:w-80 h-[380px] sm:h-[460px] md:h-[560px] lg:h-[650px] shrink-0 z-20 self-center md:self-end -mt-44 md:mt-0 mb-6 md:mb-0 overflow-hidden md:overflow-visible">
+                {/* Cut-out Avatar overlapping top border on Desktop — Hidden on Mobile for compact design */}
+                <div className="hidden md:block absolute bottom-0 left-6 lg:left-12 w-56 sm:w-64 md:w-72 lg:w-80 h-[380px] sm:h-[460px] md:h-[560px] lg:h-[650px] shrink-0 z-20 self-center md:self-end mt-0 mb-0 overflow-visible">
                   <img
                     src={current.image}
                     alt={current.name}
-                    className="w-full h-full object-contain object-bottom filter  md:translate-y-0"
+                    className="w-full h-full object-contain object-bottom filter"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/madben.png";
                     }}
