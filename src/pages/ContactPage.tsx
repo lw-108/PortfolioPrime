@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react';
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { RadioTower } from 'lucide-react';
 import { useGLTF, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import Dither from '../components/Dither';
@@ -134,7 +133,7 @@ export const ContactPage: React.FC = () => {
         </defs>
       </svg>
 
-      <div className="w-[97%] max-w-384 mx-auto bg-background min-h-[85vh] flex flex-col justify-between relative px-4 sm:px-8 lg:px-12">
+      <div className="w-[97%] max-w-384 mx-auto bg-background min-h-screen mt-[3vh] flex flex-col justify-between relative px-4 sm:px-8 lg:px-12">
         {/* Page Headers */}
         <motion.div 
           custom={0}
@@ -142,14 +141,13 @@ export const ContactPage: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="border-b border-dashed border-neutral-800/60 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12 pt-6"
+          className="border-b border-dashed border-neutral-800/60 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12 pt-8 sm:pt-12"
         >
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className="text-[#f54900] text-sm uppercase tracking-widest font-semibold font-clash">
                 CONNECT WITH ME
               </span>
-              <RadioTower className="w-8 h-8 pb-2 text-[#f54900] animate-pulse" />
             </div>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight text-foreground leading-none font-clash">
               <AnimatedTitle text="Stay Connected /" />

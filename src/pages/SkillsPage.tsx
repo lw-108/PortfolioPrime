@@ -1003,7 +1003,7 @@ export const SkillsPage: React.FC = () => {
 
   return (
     <section id="skills" className="w-full relative z-10 min-h-screen bg-transparent overflow-hidden font-clash select-none">
-      <div className="w-[97%] max-w-384 mx-auto bg-background min-h-screen relative flex flex-col pb-16">
+      <div className="w-[97%] max-w-384 mx-auto bg-background min-h-screen mt-[3vh] relative flex flex-col pb-16">
         {/* Section Header */}
         <motion.div 
           custom={0}
@@ -1011,7 +1011,7 @@ export const SkillsPage: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="w-full z-20 px-6 sm:px-8 lg:px-16 pt-10 sm:pt-14 relative"
+          className="w-full z-20 px-6 sm:px-8 lg:px-16 pt-8 sm:pt-12 relative"
         >
           <header className="border-b border-dashed border-neutral-800 pb-6 sm:pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
             <div>

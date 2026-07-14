@@ -538,7 +538,7 @@ export const BlogsPage: React.FC = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="w-[97%] max-w-384 mx-auto bg-background px-6 sm:px-10 lg:px-16 py-24 min-h-screen relative"
+        className="w-[97%] max-w-384 mx-auto bg-background px-6 sm:px-10 lg:px-16 mt-[3vh] pt-8 sm:pt-12 pb-16 min-h-screen relative"
       >
       
         {/* Breadcrumbs Navigation - Normal dashed hr line */}

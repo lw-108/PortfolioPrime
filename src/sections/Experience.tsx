@@ -81,12 +81,12 @@ export const Experience: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           
           {/* LEFT COLUMN: aside className="lg:col-span-4 lg:sticky lg:top-24 self-start" */}
-          <aside className="lg:col-span-4 lg:sticky lg:top-24 self-start pt-4 lg:pt-8 border-b border-b-neutral-200 dark:border-b-neutral-800 lg:border-b-0 lg:border-r lg:border-r-neutral-200 dark:lg:border-r-neutral-800 pb-4 lg:pb-0 lg:pr-8">
+          <aside className="lg:col-span-4 lg:sticky lg:top-24 self-start pt-4 lg:pt-8 border-b border-b-neutral-200 dark:border-b-neutral-800 lg:border-b-0 pb-4 lg:pb-0 lg:pr-8">
             <div className="space-y-6">
               <span className="text-primary text-xs font-clash font-bold uppercase tracking-widest block" style={{ letterSpacing: '0.2em', wordSpacing: '0.1em' }}>
                 Professional Journey
               </span>
-              <h2 className="text-[clamp(2.5rem,4.5vw,4rem)] font-extrabold uppercase tracking-tight text-foreground leading-none" style={{ letterSpacing: '0.05em', wordSpacing: '0.1em' }}>
+              <h2 className="text-[clamp(2rem,4.5vw,2.75rem)] lg:text-[clamp(2.25rem,4.2vw,3.25rem)] xl:text-[clamp(2.5rem,4.5vw,4rem)] font-extrabold uppercase tracking-tight text-foreground leading-none" style={{ letterSpacing: '0.05em', wordSpacing: '0.1em' }}>
                 <AnimatedTitle text="Experience" />
               </h2>
               <p 
@@ -99,7 +99,7 @@ export const Experience: React.FC = () => {
           </aside>
 
           {/* RIGHT COLUMN: main className="lg:col-span-8" */}
-          <main className="lg:col-span-8 lg:border-l lg:border-neutral-200 dark:lg:border-neutral-800 pt-4 lg:pt-8 lg:pl-8 flex flex-col gap-6 lg:gap-8">
+          <main className="lg:col-span-8 pt-4 lg:pt-8 lg:pl-8 flex flex-col gap-6 lg:gap-8">
             {internshipsData.map((intern, i) => (
               <motion.div
                 key={intern.id}

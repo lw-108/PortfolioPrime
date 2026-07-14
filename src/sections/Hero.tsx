@@ -40,7 +40,7 @@ export default function Hero({ isLoaded = false }: { isLoaded?: boolean }) {
 
   return (
     <div ref={containerRef} className="w-full bg-transparent overflow-hidden select-none">
-      <div className="w-[97%] max-w-384 mx-auto min-h-[calc(100vh-5rem)] bg-background font-clash overflow-hidden">
+      <div className="w-[97%] max-w-384 mx-auto min-h-[calc(100vh-5rem)] bg-background mt-[3vh] font-clash overflow-hidden">
         {/* Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh-5rem)]">
 
@@ -181,9 +181,9 @@ export default function Hero({ isLoaded = false }: { isLoaded?: boolean }) {
             </div>
           </div>
 
-          {/* Right Layout - Lanyard / Optimized Fallback */}
-          <div className="relative min-h-[200px] sm:min-h-[250px] md:min-h-[350px] lg:min-h-full bg-background flex items-center justify-center overflow-hidden">
-            <div className="w-full h-full flex items-center justify-center relative z-10 p-2 sm:p-4">
+          {/* Right Layout - Lanyard / Optimized Fallback (Hidden completely on mobile) */}
+          <div className="hidden md:flex relative min-h-[350px] lg:min-h-full bg-background items-center justify-center overflow-hidden">
+            <div className="w-full h-full flex items-center justify-center relative z-10 p-4">
               {(() => {
                 // Detect slow network connection (effectiveType: 'slow-2g' | '2g' | '3g' or saveData is on)
                 const conn = (navigator as any).connection;
@@ -203,7 +203,7 @@ export default function Hero({ isLoaded = false }: { isLoaded?: boolean }) {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.8, ease: 'easeOut' }}
-                      className="w-full max-w-[280px] sm:max-w-[340px] aspect-3/4 flex items-center justify-center relative"
+                      className="w-full max-w-[340px] aspect-3/4 flex items-center justify-center relative"
                     >
                       <motion.img
                         src="/omnilanyard.png"

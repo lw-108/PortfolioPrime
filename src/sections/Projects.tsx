@@ -4,10 +4,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'motion/react';
 import { CreepyButton } from '../components/ui/creepy-button';
 import { useNavigate } from 'react-router-dom';
+import { useProjects } from '../lib/projects-data';
 
 gsap.registerPlugin(ScrollTrigger);
-
-import { projectsData } from '../lib/projects-data';
 
 
 // ── Animated Title Characters ──
@@ -73,7 +72,8 @@ const tagIcons: Record<string, string> = {
 // ── Main Component ──
 const Projects: React.FC = () => {
   const navigate = useNavigate();
-  const featuredProjects = projectsData.slice(0, 5);
+  const { projects, loading } = useProjects();
+  const featuredProjects = projects.slice(0, 5);
   const sectionRef = useRef<HTMLElement>(null);
   const indexRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLSpanElement>(null);
@@ -81,6 +81,7 @@ const Projects: React.FC = () => {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    if (loading || featuredProjects.length === 0) return;
     if (window.innerWidth < 768) return;
 
     // Keep track of the active animation timeline to kill it properly
@@ -176,7 +177,7 @@ const Projects: React.FC = () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, []);
+  }, [projects, loading]);
 
   return (
     <section
@@ -198,7 +199,7 @@ const Projects: React.FC = () => {
               </h2>
             </div>
             <p className="text-muted-foreground/50 text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold hidden sm:block leading-none">
-              ( {featuredProjects.length} )
+              {loading ? '( — )' : `( ${featuredProjects.length} )`}
             </p>
           </header>
 
@@ -245,8 +246,21 @@ const Projects: React.FC = () => {
 
           {/* Project cards column */}
           <aside className="relative col-span-full flex flex-col space-y-12 md:col-span-7">
-            {featuredProjects.map((work, i) => (
-              <React.Fragment key={i}>
+            {/* Loading Skeleton */}
+            {loading && Array.from({ length: 3 }).map((_, idx) => (
+              <div key={idx} className="work-card pb-10 animate-pulse">
+                <div className="w-full h-56 bg-neutral-800 rounded-lg" />
+                <div className="mt-3 space-y-2">
+                  <div className="h-3 w-1/3 bg-neutral-800 rounded" />
+                  <div className="h-6 w-2/3 bg-neutral-800 rounded" />
+                  <div className="h-3 w-full bg-neutral-800 rounded" />
+                </div>
+              </div>
+            ))}
+
+            {/* Project List */}
+            {!loading && featuredProjects.map((work, i) => (
+              <React.Fragment key={work.id ?? i}>
                 {i > 0 && <div className="border-t border-dashed border-neutral-300 dark:border-neutral-800 my-4" />}
                 <div
                   ref={(el) => { cardRefs.current[i] = el; }}
@@ -321,7 +335,7 @@ const Projects: React.FC = () => {
                           </span>
                         </div>
                       </div>
-                      <p className="mt-2 text-xs sm:text-sm text-neutral-400 font-sans leading-relaxed max-w-xl">
+                      <p className="mt-2 text-xs sm:text-sm text-neutral-400 font-clash leading-relaxed max-w-xl">
                         {work.description}
                       </p>
                     </div>

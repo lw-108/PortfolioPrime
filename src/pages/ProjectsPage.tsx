@@ -102,9 +102,13 @@ export const ProjectsPage: React.FC = () => {
       const rect = section.getBoundingClientRect();
       const inView = rect.top <= 10 && rect.bottom >= window.innerHeight - 10;
       if (!inView) return;
+      const dir = e.deltaY > 0 ? 1 : -1;
+      // At first slide scrolling up → let native scroll take user back to header
+      if (dir === -1 && indexRef.current === 0) return;
+      // At last slide scrolling down → let native scroll take user to CTA below
+      if (dir === 1 && indexRef.current === totalSlides - 1) return;
       e.preventDefault();
       e.stopPropagation();
-      const dir = e.deltaY > 0 ? 1 : -1;
       goTo(indexRef.current + dir);
     };
 
@@ -114,11 +118,17 @@ export const ProjectsPage: React.FC = () => {
       const inView = rect.top <= 10 && rect.bottom >= window.innerHeight - 10;
       if (!inView) return;
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        goTo(indexRef.current + 1);
+        // Only consume if we can still advance
+        if (indexRef.current < totalSlides - 1) {
+          e.preventDefault();
+          goTo(indexRef.current + 1);
+        }
       } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        goTo(indexRef.current - 1);
+        // Only consume if we can still go back
+        if (indexRef.current > 0) {
+          e.preventDefault();
+          goTo(indexRef.current - 1);
+        }
       }
     };
 
@@ -134,11 +144,18 @@ export const ProjectsPage: React.FC = () => {
       if (!section) return;
       const rect = section.getBoundingClientRect();
       const inView = rect.top <= 10 && rect.bottom >= window.innerHeight - 10;
-      
-      // If we are actively within the pinned section, lock page scroll
-      if (inView) {
-        if (e.cancelable) e.preventDefault();
-      }
+      if (!inView) return;
+
+      // dy > 0 = swipe-up (finger moves up → next slide)
+      // dy < 0 = swipe-down (finger moves down → prev slide / scroll back to header)
+      const dy = touchStartY - e.touches[0].clientY;
+
+      // At first slide swiping down → allow native scroll back to title header
+      if (dy < 0 && indexRef.current === 0) return;
+      // At last slide swiping up → allow native scroll to CTA below
+      if (dy > 0 && indexRef.current === totalSlides - 1) return;
+
+      if (e.cancelable) e.preventDefault();
     };
     const onTouchEnd = (e: TouchEvent) => {
       const rect = section.getBoundingClientRect();
@@ -224,7 +241,7 @@ export const ProjectsPage: React.FC = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="w-[97%] max-w-384 mx-auto bg-background pt-10 pb-8 px-4 sm:px-8 lg:px-12 relative"
+        className="w-[97%] max-w-384 mx-auto bg-background mt-[3vh] pt-8 sm:pt-12 pb-8 px-4 sm:px-8 lg:px-12 relative"
       >
         <div className="border-b border-dashed border-neutral-800/60 pb-8 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4">
           <div>

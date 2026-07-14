@@ -10,6 +10,7 @@ import ProjectsPage from './pages/ProjectsPage' // Force reload HMR
 import ContactPage from './pages/ContactPage'
 import ResumePage from './pages/ResumePage'
 import BlogsPage from './pages/BlogsPage'
+import LegalPage from './pages/LegalPage'
 import Footer from './sections/Footer'
 import { LoadingScreen } from './components/LoadingScreen'
 
@@ -20,14 +21,14 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTo({ top: 0, behavior: 'instant' as any });
-    document.body.scrollTo({ top: 0, behavior: 'instant' as any });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+    document.documentElement.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+    document.body.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
     
     // Refresh ScrollTrigger once route has updated and DOM is stable
     setTimeout(() => {
       ScrollTrigger.refresh();
-    }, 100);
+    }, 150);
   }, [pathname]);
 
   return null;
@@ -35,6 +36,18 @@ const ScrollToTop = () => {
 
 // Layout wrapper for all pages
 const Layout = () => {
+  const { pathname } = useLocation();
+  const isLegalPage = ['/terms', '/conditions', '/privacy'].includes(pathname);
+  const isProjectsPage = pathname === '/projects';
+  const isSkillsPage = pathname === '/skills';
+  const isAboutPage = pathname === '/about';
+  const isBlogsPage = pathname === '/blogs';
+  const isContactPage = pathname === '/contact';
+  const isResumePage = pathname === '/resume';
+  const isHomePage = pathname === '/';
+
+  const isSpaceReducedPage = isProjectsPage || isSkillsPage || isAboutPage || isBlogsPage || isContactPage || isResumePage || isHomePage;
+
   return (
     <section 
       className='min-h-screen bg-background text-foreground transition-colors duration-300 relative flex flex-col'
@@ -47,15 +60,23 @@ const Layout = () => {
     >
       <ScrollToTop />
       <Navbar />
-      <div 
-        className="h-6 w-full relative z-10 animate-pulse"
-        style={{
-          backgroundImage: "url('/stripe.svg')",
-          backgroundRepeat: 'repeat',
-          backgroundSize: '10px',
-        }}
-      />
-      <main className="flex-1 w-full relative z-30">
+      {!isProjectsPage && !isSkillsPage && !isAboutPage && !isBlogsPage && !isContactPage && !isResumePage && !isHomePage && (
+        <div 
+          className="h-6 w-full relative z-10 animate-pulse"
+          style={{
+            backgroundImage: "url('/stripe.svg')",
+            backgroundRepeat: 'repeat',
+            backgroundSize: '10px',
+          }}
+        />
+      )}
+      <main className={`flex-1 w-full relative z-30 ${
+        isLegalPage
+          ? 'pt-10'
+          : isSpaceReducedPage
+          ? 'pt-0'
+          : 'pt-16 sm:pt-20 lg:pt-24 pb-20 sm:pb-24 lg:pb-32'
+      }`}>
         <Outlet />
       </main>
       <Footer />
@@ -97,6 +118,9 @@ const App = () => {
               <Route path="contact" element={<ContactPage />} />
               <Route path="resume" element={<ResumePage />} />
               <Route path="blogs" element={<BlogsPage />} />
+              <Route path="terms" element={<LegalPage />} />
+              <Route path="conditions" element={<LegalPage />} />
+              <Route path="privacy" element={<LegalPage />} />
             </Route>
           </Routes>
         </Router>

@@ -54,7 +54,7 @@ const AboutPage: React.FC = () => {
       id="about-me-section"
       className="about-section relative z-10 overflow-y-clip will-change-auto font-clash select-none bg-transparent"
     >
-      <div className="w-[97%] max-w-384 mx-auto bg-background py-8 px-6 sm:px-8 lg:px-16">
+      <div className="w-[97%] max-w-384 mx-auto bg-background mt-[3vh] pt-8 sm:pt-12 pb-8 px-6 sm:px-8 lg:px-16">
         
         {/* Header */}
         <div id="about-title" className="border-b border-dashed border-neutral-800 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
@@ -73,8 +73,8 @@ const AboutPage: React.FC = () => {
 
         <div className="relative">
 
-          {/* ═══════════ Header overlay — sits on top of clip-path image ═══════════ */}
-          <div className="flex justify-between items-center mb-8 w-[85%] absolute lg:top-4 md:top-0 sm:-top-2 -top-3 z-10">
+          {/* ═══════════ Header overlay ═══════════ */}
+          <div className="flex justify-between items-center mb-6 w-full z-10">
             {/* Label */}
             <motion.div
               custom={0}
@@ -91,7 +91,7 @@ const AboutPage: React.FC = () => {
             </motion.div>
 
             {/* Social icons */}
-            <div className="flex gap-3">
+            <div className="flex gap-4">
               {/* GitHub */}
               <motion.a
                 custom={0}
@@ -103,10 +103,11 @@ const AboutPage: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="w-10 h-10 flex items-center justify-center text-[#f54900] opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-200 cursor-pointer"
+                className="w-10 h-10 rounded-full border border-neutral-800 hover:border-[#f54900] flex items-center justify-center text-muted-foreground hover:text-[#f54900] hover:scale-105 transition-all duration-300 cursor-pointer bg-neutral-900/50"
               >
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                  <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                  <path d="M9 18c-4.51 2-5-2-7-2" />
                 </svg>
               </motion.a>
 
@@ -121,10 +122,12 @@ const AboutPage: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="w-10 h-10 flex items-center justify-center text-[#f54900] opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-200 cursor-pointer"
+                className="w-10 h-10 rounded-full border border-neutral-800 hover:border-[#f54900] flex items-center justify-center text-muted-foreground hover:text-[#f54900] hover:scale-105 transition-all duration-300 cursor-pointer bg-neutral-900/50"
               >
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect width="4" height="12" x="2" y="9" />
+                  <circle cx="4" cy="4" r="2" />
                 </svg>
               </motion.a>
 
@@ -137,9 +140,12 @@ const AboutPage: React.FC = () => {
                 viewport={{ once: true }}
                 href="mailto:lingeshwarma108@gmail.com"
                 aria-label="Email"
-                className="w-10 h-10 flex items-center justify-center text-[#f54900] opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-200 cursor-pointer"
+                className="w-10 h-10 rounded-full border border-neutral-800 hover:border-[#f54900] flex items-center justify-center text-muted-foreground hover:text-[#f54900] hover:scale-105 transition-all duration-300 cursor-pointer bg-neutral-900/50"
               >
-                <img src="/mail.svg" alt="Email" width={24} height={24} className="w-6 h-6 object-contain" />
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                  <rect width="20" height="16" x="2" y="4" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
               </motion.a>
             </div>
           </div>

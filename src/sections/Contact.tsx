@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { RadioTower } from 'lucide-react';
 import { useGLTF, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import Dither from '../components/Dither';
@@ -140,7 +139,6 @@ export const Contact: React.FC = () => {
               <span className="text-[#f54900] text-sm uppercase tracking-widest font-semibold font-clash">
                 CONNECT WITH ME
               </span>
-              <RadioTower className="w-8 h-8 pb-2 text-[#f54900] animate-pulse" />
             </div>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight text-foreground leading-none font-clash">
               <AnimatedTitle text="Stay Connected" />

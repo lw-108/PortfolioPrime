@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import WorldMap from '../components/ui/WorldMap';
 import { useTheme } from '../components/theme-provider';
 import StickerPeel from '../components/StickerPeel'
-import logo from '/logo.png'
 
 const contacts = [
   {
@@ -13,7 +12,6 @@ const contacts = [
     color: "#ff5500",
     description: "Send an email"
   },
-
   {
     name: "Stack Overflow",
     icon: "https://upload.wikimedia.org/wikipedia/commons/e/ef/Stack_Overflow_icon.svg",
@@ -100,9 +98,9 @@ const LiveISTClock: React.FC<{ resolvedTheme: "dark" | "light" }> = ({ resolvedT
   }, []);
 
   return (
-    <div className="flex flex-col items-start md:items-end font-clash text-left md:text-right gap-3 select-none md:pl-4">
+    <div className="flex flex-col items-center md:items-end font-clash text-center md:text-right gap-1.5 select-none w-full md:w-auto">
       <div className={`text-2xl sm:text-3xl font-extrabold tracking-tight uppercase leading-none ${resolvedTheme === 'light' ? 'text-neutral-900' : 'text-white'}`}>
-        {timeStr} <span className="text-[#FF5500] text-sm sm:text-base font-extrabold ml-1.5">IST</span>
+        {timeStr} <span className="text-[#FF5500] text-sm sm:text-base font-extrabold ml-1.5 animate-pulse">IST</span>
       </div>
       <div className={`text-xs sm:text-sm font-semibold uppercase tracking-widest ${resolvedTheme === 'light' ? 'text-neutral-500' : 'text-neutral-400'}`}>
         {dayStr} &mdash; {dateStr}
@@ -130,24 +128,26 @@ export function Footer() {
 
   return (
     <footer className="relative z-10 w-full bg-transparent py-0 px-0 overflow-hidden select-none font-clash">
-    <div className="w-[97%] max-w-384 mx-auto relative bg-background text-foreground transition-colors duration-300">
+      <div className="w-[97%] max-w-384 mx-auto relative bg-background text-foreground transition-colors duration-300 border-t border-dashed border-neutral-800">
 
         {/* Main Grid: Left Logo + Right Content */}
         <div className="grid grid-cols-1 md:grid-cols-12">
 
-          {/* Left Section: LW Logo Container */}
-          <div className="col-span-1 md:col-span-4 flex items-center justify-center py-16 md:py-0 md:pr-10 min-h-[220px] md:min-h-[300px] relative bg-background transition-colors duration-300">
-            <StickerPeel
-              imageSrc={logo}
-              width={260}
-              rotate={0}
-              peelBackHoverPct={30}
-              peelBackActivePct={40}
-              shadowIntensity={0.5}
-              lightingIntensity={0.1}
-              initialPosition={{ x: -100, y: 100 }}
-              peelDirection={0}
-            />
+          {/* Left Section: LW Logo Container (Centered on mobile, responsive padding) */}
+          <div className="col-span-1 md:col-span-4 flex items-center justify-center py-10 md:py-0 md:pr-10 min-h-[180px] sm:min-h-[220px] md:min-h-[300px] relative bg-background border-b border-dashed border-neutral-800 md:border-b-0 transition-colors duration-300">
+            <div className="scale-75 sm:scale-90 md:scale-100 relative w-[220px] h-[220px] flex items-center justify-center">
+              <StickerPeel
+                imageSrc="/logo-dark.svg"
+                width={220}
+                rotate={0}
+                peelBackHoverPct={30}
+                peelBackActivePct={40}
+                shadowIntensity={0.5}
+                lightingIntensity={0.1}
+                initialPosition={{ x: 0, y: 0 }}
+                peelDirection={0}
+              />
+            </div>
             {/* Vertical Stripe Divider */}
             <div
               className={`hidden md:block absolute right-0 top-0 bottom-0 w-10 border-l border-r border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}
@@ -163,59 +163,59 @@ export function Footer() {
           <div className="col-span-1 md:col-span-8 flex flex-col justify-between">
 
             {/* Top Row: Tagline */}
-            <div className={`px-6 py-6 sm:px-8 border-b border-dashed flex items-center ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
-              <span className={`text-[11px] sm:text-xs font-medium tracking-[0.2em] uppercase ${isLight ? 'text-neutral-600' : 'text-neutral-400'}`}>
+            <div className={`px-6 py-5 sm:px-8 border-b border-dashed flex items-center ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+              <span className={`text-[10px] sm:text-xs font-medium tracking-[0.25em] uppercase leading-relaxed ${isLight ? 'text-neutral-600' : 'text-neutral-400'}`}>
                 LW19, FROM IDEA TO IMPACT, WITHOUT THE NOISE.
               </span>
             </div>
 
             {/* Middle Row: Links Columns */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 flex-1">
+            <div className="grid grid-cols-2 sm:grid-cols-3 flex-1">
 
               {/* Column 1: Your Launchpad */}
-              <div className={`px-6 py-8 sm:px-8 border-b sm:border-b-0 sm:border-r border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
-                <h4 className={`text-sm font-bold uppercase tracking-wider mb-6 ${isLight ? 'text-neutral-900' : 'text-white'}`}>Your Launchpad</h4>
-                <ul className="space-y-4">
+              <div className={`px-6 py-6 sm:px-8 border-b border-r border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+                <h4 className={`text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 sm:mb-6 ${isLight ? 'text-neutral-900' : 'text-white'}`}>Your Launchpad</h4>
+                <ul className="space-y-3 sm:space-y-4">
                   <li>
-                    <Link to="/" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Home</Link>
+                    <Link to="/" className={`text-[10px] sm:text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Home</Link>
                   </li>
                   <li>
-                    <Link to="/projects" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Projects</Link>
+                    <Link to="/projects" className={`text-[10px] sm:text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Projects</Link>
                   </li>
                   <li>
-                    <Link to="/contact" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Get Started</Link>
+                    <Link to="/contact" className={`text-[10px] sm:text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Get Started</Link>
                   </li>
                 </ul>
               </div>
 
               {/* Column 2: Meet the Creator */}
-              <div className={`px-6 py-8 sm:px-8 border-b sm:border-b-0 sm:border-r border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
-                <h4 className={`text-sm font-bold uppercase tracking-wider mb-6 ${isLight ? 'text-neutral-900' : 'text-white'}`}>Meet the Creator</h4>
-                <ul className="space-y-4">
+              <div className={`px-6 py-6 sm:px-8 border-b sm:border-r border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+                <h4 className={`text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 sm:mb-6 ${isLight ? 'text-neutral-900' : 'text-white'}`}>Meet the Creator</h4>
+                <ul className="space-y-3 sm:space-y-4">
                   <li>
-                    <Link to="/about" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>About</Link>
+                    <Link to="/about" className={`text-[10px] sm:text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>About</Link>
                   </li>
                   <li>
-                    <Link to="/resume" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Resume</Link>
+                    <Link to="/resume" className={`text-[10px] sm:text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Resume</Link>
                   </li>
                   <li>
-                    <Link to="/contact" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Contact</Link>
+                    <Link to="/contact" className={`text-[10px] sm:text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Contact</Link>
                   </li>
                 </ul>
               </div>
 
               {/* Column 3: Insights & Tech */}
-              <div className={`px-6 py-8 sm:px-8 border-b sm:border-b-0 border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
-                <h4 className={`text-sm font-bold uppercase tracking-wider mb-6 ${isLight ? 'text-neutral-900' : 'text-white'}`}>Insights &amp; Tech</h4>
-                <ul className="space-y-4">
+              <div className={`col-span-2 sm:col-span-1 px-6 py-6 sm:px-8 border-b sm:border-b-0 border-dashed ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+                <h4 className={`text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 sm:mb-6 ${isLight ? 'text-neutral-900' : 'text-white'}`}>Insights &amp; Tech</h4>
+                <ul className="space-y-3 sm:space-y-4">
                   <li>
-                    <Link to="/skills" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Skills &amp; Toolkit</Link>
+                    <Link to="/skills" className={`text-[10px] sm:text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Skills</Link>
                   </li>
                   <li>
-                    <Link to="/blogs" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Blogs &amp; Articles</Link>
+                    <Link to="/blogs" className={`text-[10px] sm:text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Blogs</Link>
                   </li>
                   <li>
-                    <Link to="/blogs" className={`text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Media Vault</Link>
+                    <Link to="/blogs" className={`text-[10px] sm:text-xs transition-colors duration-250 uppercase tracking-widest font-semibold ${isLight ? 'text-neutral-600 hover:text-[#FF5500]' : 'text-neutral-400 hover:text-[#FF5500]'}`}>Media Vault</Link>
                   </li>
                 </ul>
               </div>
@@ -223,9 +223,9 @@ export function Footer() {
             </div>
 
             {/* Social Network Row */}
-            <div className={`px-6 py-5 sm:px-8 border-t border-dashed flex flex-col md:flex-row justify-between items-start md:items-center gap-6 z-10 ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+            <div className={`px-6 py-6 sm:px-8 border-t border-dashed flex flex-col md:flex-row justify-between items-center gap-6 z-10 ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
               {/* Social Icons Column */}
-              <div className="flex flex-wrap items-center justify-start gap-4">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-5 w-full md:w-auto">
                 {contacts.map((c) => (
                   <a
                     key={c.name}
@@ -233,11 +233,11 @@ export function Footer() {
                     href={c.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:-translate-y-1 p-2 transition-transform duration-300 flex items-center justify-center cursor-pointer select-none"
+                    className="hover:-translate-y-1 p-2 border border-neutral-800/40 dark:border-neutral-800/70 hover:border-[#FF5500] hover:dark:border-[#FF5500] rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer select-none bg-neutral-900/50 w-10 h-10"
                     title={`${c.name} - ${c.description}`}
                   >
                     <div
-                      className="w-5 h-5 bg-[#FF5500] opacity-75 hover:opacity-100 transition-opacity"
+                      className="w-5 h-5 bg-[#FF5500] opacity-80 hover:opacity-100 transition-all duration-300"
                       style={{
                         WebkitMask: `url(${c.icon}) no-repeat center / contain`,
                         mask: `url(${c.icon}) no-repeat center / contain`,
@@ -248,18 +248,20 @@ export function Footer() {
               </div>
 
               {/* Time / Date / Day Column */}
-              <LiveISTClock resolvedTheme={resolvedTheme} />
+              <div className="w-full md:w-auto flex justify-center md:justify-end">
+                <LiveISTClock resolvedTheme={resolvedTheme} />
+              </div>
             </div>
 
             {/* Bottom Row: Copyright & Policy Links */}
-            <div className={`px-6 py-6 sm:px-8 border-t border-dashed flex flex-col sm:flex-row justify-between items-center gap-4 ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
-              <span className={`text-[10px] tracking-widest uppercase ${isLight ? 'text-neutral-500' : 'text-neutral-500'}`}>
+            <div className={`px-6 py-5 sm:px-8 border-t border-dashed flex flex-col md:flex-row justify-between items-center gap-4 ${isLight ? 'border-neutral-300' : 'border-neutral-800'}`}>
+              <span className={`text-[9px] sm:text-[10px] tracking-widest uppercase ${isLight ? 'text-neutral-500' : 'text-neutral-500'}`}>
                 LW19, ALL RIGHTS RESERVED 2026
               </span>
-              <div className="flex gap-6">
-                <a href="#terms" className="text-[10px] tracking-widest font-semibold text-[#FF5500] hover:underline uppercase">Terms</a>
-                <a href="#conditions" className="text-[10px] tracking-widest font-semibold text-[#FF5500] hover:underline uppercase">Conditions</a>
-                <a href="#privacy" className="text-[10px] tracking-widest font-semibold text-[#FF5500] hover:underline uppercase">Privacy Policy</a>
+              <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+                <Link to="/terms" className="text-[9px] sm:text-[10px] tracking-widest font-semibold text-[#FF5500] hover:underline uppercase">Terms</Link>
+                <Link to="/conditions" className="text-[9px] sm:text-[10px] tracking-widest font-semibold text-[#FF5500] hover:underline uppercase">Conditions</Link>
+                <Link to="/privacy" className="text-[9px] sm:text-[10px] tracking-widest font-semibold text-[#FF5500] hover:underline uppercase">Privacy Policy</Link>
               </div>
             </div>
 
