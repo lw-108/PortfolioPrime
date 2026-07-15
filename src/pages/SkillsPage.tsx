@@ -1063,10 +1063,10 @@ export const SkillsPage: React.FC = () => {
 
           <div className="absolute inset-0 w-full h-full z-10 touch-auto">
             <Canvas
-              dpr={[1, 1.5]}
+              dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? 0.75 : 1.0}
               camera={{ position: [0, 0, 5.0], fov: 50, near: 0.1, far: 50 }}
               flat
-              gl={{ antialias: true, powerPreference: 'high-performance' }}
+              gl={{ antialias: false, powerPreference: 'high-performance', alpha: false, depth: false }}
             >
               <ambientLight intensity={1.5} />
               <PhysicsBallroom

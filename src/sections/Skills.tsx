@@ -127,7 +127,7 @@ const Skills: React.FC = () => {
         </div>
 
         {/* Bottom Footer with Creepy Button */}
-        <div className="w-full border-t border-dashed border-neutral-800 mix-blend-difference">
+        <div className="w-full border-t border-dashed border-neutral-800">
           <div className="flex justify-end items-center py-4 px-6 sm:px-8 lg:px-16">
             <CreepyButton onClick={() => navigate('/skills')}>
               View More

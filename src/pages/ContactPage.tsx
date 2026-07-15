@@ -4,7 +4,6 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import Dither from '../components/Dither';
-import CreepyButton from '../components/ui/creepy-button';
 import { AnimatedTitle } from '../components/ui/AnimatedTitle';
 import { motion, type Variants } from 'motion/react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -190,7 +189,7 @@ export const ContactPage: React.FC = () => {
                   {/* Name Input */}
                   <label
                     htmlFor="name"
-                    className="block relative border-b border-border focus-within:z-10 focus-within:ring-2 focus-within:ring-[#f54900] px-6 pt-8 pb-4 transition-all cursor-text"
+                    className="block relative border-b border-border focus-within:z-10 focus-within:ring-2 focus-within:ring-[#f54900] px-6 pt-6 pb-4 transition-all cursor-text"
                   >
                     <input
                       id="name"
@@ -199,12 +198,12 @@ export const ContactPage: React.FC = () => {
                       placeholder=" "
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="peer block w-full border-0 p-0 text-lg sm:text-xl font-bold bg-transparent text-foreground focus:ring-0 focus:outline-none mt-2 rounded-none"
+                      className="peer block w-full border-0 p-0 text-base sm:text-lg md:text-xl font-bold bg-transparent text-foreground focus:ring-0 focus:outline-none mt-2 rounded-none"
                     />
                     <span
-                      className="absolute left-6 top-6 text-lg sm:text-xl font-bold text-muted-foreground/40 transition-all duration-200 pointer-events-none origin-left uppercase tracking-wider
-                        peer-focus:scale-70 peer-focus:-translate-y-4 peer-focus:text-[#f54900] peer-focus:font-extrabold peer-focus:tracking-widest
-                        peer-not-placeholder-shown:scale-70 peer-not-placeholder-shown:-translate-y-4 peer-not-placeholder-shown:text-[#f54900] peer-not-placeholder-shown:font-extrabold peer-not-placeholder-shown:tracking-widest"
+                      className="absolute left-6 top-6 px-1.5 text-xs md:text-sm font-bold text-muted-foreground/50 transition-all duration-200 pointer-events-none origin-left uppercase tracking-wider bg-background/0
+                        peer-focus:scale-80 peer-focus:translate-y-[-32px] md:peer-focus:translate-y-[-36px] peer-focus:left-4 peer-focus:text-[#f54900] peer-focus:font-extrabold peer-focus:tracking-widest peer-focus:bg-background peer-focus:opacity-100
+                        peer-not-placeholder-shown:scale-80 peer-not-placeholder-shown:translate-y-[-32px] md:peer-not-placeholder-shown:translate-y-[-36px] peer-not-placeholder-shown:left-4 peer-not-placeholder-shown:text-[#f54900] peer-not-placeholder-shown:font-extrabold peer-not-placeholder-shown:tracking-widest peer-not-placeholder-shown:bg-background peer-not-placeholder-shown:opacity-100"
                     >
                       Name
                     </span>
@@ -213,7 +212,7 @@ export const ContactPage: React.FC = () => {
                   {/* Email Input */}
                   <label
                     htmlFor="email"
-                    className="block relative border-b border-border focus-within:z-10 focus-within:ring-2 focus-within:ring-[#f54900] px-6 pt-8 pb-4 transition-all cursor-text"
+                    className="block relative border-b border-border focus-within:z-10 focus-within:ring-2 focus-within:ring-[#f54900] px-6 pt-6 pb-4 transition-all cursor-text"
                   >
                     <input
                       id="email"
@@ -222,12 +221,12 @@ export const ContactPage: React.FC = () => {
                       placeholder=" "
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="peer block w-full border-0 p-0 text-lg sm:text-xl font-bold bg-transparent text-foreground focus:ring-0 focus:outline-none mt-2 rounded-none"
+                      className="peer block w-full border-0 p-0 text-base sm:text-lg md:text-xl font-bold bg-transparent text-foreground focus:ring-0 focus:outline-none mt-2 rounded-none"
                     />
                     <span
-                      className="absolute left-6 top-6 text-lg sm:text-xl font-bold text-muted-foreground/40 transition-all duration-200 pointer-events-none origin-left uppercase tracking-wider
-                        peer-focus:scale-70 peer-focus:-translate-y-4 peer-focus:text-[#f54900] peer-focus:font-extrabold peer-focus:tracking-widest
-                        peer-not-placeholder-shown:scale-70 peer-not-placeholder-shown:-translate-y-4 peer-not-placeholder-shown:text-[#f54900] peer-not-placeholder-shown:font-extrabold peer-not-placeholder-shown:tracking-widest"
+                      className="absolute left-6 top-6 px-1.5 text-xs md:text-sm font-bold text-muted-foreground/50 transition-all duration-200 pointer-events-none origin-left uppercase tracking-wider bg-background/0
+                        peer-focus:scale-80 peer-focus:translate-y-[-32px] md:peer-focus:translate-y-[-36px] peer-focus:left-4 peer-focus:text-[#f54900] peer-focus:font-extrabold peer-focus:tracking-widest peer-focus:bg-background peer-focus:opacity-100
+                        peer-not-placeholder-shown:scale-80 peer-not-placeholder-shown:translate-y-[-32px] md:peer-not-placeholder-shown:translate-y-[-36px] peer-not-placeholder-shown:left-4 peer-not-placeholder-shown:text-[#f54900] peer-not-placeholder-shown:font-extrabold peer-not-placeholder-shown:tracking-widest peer-not-placeholder-shown:bg-background peer-not-placeholder-shown:opacity-100"
                     >
                       Email
                     </span>
@@ -236,7 +235,7 @@ export const ContactPage: React.FC = () => {
                   {/* Company Input */}
                   <label
                     htmlFor="company"
-                    className="block relative border-b border-border focus-within:z-10 focus-within:ring-2 focus-within:ring-[#f54900] px-6 pt-8 pb-4 transition-all cursor-text"
+                    className="block relative border-b border-border focus-within:z-10 focus-within:ring-2 focus-within:ring-[#f54900] px-6 pt-6 pb-4 transition-all cursor-text"
                   >
                     <input
                       id="company"
@@ -244,12 +243,12 @@ export const ContactPage: React.FC = () => {
                       placeholder=" "
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      className="peer block w-full border-0 p-0 text-lg sm:text-xl font-bold bg-transparent text-foreground focus:ring-0 focus:outline-none mt-2 rounded-none"
+                      className="peer block w-full border-0 p-0 text-base sm:text-lg md:text-xl font-bold bg-transparent text-foreground focus:ring-0 focus:outline-none mt-2 rounded-none"
                     />
                     <span
-                      className="absolute left-6 top-6 text-lg sm:text-xl font-bold text-muted-foreground/40 transition-all duration-200 pointer-events-none origin-left uppercase tracking-wider
-                        peer-focus:scale-70 peer-focus:-translate-y-4 peer-focus:text-[#f54900] peer-focus:font-extrabold peer-focus:tracking-widest
-                        peer-not-placeholder-shown:scale-70 peer-not-placeholder-shown:-translate-y-4 peer-not-placeholder-shown:text-[#f54900] peer-not-placeholder-shown:font-extrabold peer-not-placeholder-shown:tracking-widest"
+                      className="absolute left-6 top-6 px-1.5 text-xs md:text-sm font-bold text-muted-foreground/50 transition-all duration-200 pointer-events-none origin-left uppercase tracking-wider bg-background/0
+                        peer-focus:scale-80 peer-focus:translate-y-[-32px] md:peer-focus:translate-y-[-36px] peer-focus:left-4 peer-focus:text-[#f54900] peer-focus:font-extrabold peer-focus:tracking-widest peer-focus:bg-background peer-focus:opacity-100
+                        peer-not-placeholder-shown:scale-80 peer-not-placeholder-shown:translate-y-[-32px] md:peer-not-placeholder-shown:translate-y-[-36px] peer-not-placeholder-shown:left-4 peer-not-placeholder-shown:text-[#f54900] peer-not-placeholder-shown:font-extrabold peer-not-placeholder-shown:tracking-widest peer-not-placeholder-shown:bg-background peer-not-placeholder-shown:opacity-100"
                     >
                       Company
                     </span>
@@ -258,7 +257,7 @@ export const ContactPage: React.FC = () => {
                   {/* Phone Input */}
                   <label
                     htmlFor="phone"
-                    className="block relative border-b border-border focus-within:z-10 focus-within:ring-2 focus-within:ring-[#f54900] px-6 pt-8 pb-4 transition-all cursor-text"
+                    className="block relative border-b border-border focus-within:z-10 focus-within:ring-2 focus-within:ring-[#f54900] px-6 pt-6 pb-4 transition-all cursor-text"
                   >
                     <input
                       id="phone"
@@ -266,12 +265,12 @@ export const ContactPage: React.FC = () => {
                       placeholder=" "
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="peer block w-full border-0 p-0 text-lg sm:text-xl font-bold bg-transparent text-foreground focus:ring-0 focus:outline-none mt-2 rounded-none"
+                      className="peer block w-full border-0 p-0 text-base sm:text-lg md:text-xl font-bold bg-transparent text-foreground focus:ring-0 focus:outline-none mt-2 rounded-none"
                     />
                     <span
-                      className="absolute left-6 top-6 text-lg sm:text-xl font-bold text-muted-foreground/40 transition-all duration-200 pointer-events-none origin-left uppercase tracking-wider
-                        peer-focus:scale-70 peer-focus:-translate-y-4 peer-focus:text-[#f54900] peer-focus:font-extrabold peer-focus:tracking-widest
-                        peer-not-placeholder-shown:scale-70 peer-not-placeholder-shown:-translate-y-4 peer-not-placeholder-shown:text-[#f54900] peer-not-placeholder-shown:font-extrabold peer-not-placeholder-shown:tracking-widest"
+                      className="absolute left-6 top-6 px-1.5 text-xs md:text-sm font-bold text-muted-foreground/50 transition-all duration-200 pointer-events-none origin-left uppercase tracking-wider bg-background/0
+                        peer-focus:scale-80 peer-focus:translate-y-[-32px] md:peer-focus:translate-y-[-36px] peer-focus:left-4 peer-focus:text-[#f54900] peer-focus:font-extrabold peer-focus:tracking-widest peer-focus:bg-background peer-focus:opacity-100
+                        peer-not-placeholder-shown:scale-80 peer-not-placeholder-shown:translate-y-[-32px] md:peer-not-placeholder-shown:translate-y-[-36px] peer-not-placeholder-shown:left-4 peer-not-placeholder-shown:text-[#f54900] peer-not-placeholder-shown:font-extrabold peer-not-placeholder-shown:tracking-widest peer-not-placeholder-shown:bg-background peer-not-placeholder-shown:opacity-100"
                     >
                       Phone
                     </span>
@@ -280,7 +279,7 @@ export const ContactPage: React.FC = () => {
                   {/* Message Textarea */}
                   <label
                     htmlFor="message"
-                    className="block relative focus-within:z-10 focus-within:ring-2 focus-within:ring-[#f54900] px-6 pt-8 pb-4 transition-all cursor-text"
+                    className="block relative focus-within:z-10 focus-within:ring-2 focus-within:ring-[#f54900] px-6 pt-6 pb-4 transition-all cursor-text"
                   >
                     <textarea
                       id="message"
@@ -289,12 +288,12 @@ export const ContactPage: React.FC = () => {
                       placeholder=" "
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="peer block w-full border-0 p-0 text-lg sm:text-xl font-bold bg-transparent text-foreground focus:ring-0 focus:outline-none mt-2 resize-none rounded-none"
+                      className="peer block w-full border-0 p-0 text-base sm:text-lg md:text-xl font-bold bg-transparent text-foreground focus:ring-0 focus:outline-none mt-2 resize-none rounded-none"
                     />
                     <span
-                      className="absolute left-6 top-6 text-lg sm:text-xl font-bold text-muted-foreground/40 transition-all duration-200 pointer-events-none origin-left uppercase tracking-wider
-                        peer-focus:scale-70 peer-focus:-translate-y-4 peer-focus:text-[#f54900] peer-focus:font-extrabold peer-focus:tracking-widest
-                        peer-not-placeholder-shown:scale-70 peer-not-placeholder-shown:-translate-y-4 peer-not-placeholder-shown:text-[#f54900] peer-not-placeholder-shown:font-extrabold peer-not-placeholder-shown:tracking-widest"
+                      className="absolute left-6 top-6 px-1.5 text-xs md:text-sm font-bold text-muted-foreground/50 transition-all duration-200 pointer-events-none origin-left uppercase tracking-wider bg-background/0
+                        peer-focus:scale-80 peer-focus:translate-y-[-32px] md:peer-focus:translate-y-[-36px] peer-focus:left-4 peer-focus:text-[#f54900] peer-focus:font-extrabold peer-focus:tracking-widest peer-focus:bg-background peer-focus:opacity-100
+                        peer-not-placeholder-shown:scale-80 peer-not-placeholder-shown:translate-y-[-32px] md:peer-not-placeholder-shown:translate-y-[-36px] peer-not-placeholder-shown:left-4 peer-not-placeholder-shown:text-[#f54900] peer-not-placeholder-shown:font-extrabold peer-not-placeholder-shown:tracking-widest peer-not-placeholder-shown:bg-background peer-not-placeholder-shown:opacity-100"
                     >
                       Message
                     </span>
@@ -306,7 +305,7 @@ export const ContactPage: React.FC = () => {
                   <legend className="px-3 text-xs sm:text-sm font-extrabold uppercase tracking-widest text-[#f54900] bg-background">
                     What services do you need?
                   </legend>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
+                  <div className="grid grid-cols-2 gap-3 mt-2">
                     {['Web Development', 'UI/UX Design', 'Branding', 'Mobile Apps'].map((service) => {
                       const isSelected = formData.services.includes(service);
                       return (
@@ -314,7 +313,7 @@ export const ContactPage: React.FC = () => {
                           key={service}
                           type="button"
                           onClick={() => toggleService(service)}
-                          className={`px-2 py-3 text-[10px] font-bold uppercase tracking-normal transition-all rounded-none border text-center cursor-pointer select-none leading-tight
+                          className={`px-3 py-4 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all rounded-none border-2 text-center cursor-pointer select-none leading-tight
                             ${isSelected
                               ? 'bg-[#f54900] border-[#f54900] text-[#ffffe3] shadow-[0_0_15px_rgba(245,73,0,0.25)]'
                               : 'border-border bg-transparent text-foreground hover:bg-neutral-800/10 dark:hover:bg-white/5'
@@ -339,14 +338,13 @@ export const ContactPage: React.FC = () => {
                       ✕ Something went wrong. Please try again.
                     </div>
                   )}
-                  <CreepyButton
+                  <button
                     type="submit"
                     disabled={loading}
-                    className="w-full h-16 text-sm tracking-widest uppercase rounded-none border-none cursor-pointer"
-                    coverClassName="bg-[#f54900] text-[#ffffe3] font-bold uppercase tracking-wider text-sm rounded-none"
+                    className="w-full h-16 text-sm font-bold uppercase tracking-wider bg-[#f54900] text-[#ffffe3] hover:bg-[#f54900]/95 active:scale-[0.99] transition-all duration-150 border-2 border-foreground rounded-none cursor-pointer flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? 'Sending...' : 'Send →'}
-                  </CreepyButton>
+                  </button>
                 </div>
               </form>
             </div>
@@ -385,11 +383,11 @@ export const ContactPage: React.FC = () => {
                 <div className="absolute inset-0 z-10 pointer-events-auto">
                   <Canvas
                     camera={{ position: [0, 0, 5.5], fov: 42 }}
-                    dpr={[1, 1.2]}
-                    gl={{ antialias: false, powerPreference: "high-performance" }}
+                    dpr={1.0}
+                    gl={{ antialias: false, powerPreference: "high-performance", alpha: false, depth: false }}
                   >
                     <ambientLight intensity={0.9} />
-                    <directionalLight position={[0, 8, 2]} intensity={3.5} castShadow />
+                    <directionalLight position={[0, 8, 2]} intensity={3.5} />
                     <directionalLight position={[5, 4, 5]} intensity={1.5} />
                     <pointLight position={[-4, -4, -4]} intensity={0.5} />
                     <Suspense fallback={null}>

@@ -145,7 +145,7 @@ export const Experience: React.FC = () => {
                   <img 
                     src={intern.image} 
                     alt={intern.companyName} 
-                    className="w-full h-auto block grayscale opacity-90 transition-all duration-500 hover:grayscale-0"
+                    className="w-full h-auto block opacity-90 transition-all duration-500"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = `https://placehold.co/800x340/121212/ffffff?text=${encodeURIComponent(intern.companyName)}`;
                     }}
@@ -179,7 +179,7 @@ export const Experience: React.FC = () => {
                   {intern.skills.map((skill, idx) => (
                     <span 
                       key={idx} 
-                      className="px-3 py-1 text-xs font-clash font-medium uppercase tracking-wider border border-neutral-300 dark:border-neutral-700 text-muted-foreground bg-neutral-100 dark:bg-neutral-900 rounded-none"
+                      className="px-3 py-1 text-xs font-clash font-medium uppercase tracking-wider border border-neutral-300 dark:border-neutral-700 text-white bg-primary rounded-none"
                       style={{ letterSpacing: '0.08em', wordSpacing: '0.05em' }}
                     >
                       {skill}

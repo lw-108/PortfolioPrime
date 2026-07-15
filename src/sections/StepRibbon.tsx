@@ -58,7 +58,7 @@ interface StepperData {
 // Data with custom SVG markups for animations (now static/non-rotating inside card headers)
 const onboardingData: StepperData = {
   subtitle: "How I Work",
-  title: "Build. Ship. Iterate",
+  title: "Build. Ship. Iterate.",
   steps: [
     {
       id: "step-1",

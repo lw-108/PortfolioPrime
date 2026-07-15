@@ -233,11 +233,14 @@ export function Footer() {
                     href={c.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:-translate-y-1 p-2 border border-neutral-800/40 dark:border-neutral-800/70 hover:border-[#FF5500] hover:dark:border-[#FF5500] rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer select-none bg-neutral-900/50 w-10 h-10"
+                    className="group hover:-translate-y-1 p-2 border border-neutral-800/40 dark:border-neutral-800/70 hover:border-[#FF5500] hover:dark:border-[#FF5500] rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer select-none w-10 h-10 bg-repeat bg-size-[15px_15px] hover:bg-primary"
+                    style={{
+                      backgroundImage: "url('/stripe.svg')"
+                    }}
                     title={`${c.name} - ${c.description}`}
                   >
                     <div
-                      className="w-5 h-5 bg-[#FF5500] opacity-80 hover:opacity-100 transition-all duration-300"
+                      className="w-5 h-5 bg-[#FF5500] group-hover:bg-background transition-all duration-300"
                       style={{
                         WebkitMask: `url(${c.icon}) no-repeat center / contain`,
                         mask: `url(${c.icon}) no-repeat center / contain`,

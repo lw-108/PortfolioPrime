@@ -3,8 +3,6 @@ import { motion } from "motion/react";
 
 export const Greetings: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [hasClicked, setHasClicked] = useState(false);
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const textEnglish = "Thanks for visiting my portfolio, here you can see the best of my works. I am passionate about transforming ideas into compelling visual experiences. I specialize in crafting unique brand identities, digital experiences, and engaging content that resonates with your audience. My mission is to empower businesses and brands to stand out in a crowded market. I believe in quality, not quantity. This portfolio represents a collection of full-stack implementations, React components, and creative animations tailored to deliver delightful UX.";
@@ -19,21 +17,17 @@ export const Greetings: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener("mousemove", updateMousePosition);
+    // Initialize spotlight center coordinates inside text boundaries
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setMousePosition({ x: rect.width / 2, y: rect.height / 2 });
+    }
     return () => {
       window.removeEventListener("mousemove", updateMousePosition);
     };
   }, []);
 
-  const handleContainerClick = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    
-    setIsHovered(true);
-    setHasClicked(true);
-  };
-
-  let maskSize = isHovered ? 280 : 0;
+  const maskSize = 480;
 
   // Split texts to make the first letter larger
   const firstLetterEnglish = textEnglish[0];
@@ -43,55 +37,21 @@ export const Greetings: React.FC = () => {
   const restTamil = textTamil.slice(1);
 
   return (
-    <section id="greetings" className="relative z-10 w-full bg-transparent py-0 px-0 overflow-hidden select-none font-clash">
+    <section id="greetings" className="relative z-40 w-full bg-transparent py-0 px-0 overflow-hidden select-none font-clash">
       <div className="w-[97%] max-w-384 mx-auto bg-background px-6 sm:px-10 lg:px-16 py-20 relative">
-        {/* User-friendly Help Indicator */}
-        {!hasClicked && (
-          <div className="flex items-center gap-3 mb-6 select-none">
-            <img src="/arrow.svg" alt="Arrow indicator" className="w-10 h-6 shrink-0 animate-pulse" />
-            <span className="text-xs font-black uppercase tracking-widest text-primary">
-              Click on the text to translate / view
-            </span>
-          </div>
-        )}
 
         <div
           ref={containerRef}
-          onClick={handleContainerClick}
-          className="relative w-full overflow-visible cursor-pointer"
+          className="relative w-full overflow-visible"
         >
-          {/* Custom circle.svg spotlight overlay with high z-index */}
-          {isHovered && (
-            <motion.img
-              src="/circle.svg"
-              alt="Spotlight Circle"
-              className="absolute pointer-events-none z-10"
-              style={{
-                width: `${maskSize}px`,
-                height: `${maskSize}px`,
-                position: "absolute",
-                left: mousePosition.x - maskSize / 2,
-                top: mousePosition.y - maskSize / 2,
-              }}
-              animate={{
-                left: mousePosition.x - maskSize / 2,
-                top: mousePosition.y - maskSize / 2,
-              }}
-              transition={{
-                left: { duration: 0.15, ease: "linear" },
-                top: { duration: 0.15, ease: "linear" }
-              }}
-            />
-          )}
-
-          {/* Masked Tamil Text Layer — bg-[#f54900] prime color background */}
+          {/* Masked Tamil Text Layer — bg-[#f54900] prime color background (higher z-index, masks with radial gradient directly) */}
           <motion.div
-            className="absolute bg-[#f54900] text-white text-base sm:text-xl md:text-2xl lg:text-3xl leading-relaxed select-none pointer-events-none z-20 text-left sm:text-justify"
+            className="absolute bg-[#f54900] text-white text-base sm:text-xl md:text-2xl lg:text-3xl leading-relaxed select-none pointer-events-none z-50 text-left sm:text-justify"
             style={{
-              inset: 0,
-              padding: "0px",
-              WebkitMaskImage: `radial-gradient(circle ${maskSize / 2}px at ${mousePosition.x}px ${mousePosition.y}px, black 100%, transparent 100%)`,
-              maskImage: `radial-gradient(circle ${maskSize / 2}px at ${mousePosition.x}px ${mousePosition.y}px, black 100%, transparent 100%)`,
+              inset: "-300px",
+              padding: "300px",
+              WebkitMaskImage: `radial-gradient(circle ${maskSize / 2}px at calc(${mousePosition.x}px + 300px) calc(${mousePosition.y}px + 300px), black 100%, transparent 100%)`,
+              maskImage: `radial-gradient(circle ${maskSize / 2}px at calc(${mousePosition.x}px + 300px) calc(${mousePosition.y}px + 300px), black 100%, transparent 100%)`,
               WebkitMaskRepeat: "no-repeat",
               maskRepeat: "no-repeat",
               letterSpacing: "0.04em",
@@ -99,7 +59,6 @@ export const Greetings: React.FC = () => {
               lineHeight: "2.1",
               fontFamily: "'Noto Serif Tamil', 'Latha', 'Setham', serif",
             }}
-            animate={undefined}
           >
             <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mr-1 float-left leading-[0.8] text-white">
               {firstLetterTamil}
