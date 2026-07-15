@@ -24,7 +24,7 @@ const internshipsData: Internship[] = [
     role: 'Cyber Security Intern',
     period: 'May 2026 - Present',
     location: 'Remote',
-    image: '/exp/pitowings.png',
+    image: '/pitowings-web.webp',
     year: '2026',
     description: 'Assisting in predictive threat hunting, monitoring firewall and security event logs, and analyzing vulnerabilities to secure cloud infrastructure.',
     achievements: [
@@ -33,7 +33,7 @@ const internshipsData: Internship[] = [
       'Drafted incident response guidelines and recommended system hardening protocols.'
     ],
     skills: ['Postman', 'Selenium', 'JMeter', 'Cypress', 'OWASP ZAP', 'Burp Suite'],
-    icon: <img src="/pitowings.png" alt="Pitowings Logo" className="w-full h-full object-contain" />
+    icon: <img src="/pitowings.webp" alt="Pitowings Logo" className="w-full h-full object-contain" />
   },
   {
     id: 'thiran',

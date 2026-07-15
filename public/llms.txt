@@ -1,0 +1,25 @@
+# M.K. Lingeshwarma - Full-Stack Developer & Designer Portfolio
+
+Welcome to the LLM-readable portfolio of M.K. Lingeshwarma (LW19). This document outlines the key pages, links, and structure of this web application to facilitate efficient agent navigation and crawling.
+
+## Core Navigation Map
+
+- **Home Page**: [https://lingeshwarma.dev/](https://lingeshwarma.dev/)
+  - Main landing view showcasing intro, design specialties, highlights, and custom creative animations.
+- **About Me**: [https://lingeshwarma.dev/about](https://lingeshwarma.dev/about)
+  - Detailed background history, creative philosophy, stats, and personal interests.
+- **Projects**: [https://lingeshwarma.dev/projects](https://lingeshwarma.dev/projects)
+  - Selected work portfolio, web tools, interactive designs, and full-stack implementations.
+- **Technical Skills**: [https://lingeshwarma.dev/skills](https://lingeshwarma.dev/skills)
+  - Tech stack expertise, drag-and-drop interactive physics ballroom dashboard, and database/DevOps proficiencies.
+- **Contact & Inquiries**: [https://lingeshwarma.dev/contact](https://lingeshwarma.dev/contact)
+  - Work inquiries, custom project requests form, and social connectivity networks.
+- **Interactive Resume**: [https://lingeshwarma.dev/resume](https://lingeshwarma.dev/resume)
+  - Full professional experiences grid, timeline details, educational context, and skill benchmarks.
+- **Blogs**: [https://lingeshwarma.dev/blogs](https://lingeshwarma.dev/blogs)
+  - Digital development logs, engineering journals, and tech walkthroughs.
+
+## Professional Links & Social Profiles
+- **GitHub**: [https://github.com/LW-8877](https://github.com/LW-8877)
+- **LinkedIn**: [https://linkedin.com/in/lingeshwarma-mk](https://linkedin.com/in/lingeshwarma-mk)
+- **Email Inquiries**: [mailto:lingeshwarma108@gmail.com](mailto:lingeshwarma108@gmail.com)

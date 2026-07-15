@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { motion } from 'motion/react';
 import { CreepyButton } from '../components/ui/creepy-button';
 import { TextFlip } from '../components/text-flip';
 import BrandMarquee from '../components/BrandMarquee';
-import Lanyard from '../components/Lanyard';
 import Dither from '../components/Dither';
+
+const Lanyard = lazy(() => import('../components/Lanyard'));
 
 export default function Hero({ isLoaded = false }: { isLoaded?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -191,11 +192,21 @@ export default function Hero({ isLoaded = false }: { isLoaded?: boolean }) {
 
                 if (isInView && !isSlowNetwork) {
                   return (
-                    <Lanyard
-                      isLoaded={isLoaded}
-                      lanyardImage="/lanyard.png"
-                      lanyardWidth={1}
-                    />
+                    <Suspense fallback={
+                      <div className="w-full max-w-[340px] aspect-3/4 flex items-center justify-center relative">
+                        <img
+                          src="/omnilanyard.png"
+                          alt="Loading Lanyard"
+                          className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(245,73,0,0.2)] animate-pulse"
+                        />
+                      </div>
+                    }>
+                      <Lanyard
+                        isLoaded={isLoaded}
+                        lanyardImage="/lanyard.png"
+                        lanyardWidth={1}
+                      />
+                    </Suspense>
                   );
                 } else {
                   return (

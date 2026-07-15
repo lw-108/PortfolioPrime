@@ -251,7 +251,7 @@ export const ProjectsPage: React.FC = () => {
               </span>
             </div>
            <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none">
-                <AnimatedTitle text="Selected Works /" />
+                <AnimatedTitle text="Selected Works" />
               </h2>
           </div>
           <p className="text-neutral-400 max-w-md font-clash text-sm sm:text-base text-left lg:text-right leading-relaxed">

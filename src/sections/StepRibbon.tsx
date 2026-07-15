@@ -34,6 +34,7 @@ const SVGPinwheel = ({ className = "" }) => (
 // Types
 interface MediaImage {
   src: string;
+  wideSrc?: string;
   alt: string;
 }
 
@@ -73,7 +74,8 @@ const onboardingData: StepperData = {
       cta: { label: "Start a project", href: "/contact" },
       media: {
         back: {
-          src: "/steps/wideplan.png",
+          src: "/steps/plan.jpg",
+          wideSrc: "/steps/wideplan.png",
           alt: "Project roadmap"
         }
       },
@@ -92,7 +94,8 @@ const onboardingData: StepperData = {
       cta: { label: "See designs", href: "/portfolio" },
       media: {
         back: {
-          src: "/steps/widedesign.png",
+          src: "/steps/design.jpg",
+          wideSrc: "/steps/widedesign.png",
           alt: "Interactive prototypes"
         }
       },
@@ -111,7 +114,8 @@ const onboardingData: StepperData = {
       cta: { label: "Tech stack", href: "/skills" },
       media: {
         back: {
-          src: "/steps/widecode.png",
+          src: "/steps/code.jpg",
+          wideSrc: "/steps/widecode.png",
           alt: "Code testing"
         }
       },
@@ -130,7 +134,8 @@ const onboardingData: StepperData = {
       cta: { label: "Launch now", href: "/contact" },
       media: {
         back: {
-          src: "/steps/widedeploy.png",
+          src: "/steps/deploy.jpg",
+          wideSrc: "/steps/widedeploy.png",
           alt: "Analytics and monitoring"
         }
       },
@@ -279,7 +284,7 @@ const StepRibbon: React.FC = () => {
               {data.subtitle}
             </span>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground bg-background leading-none">
-              <AnimatedTitle text={`${data.title} /`} />
+              <AnimatedTitle text={data.title} />
             </h2>
           </div>
           <p className="text-muted-foreground max-w-md font-clash text-sm sm:text-base bg-background">
@@ -346,13 +351,18 @@ const StepRibbon: React.FC = () => {
                         backgroundSize: '16px 16px',
                       }}
                     />
-                    <img
-                      className="stepper__media-image z-10 relative"
-                      src={step.media.back.src}
-                      alt={step.media.back.alt}
-                      loading="eager"
-                      decoding="sync"
-                    />
+                    <picture>
+                      {step.media.back.wideSrc && (
+                        <source srcSet={step.media.back.wideSrc} media="(min-width: 1024px)" />
+                      )}
+                      <img
+                        className="stepper__media-image z-10 relative"
+                        src={step.media.back.src}
+                        alt={step.media.back.alt}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </picture>
                   </figure>
                 )}
               </div>

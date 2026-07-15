@@ -289,21 +289,26 @@ export const Contact: React.FC = () => {
                   <legend className="px-3 text-xs sm:text-sm font-extrabold uppercase tracking-widest text-[#f54900] bg-background">
                     What services do you need?
                   </legend>
-                  <div className="grid grid-cols-2 gap-3 mt-2">
-                    {['Web Development', 'UI/UX Design', 'Branding', 'Mobile Apps'].map((service) => {
-                      const isSelected = formData.services.includes(service);
+                  <div className="grid grid-cols-1 min-[420px]:grid-cols-6 gap-3 mt-2">
+                    {[
+                      { name: 'Web Development', cols: 'col-span-1 min-[420px]:col-span-6 md:col-span-4' },
+                      { name: 'UI/UX Design', cols: 'col-span-1 min-[420px]:col-span-3 md:col-span-2' },
+                      { name: 'Branding', cols: 'col-span-1 min-[420px]:col-span-3 md:col-span-2' },
+                      { name: 'Mobile Apps', cols: 'col-span-1 min-[420px]:col-span-6 md:col-span-4' }
+                    ].map((service) => {
+                      const isSelected = formData.services.includes(service.name);
                       return (
                         <button
-                          key={service}
+                          key={service.name}
                           type="button"
-                          onClick={() => toggleService(service)}
-                          className={`px-3 py-4 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all rounded-none border-2 text-center cursor-pointer select-none leading-tight
+                          onClick={() => toggleService(service.name)}
+                          className={`${service.cols} px-3 py-4 text-xs min-[420px]:text-xs sm:text-sm font-bold uppercase tracking-wider transition-all rounded-none border-2 text-center cursor-pointer select-none leading-tight
                             ${isSelected
                               ? 'bg-[#f54900] border-[#f54900] text-[#ffffe3] shadow-[0_0_15px_rgba(245,73,0,0.25)]'
                               : 'border-border bg-transparent text-foreground hover:bg-neutral-800/10 dark:hover:bg-white/5'
                             }`}
                         >
-                          {service}
+                          {service.name}
                         </button>
                       );
                     })}

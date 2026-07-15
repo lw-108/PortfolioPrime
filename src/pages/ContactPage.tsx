@@ -71,12 +71,30 @@ export const ContactPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { rootMargin: '200px' }
+    );
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
   }, []);
 
   const toggleService = (service: string) => {
@@ -87,6 +105,25 @@ export const ContactPage: React.FC = () => {
       return { ...prev, services };
     });
   };
+
+  useEffect(() => {
+    const forceScroll = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+      document.documentElement.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+      document.body.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+    };
+    forceScroll();
+    const t1 = setTimeout(forceScroll, 80);
+    const t2 = setTimeout(forceScroll, 250);
+    const t3 = setTimeout(forceScroll, 500);
+    const t4 = setTimeout(forceScroll, 800);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,11 +147,11 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <section className="w-full relative z-10 min-h-screen bg-transparent py-0 px-0 overflow-hidden select-none font-clash">
+    <section ref={sectionRef} className="w-full relative z-10 min-h-screen bg-transparent py-0 px-0 overflow-hidden select-none font-clash">
       {/* SVG Clip Path Definition with Tighter Corners & Leftward Shifted Step Contour */}
       <svg width="0" height="0" className="absolute">
         <defs>
-          <clipPath id="custom-contact-clip" clipPathUnits="objectBoundingBox">
+          <clipPath id="custom-contact-page-clip" clipPathUnits="objectBoundingBox">
             <path d="M 0,0.20 
                      Q 0,0.16 0.04,0.16
                      L 0.18,0.16 
@@ -149,7 +186,7 @@ export const ContactPage: React.FC = () => {
               </span>
             </div>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight text-foreground leading-none font-clash">
-              <AnimatedTitle text="Stay Connected /" />
+              <AnimatedTitle text="Stay Connected" />
             </h2>
           </div>
           <p className="text-muted-foreground max-w-md font-clash text-sm sm:text-base text-left md:text-right leading-relaxed">
@@ -161,14 +198,7 @@ export const ContactPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch flex-1 pb-10">
 
           {/* Left Side: Form Card */}
-          <motion.div 
-            custom={1}
-            variants={revealVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="lg:col-span-6 bg-background dark:bg-background border border-border p-6 sm:p-8 rounded-none shadow-sm flex flex-col justify-between relative overflow-hidden"
-          >
+          <div className="lg:col-span-6 bg-background dark:bg-background border border-border p-6 sm:p-8 rounded-none shadow-sm flex flex-col justify-between relative overflow-hidden">
             {/* Subtle stripe background for form card only - brighter visibility */}
             <div
               className="absolute inset-0 opacity-25 dark:opacity-15 pointer-events-none select-none z-0"
@@ -305,21 +335,26 @@ export const ContactPage: React.FC = () => {
                   <legend className="px-3 text-xs sm:text-sm font-extrabold uppercase tracking-widest text-[#f54900] bg-background">
                     What services do you need?
                   </legend>
-                  <div className="grid grid-cols-2 gap-3 mt-2">
-                    {['Web Development', 'UI/UX Design', 'Branding', 'Mobile Apps'].map((service) => {
-                      const isSelected = formData.services.includes(service);
+                  <div className="grid grid-cols-1 min-[420px]:grid-cols-6 gap-3 mt-2">
+                    {[
+                      { name: 'Web Development', cols: 'col-span-1 min-[420px]:col-span-6 md:col-span-4' },
+                      { name: 'UI/UX Design', cols: 'col-span-1 min-[420px]:col-span-3 md:col-span-2' },
+                      { name: 'Branding', cols: 'col-span-1 min-[420px]:col-span-3 md:col-span-2' },
+                      { name: 'Mobile Apps', cols: 'col-span-1 min-[420px]:col-span-6 md:col-span-4' }
+                    ].map((service) => {
+                      const isSelected = formData.services.includes(service.name);
                       return (
                         <button
-                          key={service}
+                          key={service.name}
                           type="button"
-                          onClick={() => toggleService(service)}
-                          className={`px-3 py-4 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all rounded-none border-2 text-center cursor-pointer select-none leading-tight
+                          onClick={() => toggleService(service.name)}
+                          className={`${service.cols} px-3 py-4 text-xs min-[420px]:text-xs sm:text-sm font-bold uppercase tracking-wider transition-all rounded-none border-2 text-center cursor-pointer select-none leading-tight
                             ${isSelected
                               ? 'bg-[#f54900] border-[#f54900] text-[#ffffe3] shadow-[0_0_15px_rgba(245,73,0,0.25)]'
                               : 'border-border bg-transparent text-foreground hover:bg-neutral-800/10 dark:hover:bg-white/5'
                             }`}
                         >
-                          {service}
+                          {service.name}
                         </button>
                       );
                     })}
@@ -348,46 +383,41 @@ export const ContactPage: React.FC = () => {
                 </div>
               </form>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Side: Clipped Screen Matching Form Height (Hidden on Mobile) */}
-          <motion.div 
-            custom={2}
-            variants={revealVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="hidden lg:flex lg:col-span-6 flex-col justify-center items-stretch w-full relative"
-          >
+          <div className="hidden lg:flex lg:col-span-6 flex-col justify-center items-stretch w-full relative">
             <div
               className="relative w-full h-full min-h-[480px] lg:min-h-0 bg-neutral-900 shadow-2xl transition-all duration-300"
               style={{
-                clipPath: 'url(#custom-contact-clip)',
-                WebkitClipPath: 'url(#custom-contact-clip)',
+                clipPath: 'url(#custom-contact-page-clip)',
+                WebkitClipPath: 'url(#custom-contact-page-clip)',
               }}
             >
               {/* DEEPER LAYER: Dither Wave Background Shader */}
               <div className="absolute inset-0 z-0">
-                <Dither
-                  waveSpeed={0.04}
-                  waveFrequency={3.5}
-                  waveAmplitude={0.25}
-                  colorNum={5}
-                  pixelSize={isMobile ? 3 : 2.5}
-                  waveColor={[0.96, 0.28, 0.0]}
-                />
+                {isVisible && (
+                  <Dither
+                    waveSpeed={0.04}
+                    waveFrequency={3.5}
+                    waveAmplitude={0.25}
+                    colorNum={5}
+                    pixelSize={isMobile ? 3 : 2.5}
+                    waveColor={[0.96, 0.28, 0.0]}
+                  />
+                )}
               </div>
 
               {/* HIGHER LAYER: Dedicated 3D Omnitrix Canvas with Orbit Rotation Controls */}
-              {!isMobile && (
+              {!isMobile && isVisible && (
                 <div className="absolute inset-0 z-10 pointer-events-auto">
                   <Canvas
                     camera={{ position: [0, 0, 5.5], fov: 42 }}
-                    dpr={1.0}
-                    gl={{ antialias: false, powerPreference: "high-performance", alpha: false, depth: false }}
+                    dpr={[1, 1.2]}
+                    gl={{ antialias: false, powerPreference: "high-performance" }}
                   >
                     <ambientLight intensity={0.9} />
-                    <directionalLight position={[0, 8, 2]} intensity={3.5} />
+                    <directionalLight position={[0, 8, 2]} intensity={3.5} castShadow />
                     <directionalLight position={[5, 4, 5]} intensity={1.5} />
                     <pointLight position={[-4, -4, -4]} intensity={0.5} />
                     <Suspense fallback={null}>
@@ -414,7 +444,7 @@ export const ContactPage: React.FC = () => {
             </div>
 
             {/* Avatars overlay removed as requested */}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

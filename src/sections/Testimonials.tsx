@@ -23,7 +23,7 @@ const testimonials: Testimonial[] = [
     company: "U Fill Academy",
     relation: "Web Client",
     image: "/testimonials/balaji.png",
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/muthubalaji-m-14a8891ab/",
   },
   {
     id: 2,
@@ -31,19 +31,29 @@ const testimonials: Testimonial[] = [
     name: "Hari Krishnan",
     role: "CTO",
     company: "U Fill Academy",
-    relation: "Web Client",
+    relation: "Friend",
     image: "/testimonials/hari.png",
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/hari-krishnan-s-bb76843bb/",
   },
   {
     id: 3,
     text: "I'm really satisfied with the portfolio website that's built for me. It looks professional, works smoothly on all devices, and showcases my work perfectly. Thanks for the great work and I am happy with the final result.",
     name: "D. Keerthana",
-    role: "UI/UX Designer",
+    role: "Software Developer",
     company: "Freelance Client",
-    relation: "Web Client",
+    relation: "Colleague",
     image: "/testimonials/fantasy-shadow.png",
-    linkedin: "https://www.linkedin.com/",
+    linkedin: "https://www.linkedin.com/in/keerthanaduraisamy/",
+  },
+  {
+    id: 4,
+    text: "Thanks a lot, Lingesh! The portfolio website you built looks great and very professional. I've added it to my resume so that anyone can easily check out my professional details online.",
+    name: "M.Tamilarasan",
+    role: "Software Engineer",
+    company: "Freelance Client",
+    relation: "Colleague",
+    image: "/testimonials/tamil.png",
+    linkedin: "https://www.linkedin.com/in/tamil-mi/",
   }
 ];
 
@@ -87,7 +97,7 @@ export const Testimonials: React.FC = () => {
     <section id="testimonials" className="relative z-10 w-full bg-transparent pt-0 pb-0 px-0 overflow-hidden select-none font-clash">
       <div className="w-[97%] max-w-384 mx-auto bg-background flex flex-col justify-between relative px-6 sm:px-10 lg:px-16 py-4">
         <div className="relative z-10 w-full">
-          
+
           {/* Header */}
           <div className="border-b border-dashed border-border pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-16">
             <div>
@@ -105,14 +115,14 @@ export const Testimonials: React.FC = () => {
 
           {/* Card Layout Container */}
           <div className="w-full max-w-5xl lg:max-w-6xl mx-auto overflow-visible mt-8 md:mt-36 mb-16 px-2 sm:px-4">
-            
+
             {/* Neobrutalist 3D Layered Card Wrapper */}
             <div className="relative group">
               {/* Hard shadow layer — solid black offset, no blur */}
               <div className="absolute inset-0 translate-x-3 translate-y-3 sm:translate-x-5 sm:translate-y-5 bg-foreground" />
 
               {/* Primary Card — Draggable to swap to next/prev */}
-              <motion.div 
+              <motion.div
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.2}
@@ -126,7 +136,7 @@ export const Testimonials: React.FC = () => {
                 }}
                 className="bg-primary p-6 md:p-8 pt-6 md:pt-16 pb-8 md:pb-12 md:pl-[330px] lg:pl-[390px] relative flex flex-col items-center md:items-start min-h-[220px] md:min-h-[420px] justify-center overflow-visible transition-transform duration-300 ease-out group-hover:translate-x-3 group-hover:translate-y-3 sm:group-hover:translate-x-5 sm:group-hover:translate-y-5 cursor-grab active:cursor-grabbing select-none"
               >
-                
+
                 {/* Cut-out Avatar overlapping top border on Desktop — Hidden on Mobile for compact design */}
                 <div className="hidden md:block absolute bottom-0 left-6 lg:left-12 w-56 sm:w-64 md:w-72 lg:w-80 h-[380px] sm:h-[460px] md:h-[560px] lg:h-[650px] shrink-0 z-20 self-center md:self-end mt-0 mb-0 overflow-visible">
                   <img
@@ -152,7 +162,7 @@ export const Testimonials: React.FC = () => {
 
                   {/* Name badge — Neobrutalist tag style */}
                   <div className="mt-8 md:pl-10 lg:pl-12 text-center md:text-left flex flex-col items-center md:items-start gap-3">
-                    <div 
+                    <div
                       className="inline-block bg-[#ffffe3] px-4 py-2 border-2 border-black"
                       style={{ boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)' }}
                     >
@@ -164,16 +174,16 @@ export const Testimonials: React.FC = () => {
                       {current.role} <span className="mx-1 text-[#ffffe3]/30">/</span> {current.company}
                     </p>
                     {current.linkedin && (
-                      <a 
-                        href={current.linkedin} 
-                        target="_blank" 
+                      <a
+                        href={current.linkedin}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1.5 bg-black text-white px-3 py-1.5 border-2 border-black hover:bg-white hover:text-black transition-colors duration-150 text-xs uppercase tracking-widest font-bold group"
                         title={`${current.name}'s LinkedIn`}
                         style={{ boxShadow: '2px 2px 0px 0px rgba(255,255,227,0.5)' }}
                       >
                         <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                         </svg>
                         <span>LinkedIn</span>
                       </a>
@@ -196,9 +206,8 @@ export const Testimonials: React.FC = () => {
                     onClick={() => handleChange(index)}
                     className="py-2 cursor-pointer focus:outline-none group"
                   >
-                    <div className={`relative h-1 overflow-hidden transition-all duration-300 ${
-                      index === active ? 'w-12 sm:w-16 bg-neutral-800' : 'w-3 bg-neutral-800 hover:bg-[#f54900]/40'
-                    }`}>
+                    <div className={`relative h-1 overflow-hidden transition-all duration-300 ${index === active ? 'w-12 sm:w-16 bg-neutral-800' : 'w-3 bg-neutral-800 hover:bg-[#f54900]/40'
+                      }`}>
                       {index === active && (
                         <div
                           key={progressKey}

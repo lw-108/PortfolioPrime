@@ -38,15 +38,22 @@ const scaleVariants = {
 /* ─── About Page ─── */
 const AboutPage: React.FC = () => {
   React.useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      const element = document.querySelector(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        return;
-      }
-    }
-    window.scrollTo(0, 0);
+    const forceScroll = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+      document.documentElement.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+      document.body.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+    };
+    forceScroll();
+    const t1 = setTimeout(forceScroll, 80);
+    const t2 = setTimeout(forceScroll, 250);
+    const t3 = setTimeout(forceScroll, 500);
+    const t4 = setTimeout(forceScroll, 800);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+    };
   }, []);
 
   return (
@@ -63,7 +70,7 @@ const AboutPage: React.FC = () => {
               நான்
             </span>
             <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none">
-              <AnimatedTitle text="About Me /" />
+              <AnimatedTitle text="About Me" />
             </h2>
           </div>
           <p className="text-muted-foreground max-w-md font-clash text-base">
@@ -191,7 +198,7 @@ const AboutPage: React.FC = () => {
                 preserveAspectRatio="xMidYMid slice"
                 width="100%"
                 height="100%"
-                xlinkHref="/DrManhatten.jpeg"
+                xlinkHref="/DrManhatten.webp"
               />
             </svg>
           </motion.figure>
@@ -238,7 +245,7 @@ const AboutPage: React.FC = () => {
                 viewport={{ once: true }}
                 className="inline"
               >
-                {'Programmer, Developer, Web-Designer/'.split(' ').map((word, i) => (
+                {'Programmer, Developer, Web-Designer'.split(' ').map((word, i) => (
                   <motion.span
                     key={i}
                     variants={{
@@ -328,7 +335,7 @@ const AboutPage: React.FC = () => {
                 <p className="text-muted-foreground text-sm flex items-center justify-end gap-1">
                   <span className="text-[#1DB954] font-medium">Harris Jeyaraj</span>
                   songs on
-                  <a href="https://open.spotify.com/artist/29aw5YCdIw2FEXYyAJZI8l" target="_blank" rel="noopener noreferrer">
+                  <a href="https://open.spotify.com/artist/29aw5YCdIw2FEXYyAJZI8l" target="_blank" rel="noopener noreferrer" aria-label="Listen to Harris Jeyaraj on Spotify">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 inline-block text-[#1DB954] align-middle mx-1"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.565.387-.86.207-2.377-1.454-5.37-1.785-8.892-.982-.336.075-.67-.136-.746-.472-.075-.336.136-.67.472-.746 3.856-.882 7.15-.506 9.822 1.13.295.18.387.565.204.863zm1.224-2.724c-.226.367-.707.487-1.074.26-2.72-1.672-6.87-2.157-10.075-1.185-.413.125-.847-.107-.972-.52-.125-.413.107-.847.52-.972 3.666-1.112 8.237-.57 11.34 1.34.368.225.488.706.26 1.077zm.106-2.833C14.384 8.71 8.563 8.52 5.176 9.548c-.54.163-1.112-.147-1.275-.687-.163-.54.147-1.112.687-1.275 3.89-1.182 10.32-.96 14.39 1.456.485.287.643.91.356 1.396-.287.485-.91.643-1.396.356z" /></svg>
                   </a>
                 </p>

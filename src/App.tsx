@@ -1,18 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from './sections/Navbar'
 import Home from './pages/Home'
-import AboutPage from './pages/AboutPage'
-import SkillsPage from './pages/SkillsPage'
-import ProjectsPage from './pages/ProjectsPage' // Force reload HMR
-import ContactPage from './pages/ContactPage'
-import ResumePage from './pages/ResumePage'
-import BlogsPage from './pages/BlogsPage'
-import LegalPage from './pages/LegalPage'
 import Footer from './sections/Footer'
 import { LoadingScreen } from './components/LoadingScreen'
+
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const SkillsPage = lazy(() => import('./pages/SkillsPage'))
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'))
+const ContactPage = lazy(() => import('./pages/ContactPage'))
+const ResumePage = lazy(() => import('./pages/ResumePage'))
+const BlogsPage = lazy(() => import('./pages/BlogsPage'))
+const LegalPage = lazy(() => import('./pages/LegalPage'))
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,14 +22,27 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
-    document.documentElement.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
-    document.body.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    const performScroll = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+      document.documentElement.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+      document.body.scrollTo({ top: 0, left: 0, behavior: 'instant' as any });
+    };
     
+    performScroll();
+    const scrollTimer = setTimeout(performScroll, 80);
+
     // Refresh ScrollTrigger once route has updated and DOM is stable
-    setTimeout(() => {
+    const triggerTimer = setTimeout(() => {
       ScrollTrigger.refresh();
-    }, 150);
+    }, 180);
+
+    return () => {
+      clearTimeout(scrollTimer);
+      clearTimeout(triggerTimer);
+    };
   }, [pathname]);
 
   return null;
@@ -77,7 +91,13 @@ const Layout = () => {
           ? 'pt-0'
           : 'pt-16 sm:pt-20 lg:pt-24 pb-20 sm:pb-24 lg:pb-32'
       }`}>
-        <Outlet />
+        <Suspense fallback={
+          <div className="w-full h-[60vh] flex items-center justify-center bg-transparent">
+            <div className="w-10 h-10 border-2 border-dashed border-[#f54900] rounded-full animate-spin" />
+          </div>
+        }>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
     </section>

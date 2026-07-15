@@ -545,6 +545,7 @@ const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center space-x-6">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
+              aria-label="Toggle dark mode"
               className="text-muted-foreground hover:text-foreground transition-colors duration-300 p-1.5 focus:outline-none cursor-pointer hover:rotate-12"
             >
               {isDarkMode ? <Moon size={20} /> : <Sun size={20} />}
@@ -561,6 +562,7 @@ const Navbar: React.FC = () => {
           <div className="flex md:hidden items-center space-x-3">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
+              aria-label="Toggle dark mode"
               className="text-muted-foreground hover:text-foreground transition-colors p-1.5 focus:outline-none cursor-pointer"
             >
               {isDarkMode ? <Moon size={20} /> : <Sun size={20} />}

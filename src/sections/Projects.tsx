@@ -195,7 +195,7 @@ const Projects: React.FC = () => {
                 Projects
               </span>
               <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none">
-                <AnimatedTitle text="Selected Works /" />
+                <AnimatedTitle text="Selected Works" />
               </h2>
             </div>
             <p className="text-muted-foreground/50 text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold hidden sm:block leading-none">
