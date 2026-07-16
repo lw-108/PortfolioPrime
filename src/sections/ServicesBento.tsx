@@ -191,7 +191,7 @@ const ServicesBento: React.FC = () => {
       rgba(255, 255, 227, 0.85) 0%,
       rgba(255, 255, 227, 0.96) 100%
     ),
-    url('/dot.svg');
+    url('https://i.ibb.co/ZpSdBkBH/dot.jpg');
 
   background-repeat: no-repeat, repeat;
   background-size: 100% 100%, 32px 32px;
@@ -206,7 +206,7 @@ const ServicesBento: React.FC = () => {
         .dark .bento-card {
           background-image: 
             linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 0%, transparent 100%),
-            url('/dot.svg');
+            url('https://i.ibb.co/ZpSdBkBH/dot.jpg');
           border: 1px solid rgba(255, 255, 255, 0.1);
         }
 

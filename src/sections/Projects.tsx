@@ -279,7 +279,7 @@ const Projects: React.FC = () => {
                       <div
                         className="absolute inset-0 w-full h-full opacity-35 dark:opacity-20 pointer-events-none select-none rounded-lg"
                         style={{
-                          backgroundImage: "url('/stripe.svg')",
+                          backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
                           backgroundRepeat: 'repeat',
                           backgroundSize: '16px 16px',
                         }}

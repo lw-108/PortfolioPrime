@@ -9,7 +9,7 @@ import { db } from '../lib/firebase';
 
 // 3D Spinning & Interactive Omnitrix Model Component
 function OmnitrixModel() {
-  const { scene } = useGLTF('/omnitrix.glb');
+  const { scene } = useGLTF('https://res.cloudinary.com/dma4ltfxa/image/upload/v1784199174/omnitrix_zaudit.glb');
   const modelRef = useRef<THREE.Group>(null);
 
   // Deep clone scene to avoid sharing instances across re-renders
@@ -157,7 +157,7 @@ export const Contact: React.FC = () => {
             <div
               className="absolute inset-0 opacity-25 dark:opacity-15 pointer-events-none select-none z-0"
               style={{
-                backgroundImage: "url('/stripe.svg')",
+                backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
                 backgroundRepeat: 'repeat',
                 backgroundSize: '16px 16px',
               }}
@@ -403,6 +403,6 @@ export const Contact: React.FC = () => {
   );
 };
 
-useGLTF.preload('/omnitrix.glb');
+useGLTF.preload('https://res.cloudinary.com/dma4ltfxa/image/upload/v1784199174/omnitrix_zaudit.glb');
 
 export default Contact;

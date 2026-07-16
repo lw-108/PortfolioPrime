@@ -18,7 +18,7 @@ export const techStackItems: TechItem[] = [
   /* Programming Languages */
   {
     title: "C",
-    image: "/TechIcons/C.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/7/72/C1stEdition.svg",
     link: "https://en.cppreference.com/w/c",
     level: 85,
     experience: 80,
@@ -28,7 +28,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "C++",
-    image: "/TechIcons/Cplusplus.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/1/18/ISO_C%2B%2B_Logo.svg",
     link: "https://isocpp.org",
     level: 82,
     experience: 78,
@@ -38,7 +38,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Python",
-    image: "/TechIcons/Python.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
     link: "https://www.python.org",
     level: 88,
     experience: 85,
@@ -48,7 +48,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Java",
-    image: "/TechIcons/Java.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/b/b1/ThumbsUp.svg",
     link: "https://www.java.com",
     level: 85,
     experience: 80,
@@ -60,7 +60,7 @@ export const techStackItems: TechItem[] = [
   /* Front-end Technologies */
   {
     title: "HTML5",
-    image: "/TechIcons/HTML5.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Html-1.svg",
     link: "https://developer.mozilla.org/en-US/docs/Web/HTML",
     level: 95,
     experience: 90,
@@ -70,7 +70,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "CSS3",
-    image: "/TechIcons/CSS3.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/6/62/CSS3_logo.svg",
     link: "https://developer.mozilla.org/en-US/docs/Web/CSS",
     level: 92,
     experience: 88,
@@ -80,7 +80,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "JavaScript",
-    image: "/TechIcons/JavaScript.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/b/b9/JavaScript_shield_logo_%28no_text%29.svg",
     link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
     level: 90,
     experience: 85,
@@ -90,7 +90,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "TypeScript",
-    image: "/TechIcons/TypeScript.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/f/f5/Typescript.svg",
     link: "https://www.typescriptlang.org",
     level: 88,
     experience: 82,
@@ -100,7 +100,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Bootstrap",
-    image: "/TechIcons/Bootstrap.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/b/b2/Bootstrap_logo.svg",
     link: "https://getbootstrap.com",
     level: 85,
     experience: 80,
@@ -110,7 +110,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "jQuery",
-    image: "/TechIcons/jQuery.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/6/61/JQuery_icon.svg",
     link: "https://jquery.com",
     level: 75,
     experience: 70,
@@ -120,7 +120,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Tailwind CSS",
-    image: "/TechIcons/Tailwind CSS.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg",
     link: "https://tailwindcss.com",
     level: 88,
     experience: 82,
@@ -129,18 +129,8 @@ export const techStackItems: TechItem[] = [
     tools: ["Utility Classes", "Responsive", "Customization"],
   },
   {
-    title: "Rest API",
-    image: "/TechIcons/RestAPI.svg",
-    link: "https://restfulapi.net/",
-    level: 88,
-    experience: 82,
-    category: "Backend",
-    description: "REST API development for web applications.",
-    tools: ["REST API", "HTTP", "JSON"],
-  },
-  {
-    title: "SCSS/SASS",
-    image: "/TechIcons/SCSS-SASS.svg",
+    title: "SASS",
+    image: "https://upload.wikimedia.org/wikipedia/commons/9/96/Sass_Logo_Color.svg",
     link: "https://sass-lang.com",
     level: 82,
     experience: 75,
@@ -150,7 +140,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Framer Motion",
-    image: "/TechIcons/Framer Motion.svg",
+    image: "https://cdn.worldvectorlogo.com/logos/framer-motion.svg",
     link: "https://www.framer.com/motion/",
     level: 75,
     experience: 68,
@@ -160,7 +150,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "GSAP",
-    image: "/TechIcons/GSAP.svg",
+    image: "https://gsap.com/community/uploads/monthly_2020_03/tweenmax.thumb.png.c849c5b56c6752e3f2276b82ee702625.png",
     link: "https://gsap.com",
     level: 78,
     experience: 70,
@@ -170,7 +160,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "React",
-    image: "/TechIcons/React.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg",
     link: "https://react.dev",
     level: 90,
     experience: 85,
@@ -180,7 +170,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Next.js",
-    image: "/TechIcons/Next.js.svg",
+    image: "https://www.svgrepo.com/show/354113/nextjs-icon.svg",
     link: "https://nextjs.org",
     level: 85,
     experience: 80,
@@ -190,7 +180,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Three.js",
-    image: "/TechIcons/Three.js.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Three.js_Icon.svg",
     link: "https://threejs.org",
     level: 78,
     experience: 72,
@@ -200,7 +190,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Angular",
-    image: "/TechIcons/Angular.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/0/0d/Deprecated_Angular_logo.svg",
     link: "https://angular.dev",
     level: 85,
     experience: 80,
@@ -210,7 +200,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Chart.js",
-    image: "/TechIcons/Chart.js.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/8/86/Chart.js_logo.svg",
     link: "https://www.chartjs.org",
     level: 78,
     experience: 72,
@@ -222,7 +212,7 @@ export const techStackItems: TechItem[] = [
   /* Back-end Technologies */
   {
     title: "Node.js",
-    image: "/TechIcons/Node.js.svg",
+    image: "https://www.svgrepo.com/show/354119/nodejs-icon.svg",
     link: "https://nodejs.org",
     level: 85,
     experience: 80,
@@ -232,7 +222,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Express.js",
-    image: "/TechIcons/Express.js.svg",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe1k8pM0eIDgOiGYr06gEmHlG3eJYTckNzO8R-nmjH3g&s=10d",
     link: "https://expressjs.com",
     level: 82,
     experience: 78,
@@ -242,7 +232,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "JWT",
-    image: "/TechIcons/JWT.svg",
+    image: "https://img.icons8.com/?size=256&id=rHpveptSuwDz&format=png",
     link: "https://jwt.io",
     level: 80,
     experience: 75,
@@ -252,7 +242,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "OpenCV",
-    image: "/TechIcons/OpenCV.svg",
+    image: "https://images.icon-icons.com/2699/PNG/512/opencv_logo_icon_170887.png",
     link: "https://opencv.org",
     level: 72,
     experience: 65,
@@ -264,7 +254,7 @@ export const techStackItems: TechItem[] = [
   /* Databases */
   {
     title: "Firebase",
-    image: "/TechIcons/Firebase.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Firebase_Logo_%28No_wordmark%29_%282024-%29.svg",
     link: "https://firebase.google.com",
     level: 78,
     experience: 72,
@@ -274,7 +264,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Supabase",
-    image: "/TechIcons/Supabase.svg",
+    image: "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/supabase.webp",
     link: "https://supabase.com",
     level: 75,
     experience: 68,
@@ -284,7 +274,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "PostgreSQL",
-    image: "/TechIcons/PostgreSQL.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1280px-Postgresql_elephant.svg.png",
     link: "https://www.postgresql.org",
     level: 80,
     experience: 75,
@@ -294,7 +284,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "SQLite",
-    image: "/TechIcons/SQLite.svg",
+    image: "https://www.svgrepo.com/show/374094/sqlite.svg",
     link: "https://www.sqlite.org",
     level: 78,
     experience: 72,
@@ -304,7 +294,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "MongoDB",
-    image: "/TechIcons/MongoDB.svg",
+    image: "https://icon.icepanel.io/Technology/svg/MongoDB.svg",
     link: "https://www.mongodb.com",
     level: 82,
     experience: 78,
@@ -314,7 +304,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "MySQL",
-    image: "/TechIcons/MySQL.svg",
+    image: "https://icon.icepanel.io/Technology/svg/MySQL.svg",
     link: "https://www.mysql.com",
     level: 80,
     experience: 75,
@@ -326,7 +316,7 @@ export const techStackItems: TechItem[] = [
   /* Tools / DevOps / Design */
   {
     title: "Git",
-    image: "/TechIcons/Git.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Git_Icon.svg",
     link: "https://git-scm.com",
     level: 90,
     experience: 85,
@@ -336,7 +326,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "GitHub",
-    image: "/TechIcons/GitHub.svg",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI0m2XETqEvIbVmv1rXkjDb1N-tRlSlInwlCcwfGkpeoCmKeU90meC6vo&s=10",
     link: "https://github.com",
     level: 88,
     experience: 85,
@@ -345,18 +335,8 @@ export const techStackItems: TechItem[] = [
     tools: ["Repositories", "Pull Requests", "Actions"],
   },
   {
-    title: "VS Code",
-    image: "/TechIcons/VS Code.svg",
-    link: "https://code.visualstudio.com",
-    level: 92,
-    experience: 90,
-    category: "DevOps",
-    description: "Popular code editor with extensive extensions and debugging.",
-    tools: ["Extensions", "Debugging", "Terminal"],
-  },
-  {
     title: "Postman",
-    image: "/TechIcons/Postman.svg",
+    image: "https://www.svgrepo.com/show/354202/postman-icon.svg",
     link: "https://www.postman.com",
     level: 85,
     experience: 80,
@@ -366,7 +346,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Figma",
-    image: "/TechIcons/Figma.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
     link: "https://www.figma.com",
     level: 80,
     experience: 75,
@@ -376,7 +356,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Docker",
-    image: "/TechIcons/Docker.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Docker-svgrepo-com.svg/3840px-Docker-svgrepo-com.svg.png",
     link: "https://www.docker.com",
     level: 72,
     experience: 65,
@@ -386,7 +366,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Netlify",
-    image: "/TechIcons/Netlify.svg",
+    image: "https://images.seeklogo.com/logo-png/47/3/netlify-icon-logo-png_seeklogo-477950.png",
     link: "https://www.netlify.com",
     level: 78,
     experience: 72,
@@ -396,7 +376,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Vercel",
-    image: "/TechIcons/Vercel.svg",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpGGArTE_eXrg4L5F3A3LPOjjxf8fkt3N5urx4iuR5xN-E6B2pCIzej5o&s=10",
     link: "https://vercel.com",
     level: 80,
     experience: 75,
@@ -405,18 +385,8 @@ export const techStackItems: TechItem[] = [
     tools: ["Deployment", "Serverless", "Edge Functions"],
   },
   {
-    title: "Canva",
-    image: "/TechIcons/Canva.svg",
-    link: "https://www.canva.com",
-    level: 82,
-    experience: 78,
-    category: "Design",
-    description: "Graphic design platform for creating visual content.",
-    tools: ["Design", "Templates", "Collaboration"],
-  },
-  {
     title: "GIMP",
-    image: "/TechIcons/GIMP.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/4/45/The_GIMP_icon_-_gnome.svg",
     link: "https://www.gimp.org",
     level: 75,
     experience: 70,
@@ -424,19 +394,9 @@ export const techStackItems: TechItem[] = [
     description: "Free and open-source image editor for photo retouching.",
     tools: ["Image Editing", "Photo Retouching", "Graphic Design"],
   },
-  // {
-  //   title: "Angular CLI",
-  //   image: "/TechIcons/Angular CLI.svg",
-  //   link: "https://angular.dev",
-  //   level: 82,
-  //   experience: 78,
-  //   category: "DevOps",
-  //   description: "Command Line Interface for Angular development workflow.",
-  //   tools: ["Scaffolding", "Build Tools", "Deployment"],
-  // },
   {
     title: "npm",
-    image: "/TechIcons/npm.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/d/db/Npm-logo.svg",
     link: "https://www.npmjs.com",
     level: 85,
     experience: 80,

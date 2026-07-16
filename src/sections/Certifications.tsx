@@ -37,7 +37,7 @@ export const futureInternshipData: CertificationItemType[] = [
     id: 'pitowings',
     companyName: 'Pitowings Predictive Cybersecurity',
     isCurrentEmployer: true,
-    image: '/exp/pitowings.png',
+    image: 'https://i.ibb.co/gLVQ2rtC/pitowings.png',
     yearLabel: '2026',
     positions: [
       {
@@ -72,7 +72,7 @@ const certificationsData: CertificationItemType[] = [
   {
     id: 'qtree',
     companyName: 'Q Tree Technologies',
-    image: '/exp/qtree.jpg',
+    image: 'https://i.ibb.co/PvqkVWZK/qtree.jpg',
     yearLabel: '2023',
     positions: [
       {
@@ -88,7 +88,7 @@ const certificationsData: CertificationItemType[] = [
   {
     id: 'csc',
     companyName: 'CSC Computer Education',
-    image: '/exp/csc.png',
+    image: 'https://i.ibb.co/8g5488Bt/csc.png',
     yearLabel: '2020',
     positions: [
       {

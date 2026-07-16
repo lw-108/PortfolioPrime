@@ -203,7 +203,7 @@ const Steps: React.FC = () => {
                     <div
                       className="absolute inset-0 w-full h-full opacity-35 dark:opacity-20 pointer-events-none select-none"
                       style={{
-                        backgroundImage: "url('/stripe.svg')",
+                        backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
                         backgroundRepeat: 'repeat',
                         backgroundSize: '16px 16px',
                       }}
@@ -273,13 +273,15 @@ const Steps: React.FC = () => {
           border-radius: 0;
           overflow: hidden;
 
+          will-change: transform, opacity;
+
           background-image:
             linear-gradient(
               to bottom,
               rgba(255, 255, 227, 1) 0%,
               rgba(255, 255, 227, 1) 100%
             ),
-            url('/dot.svg');
+            url('https://i.ibb.co/ZpSdBkBH/dot.jpg');
           background-repeat: no-repeat, repeat;
           background-size: 100% 100%, 32px 32px;
           background-blend-mode: normal, soft-light;
@@ -293,7 +295,7 @@ const Steps: React.FC = () => {
               rgba(16, 16, 14, 1) 0%,
               rgba(16, 16, 14, 1) 100%
             ),
-            url('/dot.svg');
+            url('https://i.ibb.co/ZpSdBkBH/dot.jpg');
         }
 
         /* ── Number Header Bar ── */

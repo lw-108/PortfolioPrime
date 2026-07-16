@@ -66,7 +66,7 @@ const Layout = () => {
     <section 
       className='min-h-screen bg-background text-foreground transition-colors duration-300 relative flex flex-col'
       style={{
-        backgroundImage: "url('/stripe.svg')",
+        backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
         backgroundRepeat: 'repeat',
         backgroundSize: '24px 24px',
         backgroundAttachment: 'fixed',
@@ -78,7 +78,7 @@ const Layout = () => {
         <div 
           className="h-6 w-full relative z-10 animate-pulse"
           style={{
-            backgroundImage: "url('/stripe.svg')",
+            backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
             backgroundRepeat: 'repeat',
             backgroundSize: '10px',
           }}

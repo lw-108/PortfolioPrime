@@ -413,7 +413,8 @@ const Ball: React.FC<{
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
-    loader.load("/stripe.svg", (tex) => {
+    loader.setCrossOrigin('anonymous');
+    loader.load("https://i.ibb.co/7x9yp8J2/stripe.jpg", (tex) => {
       tex.wrapS = THREE.RepeatWrapping;
       tex.wrapT = THREE.RepeatWrapping;
           tex.repeat.set(8, 8);
@@ -976,18 +977,10 @@ export const SkillsPage: React.FC = () => {
 
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedTech, setSelectedTech] = useState<typeof techStackItems[0] | null>(null);
-  const [hasInteracted, setHasInteracted] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('portfolio_skills_interacted') === 'true';
-    }
-    return false;
-  });
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   const handleInteract = () => {
     setHasInteracted(true);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('portfolio_skills_interacted', 'true');
-    }
   };
 
   const filteredItems = useMemo(() => {
@@ -1055,7 +1048,7 @@ export const SkillsPage: React.FC = () => {
           <div
             className="absolute inset-0 w-full h-full opacity-10 dark:opacity-5 pointer-events-none select-none"
             style={{
-              backgroundImage: "url('/stripe.svg')",
+              backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
               backgroundRepeat: 'repeat',
               backgroundSize: '16px 16px',
             }}
@@ -1144,7 +1137,7 @@ export const SkillsPage: React.FC = () => {
               <div
                 className="absolute inset-0 w-full h-full opacity-10 dark:opacity-5 pointer-events-none select-none z-0"
                 style={{
-                  backgroundImage: "url('/stripe.svg')",
+                  backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
                   backgroundRepeat: 'repeat',
                   backgroundSize: '16px 16px',
                 }}

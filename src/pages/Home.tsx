@@ -19,7 +19,7 @@ export const Home: React.FC = () => {
   return (
     <>
       <Hero isLoaded={true} />
-      <div className="w-full bg-[url(/stripe.svg)] bg-repeat bg-size-[16px_16px] flex justify-center">
+      <div className="w-full bg-[url(https://i.ibb.co/7x9yp8J2/stripe.jpg)] bg-repeat bg-size-[16px_16px] flex justify-center">
         <div className="w-[97%] max-w-384 mx-auto bg-background flex justify-center">
           <div className="w-1/2 border-t border-neutral-800"></div>
         </div>

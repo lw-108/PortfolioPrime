@@ -193,41 +193,43 @@ export default function Hero({ isLoaded = false }: { isLoaded?: boolean }) {
                 if (isInView && !isSlowNetwork) {
                   return (
                     <Suspense fallback={
-                      <div className="w-full max-w-[340px] aspect-3/4 flex items-center justify-center relative">
-                        <img
-                          src="/omnilanyard.png"
-                          alt="Loading Lanyard"
-                          className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(245,73,0,0.2)] animate-pulse"
-                        />
-                      </div>
-                    }>
-                      <Lanyard
-                        isLoaded={isLoaded}
-                        lanyardImage="/lanyard.png"
-                        lanyardWidth={1}
-                      />
-                    </Suspense>
-                  );
-                } else {
-                  return (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.8, ease: 'easeOut' }}
-                      className="w-full max-w-[340px] aspect-3/4 flex items-center justify-center relative"
-                    >
-                      <motion.img
-                        src="/omnilanyard.png"
-                        alt="Lanyard Mockup"
-                        className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(245,73,0,0.2)]"
-                        animate={{
-                          y: [0, -12, 0],
-                        }}
-                        transition={{
-                          duration: 4,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
+                       <div className="w-full max-w-[340px] aspect-3/4 flex items-center justify-center relative">
+                         <img
+                           src="https://i.ibb.co/0jbGjxpt/omnilanyard.png"
+                           alt="Loading Lanyard"
+                           fetchPriority="high"
+                           className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(245,73,0,0.2)] animate-pulse"
+                         />
+                       </div>
+                     }>
+                       <Lanyard
+                         isLoaded={isLoaded}
+                         lanyardImage="https://i.ibb.co/VWcxJNX8/lanyard.png"
+                         lanyardWidth={1}
+                       />
+                     </Suspense>
+                   );
+                 } else {
+                   return (
+                     <motion.div
+                       initial={{ opacity: 0, y: 20 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       transition={{ duration: 0.8, ease: 'easeOut' }}
+                       className="w-full max-w-[340px] aspect-3/4 flex items-center justify-center relative"
+                     >
+                       <motion.img
+                         src="https://i.ibb.co/0jbGjxpt/omnilanyard.png"
+                         alt="Lanyard Mockup"
+                         fetchPriority="high"
+                         className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(245,73,0,0.2)]"
+                         animate={{
+                           y: [0, -12, 0],
+                         }}
+                         transition={{
+                           duration: 4,
+                           repeat: Infinity,
+                           ease: "easeInOut"
+                         }}
                       />
                     </motion.div>
                   );

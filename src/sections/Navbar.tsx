@@ -345,7 +345,7 @@ const Navbar: React.FC = () => {
         <div
           className="absolute inset-0 opacity-[0.03] dark:opacity-[0.06] pointer-events-none"
           style={{
-            backgroundImage: "url('/dot.svg')",
+            backgroundImage: "url('https://i.ibb.co/ZpSdBkBH/dot.jpg')",
             backgroundRepeat: 'repeat',
             backgroundSize: '28px 28px',
           }}
@@ -355,7 +355,7 @@ const Navbar: React.FC = () => {
         <div className="relative z-10 flex items-center justify-between px-8 pt-8 pb-6 border-b border-dashed border-border">
           <RouterLink to="/" onClick={toggleBtnClickAnimation} className="flex items-center gap-3">
             <img
-              src={isDarkMode ? '/logo-dark.svg' : '/logo-light.svg'}
+              src="https://i.ibb.co/pjL7BVkT/logo-dark.jpg"
               alt="LW"
               className="h-12 w-auto"
             />
@@ -363,6 +363,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
+              aria-label="Toggle dark mode"
               className="text-muted-foreground hover:text-primary transition-colors p-1.5 focus:outline-none cursor-pointer"
             >
               {isDarkMode ? <Moon size={16} /> : <Sun size={16} />}
@@ -459,7 +460,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center h-full">
             <RouterLink to="/">
               <img
-                src={isDarkMode ? "/logo-dark.svg" : "/logo-light.svg"}
+                src="https://i.ibb.co/pjL7BVkT/logo-dark.jpg"
                 alt="LW"
                 className="h-20 w-auto cursor-pointer"
               />
@@ -507,7 +508,7 @@ const Navbar: React.FC = () => {
                 <div
                   className="absolute top-[85%] left-1/2 -translate-x-1/2 w-48 border-2 border-neutral-700 p-3 z-50 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 backdrop-blur-sm"
                   style={{
-                    backgroundImage: "url('/stripe.svg')",
+                    backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
                     backgroundRepeat: 'repeat',
                     backgroundSize: '38px',
                   }}

@@ -3,13 +3,13 @@ import { db } from "./firebase";
 
 const MEASUREMENT_ID = "G-QBQWJK7NX3";
 
+let sessionClientId: string | null = null;
+
 const getClientId = () => {
-  let cid = localStorage.getItem("ga_client_id");
-  if (!cid) {
-    cid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    localStorage.setItem("ga_client_id", cid);
+  if (!sessionClientId) {
+    sessionClientId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }
-  return cid;
+  return sessionClientId;
 };
 
 // Send GA4 tracking event via Fetch with keepalive to survive page transitions (resolves net::ERR_ABORTED)

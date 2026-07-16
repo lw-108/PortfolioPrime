@@ -24,7 +24,7 @@ const internshipsData: Internship[] = [
     role: 'Cyber Security Intern',
     period: 'May 2026 - Present',
     location: 'Remote',
-    image: '/pitowings-web.webp',
+    image: 'https://i.ibb.co/W4HQ5jBh/pitowings-web.webp',
     year: '2026',
     description: 'Assisting in predictive threat hunting, monitoring firewall and security event logs, and analyzing vulnerabilities to secure cloud infrastructure.',
     achievements: [
@@ -33,7 +33,7 @@ const internshipsData: Internship[] = [
       'Drafted incident response guidelines and recommended system hardening protocols.'
     ],
     skills: ['Postman', 'Selenium', 'JMeter', 'Cypress', 'OWASP ZAP', 'Burp Suite'],
-    icon: <img src="/pitowings.webp" alt="Pitowings Logo" className="w-full h-full object-contain" />
+    icon: <img src="https://i.ibb.co/21BJ0Zf1/pitowings.webp" alt="Pitowings Logo" className="w-full h-full object-contain" />
   },
   {
     id: 'thiran',
@@ -41,7 +41,7 @@ const internshipsData: Internship[] = [
     role: 'MERN  Stack  Developer',
     period: 'May 2026',
     location: 'Gobichettipalayam',
-    image: '/exp/360.png',
+    image: 'https://i.ibb.co/TqdypjmH/360.png',
     year: '2026',
     description: 'Developed modern full-stack web applications. Participated in AI API model integrations and polished front-end user experience.',
     achievements: [
@@ -50,7 +50,7 @@ const internshipsData: Internship[] = [
       'Integrated AI LLM APIs to deliver intelligent, contextual chat completions.'
     ],
     skills: ['MongoDB', 'Express.js', 'React', 'Node.js', 'Tailwind'],
-    icon: <img src="/Thiran.png" alt="Thiran Logo" className="w-full h-full object-contain" />
+    icon: <img src="https://i.ibb.co/SX0LMpSr/Thiran.webp" alt="Thiran Logo" className="w-full h-full object-contain" />
   }
 ];
 
@@ -167,7 +167,7 @@ export const Experience: React.FC = () => {
                         className="flex items-start gap-3 text-xs sm:text-sm text-muted-foreground font-clash-light leading-relaxed"
                         style={{ letterSpacing: '0.05em', wordSpacing: '0.15em', lineHeight: '1.8' }}
                       >
-                        <img src="/omnitrixBullets.png" alt="Bullet" className="w-3.5 h-3.5 mt-1 shrink-0 object-contain" />
+                        <img src="https://i.ibb.co/TDbW3cSB/omnitrix-Bullets.png" alt="Bullet" className="w-3.5 h-3.5 mt-1 shrink-0 object-contain" />
                         <span>{ach}</span>
                       </li>
                     ))}

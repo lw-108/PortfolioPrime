@@ -22,7 +22,7 @@ const testimonials: Testimonial[] = [
     role: "CEO & Founder",
     company: "U Fill Academy",
     relation: "Web Client",
-    image: "/testimonials/balaji.png",
+    image: "https://i.ibb.co/zhn0yTyX/balaji.png",
     linkedin: "https://www.linkedin.com/in/muthubalaji-m-14a8891ab/",
   },
   {
@@ -32,7 +32,7 @@ const testimonials: Testimonial[] = [
     role: "CTO",
     company: "U Fill Academy",
     relation: "Friend",
-    image: "/testimonials/hari.png",
+    image: "https://i.ibb.co/mVf8JXdF/hari.png",
     linkedin: "https://www.linkedin.com/in/hari-krishnan-s-bb76843bb/",
   },
   {
@@ -42,7 +42,7 @@ const testimonials: Testimonial[] = [
     role: "Software Developer",
     company: "Freelance Client",
     relation: "Colleague",
-    image: "/testimonials/fantasy-shadow.png",
+    image: "https://i.ibb.co/cS7thgHg/fantasy-shadow.png",
     linkedin: "https://www.linkedin.com/in/keerthanaduraisamy/",
   },
   {
@@ -52,7 +52,7 @@ const testimonials: Testimonial[] = [
     role: "Software Engineer",
     company: "Freelance Client",
     relation: "Colleague",
-    image: "/testimonials/tamil.png",
+    image: "https://i.ibb.co/PsPx0tDj/tamil.png",
     linkedin: "https://www.linkedin.com/in/tamil-mi/",
   }
 ];

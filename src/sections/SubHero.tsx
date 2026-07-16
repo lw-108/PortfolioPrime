@@ -139,11 +139,11 @@ const SubHero: React.FC = () => {
               >
                 <video
                   ref={videoRef}
-                  src="/SanAndreas/San Andreas.mp4"
+                  src="https://res.cloudinary.com/dma4ltfxa/video/upload/v1783734856/portfolio/ufkvln9dgcto52fezrs6.mp4"
                   muted
                   loop
                   playsInline
-                  preload="metadata"
+                  preload="none"
                   className="w-full h-full object-cover pointer-events-none"
                   style={{ filter: 'contrast(1.15) brightness(0.75)' }}
                 />

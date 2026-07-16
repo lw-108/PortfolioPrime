@@ -134,7 +134,7 @@ export const LatestBlogs: React.FC = () => {
 
                 {/* Title */}
                 <h3 
-                  className="text-lg font-bold uppercase tracking-normal group-hover:text-primary transition-colors line-clamp-2 leading-snug mb-6 flex-1 font-dmsans"
+                  className="text-lg font-bold uppercase tracking-normal group-hover:text-primary transition-colors line-clamp-2 leading-snug mb-6 flex-1 font-clash"
                   style={{ wordSpacing: '0.15em' }}
                 >
                   {blog.title}

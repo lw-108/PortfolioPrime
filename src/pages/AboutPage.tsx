@@ -62,7 +62,7 @@ const AboutPage: React.FC = () => {
       className="about-section relative z-10 overflow-y-clip will-change-auto font-clash select-none bg-transparent"
     >
       <div className="w-[97%] max-w-384 mx-auto bg-background mt-[3vh] pt-8 sm:pt-12 pb-8 px-6 sm:px-8 lg:px-16">
-        
+
         {/* Header */}
         <div id="about-title" className="border-b border-dashed border-neutral-800 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12">
           <div>
@@ -81,22 +81,7 @@ const AboutPage: React.FC = () => {
         <div className="relative">
 
           {/* ═══════════ Header overlay ═══════════ */}
-          <div className="flex justify-between items-center mb-6 w-full z-10">
-            {/* Label */}
-            <motion.div
-              custom={0}
-              variants={revealVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="flex items-center gap-2 text-xl"
-            >
-              <span className="text-[#f54900] animate-spin">✱</span>
-              <span className="text-sm font-medium text-muted-foreground uppercase tracking-widest">
-                நான்
-              </span>
-            </motion.div>
-
+          <div className="flex justify-start items-center mb-6 w-full z-10">
             {/* Social icons */}
             <div className="flex gap-4">
               {/* GitHub */}
@@ -170,7 +155,7 @@ const AboutPage: React.FC = () => {
             <div
               className="absolute inset-0 w-full h-full opacity-[0.06] dark:opacity-[0.04] pointer-events-none select-none z-1"
               style={{
-                backgroundImage: "url('/stripe.svg')",
+                backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
                 backgroundRepeat: 'repeat',
                 backgroundSize: '16px 16px',
               }}
@@ -198,7 +183,7 @@ const AboutPage: React.FC = () => {
                 preserveAspectRatio="xMidYMid slice"
                 width="100%"
                 height="100%"
-                xlinkHref="/DrManhatten.webp"
+                xlinkHref="https://i.ibb.co/RpLmXS26/Dr-Manhatten.webp"
               />
             </svg>
           </motion.figure>
@@ -224,7 +209,7 @@ const AboutPage: React.FC = () => {
               </div>
             </motion.div>
 
-            
+
           </div>
         </div>
 

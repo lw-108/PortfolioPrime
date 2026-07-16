@@ -21,7 +21,7 @@ const educationHistory: EducationItem[] = [
     duration: '2024 - 2026',
     score: 'CGPA: 80%',
     coursework: 'Computer Architecture, Comparison of Learning Algorithms, OOP Concepts in Languages',
-    image: '/edu/esec.png'
+    image: 'https://i.ibb.co/jC4zbjN/esec.png'
   },
   {
     degree: 'Bachelor of Computer Applications (BCA)',
@@ -30,7 +30,7 @@ const educationHistory: EducationItem[] = [
     duration: '2020 - 2023',
     score: 'CGPA: 80%',
     coursework: 'Basics of Computer Systems, Cloud Computing Concepts, Algorithms and Problem Solving',
-    image: '/edu/ksr.jpg'
+    image: 'https://i.ibb.co/NnHqyPqP/ksr.webp'
   },
   {
     degree: 'Higher Secondary Certificate (XII - HSC)',
@@ -39,7 +39,7 @@ const educationHistory: EducationItem[] = [
     duration: '2019 - 2020',
     score: 'Percentage: 76%',
     coursework: 'Computer Systems and work principles, Programming (C, C++, Java, Python), OOP concepts, R, SQL, MySQL, MS Access',
-    image: '/edu/svn2.jpg'
+    image: 'https://i.ibb.co/ZR5JTBTH/sakthi.jpg'
   },
   {
     degree: 'Secondary School Leaving Certificate (X - SSLC)',
@@ -48,7 +48,7 @@ const educationHistory: EducationItem[] = [
     duration: '2017 - 2018',
     score: 'Percentage: 88%',
     coursework: 'Tamil, English, Mathematics, Science, Social Science',
-    image: '/edu/sakthi.jpg'
+    image: 'https://i.ibb.co/tT1WVpCr/svn2.jpg'
   }
 ];
 

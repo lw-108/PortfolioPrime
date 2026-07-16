@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import WorldMap from '../components/ui/WorldMap';
 import { useTheme } from '../components/theme-provider';
-import StickerPeel from '../components/StickerPeel'
 
 const contacts = [
   {
     name: "Mail",
-    icon: "/mail.svg",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg",
     link: "mailto:lingeshwarma108@gmail.com",
     color: "#ff5500",
     description: "Send an email"
@@ -28,7 +27,7 @@ const contacts = [
   },
   {
     name: "LinkedIn",
-    icon: "/TechIcons/LinkedIn.svg",
+    icon: "/linkedin.svg",
     link: "https://www.linkedin.com/in/lingeshwarma19/",
     color: "#ff5500",
     description: "Professional network"
@@ -136,16 +135,10 @@ export function Footer() {
           {/* Left Section: LW Logo Container (Centered on mobile, responsive padding) */}
           <div className="col-span-1 md:col-span-4 flex items-center justify-center py-10 md:py-0 md:pr-10 min-h-[180px] sm:min-h-[220px] md:min-h-[300px] relative bg-background border-b border-dashed border-neutral-800 md:border-b-0 transition-colors duration-300">
             <div className="scale-75 sm:scale-90 md:scale-100 relative w-[220px] h-[220px] flex items-center justify-center">
-              <StickerPeel
-                imageSrc="/logo-dark.svg"
-                width={220}
-                rotate={0}
-                peelBackHoverPct={30}
-                peelBackActivePct={40}
-                shadowIntensity={0.5}
-                lightingIntensity={0.1}
-                initialPosition={{ x: 0, y: 0 }}
-                peelDirection={0}
+              <img
+                src="https://i.ibb.co/4w3Zxxx9/logo.png"
+                alt="LW Logo"
+                className="w-full h-full object-contain"
               />
             </div>
             {/* Vertical Stripe Divider */}
@@ -233,14 +226,14 @@ export function Footer() {
                     href={c.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group hover:-translate-y-1 p-2 border border-neutral-800/40 dark:border-neutral-800/70 hover:border-[#FF5500] hover:dark:border-[#FF5500] rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer select-none w-10 h-10 bg-repeat bg-size-[15px_15px] hover:bg-primary"
+                    className="group hover:-translate-y-1 p-2 border border-neutral-300 dark:border-neutral-800 hover:border-[#FF5500] hover:dark:border-[#FF5500] rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer select-none w-10 h-10 bg-repeat bg-size-[15px_15px] hover:bg-[#FF5500]/10"
                     style={{
-                      backgroundImage: "url('/stripe.svg')"
+                      backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')"
                     }}
                     title={`${c.name} - ${c.description}`}
                   >
                     <div
-                      className="w-5 h-5 bg-[#FF5500] group-hover:bg-background transition-all duration-300"
+                      className="w-5 h-5 bg-[#FF5500] transition-all duration-300"
                       style={{
                         WebkitMask: `url(${c.icon}) no-repeat center / contain`,
                         mask: `url(${c.icon}) no-repeat center / contain`,

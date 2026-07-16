@@ -1,9 +1,7 @@
 import React from 'react';
-import { MiniGlobe } from '../components/ui/MiniGlobe';
 import { CreepyButton } from '../components/ui/creepy-button';
 
 interface CTAProps {
-  title?: string;
   text?: string;
   buttonText?: string;
   buttonLink?: string;
@@ -11,7 +9,6 @@ interface CTAProps {
 }
 
 export const CTA: React.FC<CTAProps> = ({
-  title = "Let's Make it happen",
   text = 'Your design is a masterpiece waiting to become alive.',
   buttonText = 'Get in touch',
   buttonLink = 'https://wa.me/+919025464209',
@@ -48,28 +45,27 @@ export const CTA: React.FC<CTAProps> = ({
             ></span>
           </div>
 
-          {/* Top spacer */}
-          <div className="hidden lg:block"></div>
-
-          {/* Content (Left-aligned, sharp buttons) */}
-          <div className="relative z-10 flex flex-col items-start justify-center gap-8 text-left max-w-4xl py-12">
-            <p className="text-sm sm:text-base uppercase tracking-widest font-clash text-white/80 max-w-[30ch]">
+          {/* Content (Left-aligned, stacked text, large neobrutalist styling) */}
+          <div className="relative z-10 flex flex-col items-start justify-center gap-10 text-left w-full py-12 max-w-4xl mr-auto">
+            <p className="text-xs sm:text-sm uppercase tracking-widest font-black font-clash text-white/80">
               {text}
             </p>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold uppercase tracking-tight leading-none max-w-[15ch] mix-blend-difference">
-              {title}
+            <h2 className="text-[clamp(4.5rem,13vw,9.5rem)] font-black uppercase tracking-tighter leading-[0.85] flex flex-col select-none font-clash">
+              <span className="neobrutal-text-stack ">Let's</span>
+              <span className="neobrutal-text-stack ">Make It</span>
+              <span className="neobrutal-text-stack ">Happen</span>
             </h2>
-            <div className="mt-4 flex items-start justify-start w-full">
+            <div className="mt-6 flex items-start justify-start w-full max-w-md">
               <a
                 href={buttonLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto"
+                className="w-full"
               >
                 <CreepyButton
                   type="button"
-                  className="w-full sm:w-auto text-sm tracking-widest uppercase rounded-none border-none cursor-pointer"
-                  coverClassName="bg-white text-[#f54900] font-bold uppercase tracking-wider text-sm rounded-none"
+                  className="w-full text-base tracking-widest uppercase rounded-none border-none cursor-pointer py-4 font-clash"
+                  coverClassName="bg-white text-[#f54900] font-black uppercase tracking-widest text-base rounded-none py-4 font-clash"
                 >
                   {buttonText}
                 </CreepyButton>
@@ -78,35 +74,36 @@ export const CTA: React.FC<CTAProps> = ({
           </div>
 
           {/* Bottom details panel (No top border / hr line) */}
-          <div className="relative z-10 flex flex-col md:flex-row w-full items-center justify-between gap-6 pt-8 mt-auto">
-            {/* Rotating continents globe animation - Glass Card */}
-            <div className="flex items-center backdrop-blur-md bg-white/10 border border-white/20 rounded-none p-1.5 gap-3 shadow-lg">
-              <div className="flex items-center justify-center w-12 h-12 bg-white/5 rounded-none overflow-hidden">
-                <MiniGlobe width={36} height={36} />
-              </div>
-              <div className="flex flex-col justify-center font-clash text-left pr-3">
-                <p className="text-[11px] font-bold text-white uppercase border-b border-white/10 pb-0.5">
-                  Working Globally
-                </p>
-                <p className="text-[10px] text-white/75 uppercase pt-0.5">
-                  Available Now
-                </p>
-              </div>
-            </div>
-
+          <div className="relative z-10 flex flex-col w-full items-start justify-start pt-8 mt-auto">
             {/* Inquiries */}
-            <div className="text-center md:text-right font-clash">
+            <div className="text-left font-clash">
               <p className="text-xs font-bold uppercase tracking-wider text-white/50 mb-1">For further inquiries</p>
               <a 
                 href={emailLink}
                 className="interactive text-sm font-semibold tracking-wide text-white hover:text-white/80 transition-colors lowercase"
               >
-                lingeshwarma108@gmail
+                lingeshwarma108@gmail.com
               </a>
             </div>
           </div>
         </div>
       </div>
+
+      <style>{`
+        .neobrutal-text-stack {
+          color: #ffffff;
+          -webkit-text-stroke: 0;
+          text-shadow: none;
+          letter-spacing: 0.05em; /* Added clean letter-spacing */
+        }
+        @media (max-width: 640px) {
+          .neobrutal-text-stack {
+            -webkit-text-stroke: 0;
+            text-shadow: none;
+            letter-spacing: 0.04em;
+          }
+        }
+      `}</style>
     </section>
   );
 };

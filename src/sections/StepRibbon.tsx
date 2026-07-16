@@ -72,13 +72,6 @@ const onboardingData: StepperData = {
         "This phase ensures there are no surprises later — just a shared understanding of what we're building and why it matters."
       ],
       cta: { label: "Start a project", href: "/contact" },
-      media: {
-        back: {
-          src: "/steps/plan.jpg",
-          wideSrc: "/steps/wideplan.png",
-          alt: "Project roadmap"
-        }
-      },
       svgMarkup: <SVGStar className="w-8 h-8 sm:w-10 sm:h-10 text-[#f54900]" />
     },
     {
@@ -92,13 +85,6 @@ const onboardingData: StepperData = {
         "Feedback loops are fast and collaborative, ensuring the final design feels natural, purposeful, and easy to use."
       ],
       cta: { label: "See designs", href: "/portfolio" },
-      media: {
-        back: {
-          src: "/steps/design.jpg",
-          wideSrc: "/steps/widedesign.png",
-          alt: "Interactive prototypes"
-        }
-      },
       svgMarkup: <SVGFourStar className="w-10 h-10 sm:w-14 sm:h-14 text-[#f54900] translate-x-2" />
     },
     {
@@ -112,13 +98,6 @@ const onboardingData: StepperData = {
         "Every feature is tested, refined, and optimized — not just to work, but to last."
       ],
       cta: { label: "Tech stack", href: "/skills" },
-      media: {
-        back: {
-          src: "/steps/code.jpg",
-          wideSrc: "/steps/widecode.png",
-          alt: "Code testing"
-        }
-      },
       svgMarkup: <SVGClover className="w-8 h-8 sm:w-10 sm:h-10 text-[#f54900]" />
     },
     {
@@ -132,13 +111,6 @@ const onboardingData: StepperData = {
         "Post-launch, I stay involved — supporting improvements, fixing issues, and helping your product grow."
       ],
       cta: { label: "Launch now", href: "/contact" },
-      media: {
-        back: {
-          src: "/steps/deploy.jpg",
-          wideSrc: "/steps/widedeploy.png",
-          alt: "Analytics and monitoring"
-        }
-      },
       svgMarkup: <SVGPinwheel className="w-8 h-8 sm:w-10 sm:h-10 text-[#f54900]" />
     }
   ]
@@ -315,7 +287,7 @@ const StepRibbon: React.FC = () => {
               {/* Content Grid */}
               <div className="stepper__content-grid">
                 {/* Step Text */}
-                <div className="stepper__step" id={step.id}>
+                <div className="stepper__step w-full" id={step.id}>
                   <h3 className="text-xl sm:text-2xl lg:text-4xl font-medium tracking-tight text-foreground mb-4 sm:mb-6 flex items-center gap-4">
                     {step.title}
                   </h3>
@@ -338,33 +310,6 @@ const StepRibbon: React.FC = () => {
                     )}
                   </div>
                 </div>
-
-                {/* Step Media */}
-                {step.media?.back && (
-                  <figure className="stepper__media border-t lg:border-t-0 lg:border-l border-neutral-200 dark:border-neutral-800 relative overflow-hidden">
-                    {/* Background repeating stripe pattern */}
-                    <div
-                      className="absolute inset-0 w-full h-full opacity-35 dark:opacity-20 pointer-events-none select-none"
-                      style={{
-                        backgroundImage: "url('/stripe.svg')",
-                        backgroundRepeat: 'repeat',
-                        backgroundSize: '16px 16px',
-                      }}
-                    />
-                    <picture>
-                      {step.media.back.wideSrc && (
-                        <source srcSet={step.media.back.wideSrc} media="(min-width: 1024px)" />
-                      )}
-                      <img
-                        className="stepper__media-image z-10 relative"
-                        src={step.media.back.src}
-                        alt={step.media.back.alt}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </picture>
-                  </figure>
-                )}
               </div>
             </div>
           ))}
@@ -449,6 +394,12 @@ const StepRibbon: React.FC = () => {
           transition: border-color 0.3s ease, transform 0.3s ease;
           border-radius: 0;
           overflow: hidden;
+          width: 100%;
+          max-width: 960px;
+          margin-left: auto;
+          margin-right: auto;
+
+          will-change: transform, opacity;
 
           background-image:
             linear-gradient(
@@ -456,7 +407,7 @@ const StepRibbon: React.FC = () => {
               rgba(255, 255, 227, 1) 0%,
               rgba(255, 255, 227, 1) 100%
             ),
-            url('/dot.svg');
+            url('https://i.ibb.co/ZpSdBkBH/dot.jpg');
           background-repeat: no-repeat, repeat;
           background-size: 100% 100%, 32px 32px;
           background-blend-mode: normal, soft-light;
@@ -470,7 +421,7 @@ const StepRibbon: React.FC = () => {
               rgba(16, 16, 14, 1) 0%,
               rgba(16, 16, 14, 1) 100%
             ),
-            url('/dot.svg');
+            url('https://i.ibb.co/ZpSdBkBH/dot.jpg');
         }
 
         /* ── Number Header Bar ── */
@@ -518,68 +469,26 @@ const StepRibbon: React.FC = () => {
           }
 
           .stepper__item {
-            height: 25.5rem; /* Strict fixed height for all cards on desktop */
+            min-height: 22.5rem;
+            height: auto;
           }
 
           .stepper__content-grid {
-            grid-template-columns: 1fr 1fr;
-            height: 22rem; /* 25.5rem total - 3.5rem number bar height */
+            grid-template-columns: 1fr;
+            height: auto;
           }
 
-          .stepper__step,
-          .stepper__media {
-            height: 100%;
-          }
-
-          .stepper__media {
-            padding: 0;
-          }
-
-          .stepper__media-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-
-          /* Alternating layout for even steps */
-          .stepper__item:nth-child(even) .stepper__step {
-            order: 2;
-          }
-
-          .stepper__item:nth-child(even) .stepper__media {
-            order: 1;
-            border-left: 0 !important;
-            border-right: 1px solid var(--border);
+          .stepper__step {
+            padding: 3.5rem 4.5rem; /* Spacious premium padding on desktop */
           }
         }
 
         .stepper__step {
-          padding: 2rem;
+          padding: 2.25rem 2.75rem; /* Good default padding on tablet */
           display: flex;
           flex-direction: column;
           justify-content: center;
           overflow: hidden;
-        }
-
-        .stepper__media {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0;
-          background-color: var(--background);
-          min-height: 0;
-        }
-
-        .stepper__media-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          filter: grayscale(10%) contrast(95%);
-          transition: all 0.5s ease;
-        }
-
-        .stepper__item:hover .stepper__media-image {
-          filter: none;
         }
 
         @media (max-width: 1023px) {
@@ -596,37 +505,24 @@ const StepRibbon: React.FC = () => {
             margin-bottom: 0;
           }
           .stepper__number-bar {
-            padding: 0.5rem 1.25rem;
+            padding: 0.5rem 1.5rem;
             height: 3rem;
           }
           .stepper__number {
             font-size: 1.5rem;
           }
           .stepper__step {
-            padding: 1.25rem;
+            padding: 2rem 2.25rem; /* Generous padding on mobile */
           }
           .stepper__step h3 {
             margin-bottom: 0.75rem !important;
-            font-size: 1.25rem !important;
+            font-size: 1.35rem !important;
             line-height: 1.25 !important;
           }
           .stepper__step-text {
-            font-size: 0.8125rem !important;
-            line-height: 1.5 !important;
-            margin-bottom: 0.375rem !important;
-          }
-          .stepper__media {
-            padding: 0;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            max-height: 240px;
-            min-height: 160px;
-            height: auto;
-          }
-          .stepper__media-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            font-size: 0.875rem !important;
+            line-height: 1.6 !important;
+            margin-bottom: 0.5rem !important;
           }
         }
 
@@ -640,7 +536,7 @@ const StepRibbon: React.FC = () => {
             margin-bottom: 25vh;
           }
           .stepper__number-bar {
-            padding: 0.4rem 0.75rem;
+            padding: 0.4rem 1rem;
             height: 2.5rem;
             gap: 0.5rem;
           }
@@ -651,28 +547,15 @@ const StepRibbon: React.FC = () => {
             font-size: 0.625rem;
           }
           .stepper__step {
-            padding: 1rem;
+            padding: 1.5rem 1.5rem; /* Clean padding on small mobile */
           }
           .stepper__step h3 {
-            font-size: 1.1rem !important;
+            font-size: 1.15rem !important;
           }
           .stepper__step-text {
-            font-size: 0.75rem !important;
-            line-height: 1.45 !important;
-            margin-bottom: 0.25rem !important;
-          }
-          .stepper__media {
-            padding: 0;
-            width: 100%;
-            aspect-ratio: 16 / 10;
-            max-height: 180px;
-            min-height: 130px;
-            height: auto;
-          }
-          .stepper__media-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            font-size: 0.8rem !important;
+            line-height: 1.5 !important;
+            margin-bottom: 0.375rem !important;
           }
         }
       `}</style>
