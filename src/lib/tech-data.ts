@@ -56,6 +56,36 @@ export const techStackItems: TechItem[] = [
     description: "Enterprise-level application development with strong OOP principles.",
     tools: ["OOP", "Spring", "Multithreading"],
   },
+  {
+    title: "Rust",
+    image: "https://icons.veryicon.com/png/o/business/vscode-program-item-icon/rust-1.png",
+    link: "https://www.rust-lang.org",
+    level: 80,
+    experience: 75,
+    category: "Backend",
+    description: "Empowering everyone to build reliable and efficient systems with memory safety.",
+    tools: ["Memory Safety", "Concurrency", "Systems Programming"],
+  },
+  {
+    title: "Tauri",
+    image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/tauri-icon.png",
+    link: "https://tauri.app",
+    level: 82,
+    experience: 78,
+    category: "Backend",
+    description: "Build smaller, faster, and more secure desktop applications with a web frontend.",
+    tools: ["Desktop Apps", "Rust Integration", "Cross-Platform"],
+  },
+  {
+    title: "Fast API",
+    image: "https://images.icon-icons.com/4256/PNG/512/fastapi_api_icon_265226.png",
+    link: "https://fastapi.tiangolo.com",
+    level: 85,
+    experience: 80,
+    category: "Backend",
+    description: "High-performance Python web framework for building APIs with OpenAPI & Pydantic.",
+    tools: ["Async", "OpenAPI", "Pydantic"],
+  },
 
   /* Front-end Technologies */
   {
@@ -403,6 +433,16 @@ export const techStackItems: TechItem[] = [
     category: "DevOps",
     description: "Package manager for JavaScript and the world's largest software registry.",
     tools: ["Package Management", "Scripts", "Dependencies"],
+  },
+  {
+    title: "Ollama",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Ollama-logo.svg/1920px-Ollama-logo.svg.png",
+    link: "https://ollama.com",
+    level: 84,
+    experience: 78,
+    category: "DevOps",
+    description: "Get up and running with large language models locally.",
+    tools: ["LLMs", "Local AI", "Model Inference"],
   },
 ];
 

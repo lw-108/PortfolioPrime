@@ -32,92 +32,81 @@ const SVGPinwheel = ({ className = "" }) => (
   </svg>
 );
 
-// Types
-interface MediaImage {
-  src: string;
-  wideSrc?: string;
-  alt: string;
+// Services / Stacking Section Data
+interface ServiceItem {
+  id: string;
+  label: string;
 }
 
-interface Step {
+interface ServiceSection {
   id: string;
   index: string;
+  subtitle: string;
   title: string;
-  subtitle?: string;
-  color?: string;
-  body: string[];
+  description: string;
+  items: ServiceItem[];
   cta?: { label: string; href: string };
-  media?: { back?: MediaImage };
-  svgMarkup: React.ReactNode;
+  svgIcon: React.ReactNode;
 }
 
-interface StepperData {
-  subtitle?: string;
-  title: string;
-  steps: Step[];
-}
-
-// Data with custom SVG markups for animations (now static/non-rotating inside card headers)
-const onboardingData: StepperData = {
-  subtitle: "How I Work",
-  title: "Build. Ship. Iterate.",
-  steps: [
-    {
-      id: "step-1",
-      index: "01",
-      title: "I Start with clarity",
-      subtitle: "Plan",
-      body: [
-        "A clear brief. Defined goals. Realistic timeline. I listen first, then map out the path forward.",
-        "We'll identify the core problem, define success metrics, and remove unnecessary complexity before it ever reaches design or code.",
-        "This phase ensures there are no surprises later — just a shared understanding of what we're building and why it matters."
-      ],
-      cta: { label: "Start a project", href: "/contact" },
-      svgMarkup: <SVGStar className="w-8 h-8 sm:w-10 sm:h-10 text-[#f54900]" />
-    },
-    {
-      id: "step-2",
-      index: "02",
-      title: "Design that works",
-      subtitle: "Design",
-      body: [
-        "Clean interfaces. Intuitive flows. Design decisions driven by real user needs — not trends.",
-        "I translate ideas into wireframes and interactive prototypes so you can see the product take shape early.",
-        "Feedback loops are fast and collaborative, ensuring the final design feels natural, purposeful, and easy to use."
-      ],
-      cta: { label: "See designs", href: "/projects" },
-      svgMarkup: <SVGFourStar className="w-10 h-10 sm:w-14 sm:h-14 text-[#f54900] translate-x-2" />
-    },
-    {
-      id: "step-3",
-      index: "03",
-      title: "Write. Test. Refine.",
-      subtitle: "Code",
-      body: [
-        "Clean, maintainable code built with modern tools and best practices.",
-        "I work with React, Next.js, and Tailwind to create fast, scalable applications that perform well across devices.",
-        "Every feature is tested, refined, and optimized — not just to work, but to last."
-      ],
-      cta: { label: "Tech stack", href: "/#skills" },
-      svgMarkup: <SVGClover className="w-8 h-8 sm:w-10 sm:h-10 text-[#f54900]" />
-    },
-    {
-      id: "step-4",
-      index: "04",
-      title: "Launch. Support. Grow.",
-      subtitle: "Launch",
-      body: [
-        "Deployment is smooth, secure, and production-ready from day one.",
-        "Your project goes live on Vercel or AWS with performance monitoring, analytics, and best-practice configurations.",
-        "Post-launch, I stay involved — supporting improvements, fixing issues, and helping your product grow."
-      ],
-      cta: { label: "Launch now", href: "/contact" },
-      svgMarkup: <SVGPinwheel className="w-8 h-8 sm:w-10 sm:h-10 text-[#f54900]" />
-    }
-  ]
-};
-
-const HEADER_HEIGHT_REM = 3.5;
+const servicesData: ServiceSection[] = [
+  {
+    id: "service-1",
+    index: "01",
+    subtitle: "Full-Stack Architecture",
+    title: "Full-Stack Development",
+    description: "From frontend interactions to backend APIs, I build complete web solutions. I work with modern stacks to deliver apps that are scalable, maintainable, and ready for real-world users.",
+    items: [
+      { id: "01", label: "React, Node.js, Express.js" },
+      { id: "02", label: "REST APIs, Firebase, Docker" },
+      { id: "03", label: "Git, GitHub, Postman" }
+    ],
+    cta: { label: "Start a project", href: "/contact" },
+    svgIcon: <SVGStar className="w-6 h-6 sm:w-8 sm:h-8 text-[#f54900]" />
+  },
+  {
+    id: "service-2",
+    index: "02",
+    subtitle: "Frontend & Interface Design",
+    title: "UI/UX & Frontend",
+    description: "Good design feels effortless. I design and develop responsive, intuitive interfaces that work smoothly across devices, with a strong focus on clarity, accessibility, and performance.",
+    items: [
+      { id: "01", label: "NextJs, TailwindCSS, GSAP" },
+      { id: "02", label: "Figma → Pixel-perfect code" },
+      { id: "03", label: "HTML, CSS, JavaScript" }
+    ],
+    cta: { label: "See designs", href: "/projects" },
+    svgIcon: <SVGFourStar className="w-7 h-7 sm:w-9 sm:h-9 text-[#f54900]" />
+  },
+  {
+    id: "service-3",
+    index: "03",
+    subtitle: "Systems & Algorithms",
+    title: "Optimization",
+    description: "I focus on building systems that stay reliable as things scale. From handling data efficiently to designing clean architecture, I apply core computer science principles to keep applications fast, stable, and future-ready.",
+    items: [
+      { id: "01", label: "Data Structures & Algorithms" },
+      { id: "02", label: "DBMS, OOP, OS Fundamentals" },
+      { id: "03", label: "Scalable systems & data pipelines" }
+    ],
+    cta: { label: "Tech stack", href: "/#skills" },
+    svgIcon: <SVGClover className="w-6 h-6 sm:w-8 sm:h-8 text-[#f54900]" />
+  },
+  {
+    id: "service-4",
+    index: "04",
+    subtitle: "Cloud & Deployment",
+    title: "Deployment & Growth",
+    description: "Deployment is smooth, secure, and production-ready from day one. I set up automated pipelines, cloud infrastructure on AWS or Vercel, and continuous performance monitoring.",
+    items: [
+      { id: "01", label: "Vercel, AWS Cloud, Docker" },
+      { id: "02", label: "Performance & SEO Audits" },
+      { id: "03", label: "CI/CD & System Maintenance" }
+    ],
+    cta: { label: "Launch now", href: "/contact" },
+    svgIcon: <SVGPinwheel className="w-6 h-6 sm:w-8 sm:h-8 text-[#f54900]" />
+  }
+];
 
 function Ribbon() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -126,7 +115,6 @@ function Ribbon() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Scroll-based translation by a smaller percentage to make the motion slower
       gsap.fromTo(
         marquee1Ref.current,
         { xPercent: 0 },
@@ -163,7 +151,6 @@ function Ribbon() {
 
   const svgClass = "mx-8 sm:mx-12 h-6 w-6 sm:h-8 sm:w-8 shrink-0";
 
-  // Ribbon 1 sequence: Developer -> svg1 -> Creator -> svg2 -> Designer -> svg3 -> full stack dev -> svg4
   const sequence1 = [
     { text: "Developer", svg: <SVGStar className={svgClass} /> },
     { text: "Creator", svg: <SVGFourStar className={svgClass} /> },
@@ -172,7 +159,6 @@ function Ribbon() {
   ];
   const repeatedItems1 = Array(36).fill(sequence1).flat();
 
-  // Ribbon 2 sequence: Developer -> svg1 -> Creator -> svg2 -> Designer -> svg3 -> full stack dev -> svg4
   const sequence2 = [
     { text: "Developer", svg: <SVGStar className={svgClass} /> },
     { text: "Creator", svg: <SVGFourStar className={svgClass} /> },
@@ -184,12 +170,10 @@ function Ribbon() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[180px] sm:h-[240px] overflow-hidden flex items-center justify-center select-none bg-background"
+      className="relative w-full h-[180px] sm:h-[240px] overflow-hidden flex items-center justify-center select-none bg-background border-t border-dashed border-border"
     >
-      {/* Ribbon 1: Slanted Left to Right - Border and Shadow removed */}
-      <div
-        className="absolute w-[150%] h-14 sm:h-20 bg-primary text-black flex items-center overflow-hidden rotate-[-10deg] sm:rotate-[-4deg] z-20 origin-center"
-      >
+      {/* Ribbon 1 */}
+      <div className="absolute w-[150%] h-14 sm:h-20 bg-primary text-black flex items-center overflow-hidden rotate-[-10deg] sm:rotate-[-4deg] z-20 origin-center">
         <div
           ref={marquee1Ref}
           className="flex whitespace-nowrap items-center font-clash text-lg sm:text-2xl md:text-3xl font-bold uppercase tracking-wider"
@@ -213,10 +197,8 @@ function Ribbon() {
         </div>
       </div>
 
-      {/* Ribbon 2: Slanted Right to Left - Border and Shadow removed */}
-      <div
-        className="absolute w-[150%] h-14 sm:h-20 bg-primary text-black flex items-center overflow-hidden rotate-10 sm:rotate-[4deg] z-10 origin-center"
-      >
+      {/* Ribbon 2 */}
+      <div className="absolute w-[150%] h-14 sm:h-20 bg-primary text-black flex items-center overflow-hidden rotate-10 sm:rotate-[4deg] z-10 origin-center">
         <div
           ref={marquee2Ref}
           className="flex whitespace-nowrap items-center font-clash text-lg sm:text-2xl md:text-3xl font-bold uppercase tracking-wider"
@@ -244,335 +226,148 @@ function Ribbon() {
 }
 
 const StepRibbon: React.FC = () => {
-  const data = onboardingData;
   const containerRef = useRef<HTMLDivElement>(null);
+  const stackContainerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Smooth GSAP ScrollTrigger Pinning — Every card pins at exact baseNavOffset so each card slides over and strictly hides the card below it
+  useEffect(() => {
+    const cards = cardRefs.current.filter(Boolean);
+    if (!cards.length || !stackContainerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768;
+      const baseNavOffset = isMobile ? 56 : 72; // Nav clearance
+
+      cards.forEach((card) => {
+        // Pin every card at baseNavOffset so each card slides over and strictly hides the card below it
+        ScrollTrigger.create({
+          trigger: card,
+          start: () => `top top+=${baseNavOffset}px`,
+          endTrigger: stackContainerRef.current,
+          end: () => `bottom bottom-=${isMobile ? 80 : 120}px`,
+          pin: true,
+          pinSpacing: false,
+          invalidateOnRefresh: true,
+        });
+      });
+
+      ScrollTrigger.refresh();
+    }, stackContainerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section ref={containerRef} className="relative w-full font-clash select-none bg-transparent">
-      <div className="w-[97%] max-w-384 mx-auto bg-background pt-10 pb-6 px-4 sm:px-8 lg:pt-12 lg:pb-8">
-        {/* Header */}
-        <header className="stepper__header mb-8 sm:mb-12 border-b border-dashed border-neutral-800 pb-6 sm:pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 bg-background ">
+    <section ref={containerRef} className="relative w-full font-clash select-none bg-transparent text-foreground">
+      {/* 97% width inner container matching Home.tsx and other sections */}
+      <div className="w-[97%] max-w-384 mx-auto bg-background px-4 sm:px-8 lg:px-16 py-12 sm:py-16 border-t border-dashed border-border">
+        
+        {/* Section Header matching other sections */}
+        <header className="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-dashed border-border pb-6 sm:pb-8 bg-background">
           <div>
-            <span className="text-[#f54900] text-sm uppercase tracking-widest font-semibold bg-background">
-              {data.subtitle}
+            <span className="text-[#f54900] text-sm uppercase tracking-widest font-semibold font-clash flex items-center gap-1.5">
+              How I Work
             </span>
-            <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground bg-background leading-none">
-              <AnimatedTitle text={data.title} />
+            <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold uppercase tracking-tight mt-2 text-foreground leading-none font-clash">
+              <AnimatedTitle text="WHAT I DO /" />
             </h2>
           </div>
-          <p className="text-muted-foreground max-w-md font-clash text-sm sm:text-base bg-background">
+
+          <p className="text-muted-foreground max-w-md font-clash text-sm sm:text-base leading-relaxed">
             A structured, collaborative approach to delivering clean code, premium designs, and production-ready applications.
           </p>
         </header>
 
-        {/* Steps Container */}
-        <div className="stepper__steps relative">
-          {data.steps.map((step, index) => (
+        {/* Full-Width GSAP Stacking Cards Container */}
+        <div ref={stackContainerRef} className="stepper__stack-container relative w-full flex flex-col space-y-[35vh] sm:space-y-[45vh] pt-4 pb-[15vh]">
+          {servicesData.map((service, index) => (
             <div
-              key={step.id}
-              className="stepper__item group border border-neutral-200 dark:border-neutral-800"
+              key={service.id}
+              ref={(el) => { cardRefs.current[index] = el; }}
+              className="stepper__card w-full bg-background text-foreground border-t border-neutral-300 dark:border-neutral-800 rounded-none overflow-hidden font-clash"
               style={{
-                top: `calc(var(--sticky-top-base) + (var(--header-height) * ${index}) - ${index}px)`,
-                zIndex: (index + 1) * 10
+                zIndex: (index + 1) * 10,
               }}
             >
-              {/* Number Header Bar */}
-              <div className="stepper__number-bar">
-                <span className="stepper__number">{step.index}</span>
-                <span className="stepper__subtitle-label">{step.subtitle}</span>
-                <div className="ml-auto flex items-center justify-center">
-                  {step.svgMarkup}
+              {/* Card Title & Number Header Bar */}
+              <div className="stepper__card-header py-3.5 sm:py-5 px-4 sm:px-8 flex items-center justify-between bg-background font-clash rounded-none border-b border-neutral-200 dark:border-neutral-800">
+                <div className="flex items-center gap-3 sm:gap-6 flex-1 min-w-0">
+                  <span className="text-lg sm:text-2xl font-extrabold text-[#f54900] font-clash shrink-0">
+                    ({service.index})
+                  </span>
+                  <h3 className="text-base sm:text-2xl lg:text-3xl font-extrabold uppercase tracking-tight text-foreground font-clash truncate">
+                    {service.title}
+                  </h3>
+                </div>
+                <div className="flex items-center shrink-0 ml-2">
+                  {service.svgIcon}
                 </div>
               </div>
 
-              {/* Content Grid */}
-              <div className="stepper__content-grid">
-                {/* Step Text */}
-                <div className="stepper__step w-full" id={step.id}>
-                  <h3 className="text-xl sm:text-2xl lg:text-4xl font-medium tracking-tight text-foreground mb-4 sm:mb-6 flex items-center gap-4">
-                    {step.title}
-                  </h3>
-                  <div className="stepper__step-body">
-                    {step.body.map((p, idx) => (
-                      <p key={idx} className="stepper__step-text text-muted-foreground font-clash text-base leading-relaxed mb-4">
-                        {p}
-                      </p>
-                    ))}
-                    {step.cta && (
-                      <RouterLink
-                        to={step.cta.href}
-                        onClick={(e) => {
-                          if (!step.cta) return;
-                          const isHashLink = step.cta.href.includes('#');
-                          if (isHashLink) {
-                            const [path, hashVal] = step.cta.href.split('#');
-                            const currentPath = window.location.pathname;
-                            if (currentPath === path || (currentPath === '/' && path === '')) {
-                              e.preventDefault();
-                              const element = document.getElementById(hashVal);
-                              if (element) {
-                                element.scrollIntoView({ behavior: 'smooth' });
-                              }
-                            }
-                          }
-                        }}
-                        className="stepper__step-cta inline-flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 bg-[#f54900] text-white hover:bg-[#d43f00] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wider transition-colors duration-300 font-clash"
+              {/* Card Body Content */}
+              <div className="p-4 sm:p-8 lg:p-12 flex flex-col lg:flex-row gap-6 lg:gap-12 bg-background font-clash rounded-none">
+                <div className="flex-1 max-w-4xl">
+                  {/* Paragraph Description */}
+                  <p className="text-xs sm:text-base lg:text-lg text-muted-foreground font-clash leading-relaxed mb-6 max-w-2xl">
+                    {service.description}
+                  </p>
+
+                  {/* Sub-items List with Dividers */}
+                  <div className="flex flex-col border-b border-neutral-200 dark:border-neutral-800 mb-6">
+                    {service.items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="border-t border-neutral-200 dark:border-neutral-800 py-3 sm:py-4 flex items-center gap-3 sm:gap-6 group hover:bg-neutral-100 dark:hover:bg-neutral-900/50 px-2 transition-colors duration-200 font-clash rounded-none"
                       >
-                        {step.cta.label}
-                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                          <path d="M7 7l10 10m0 0V7m0 10H7" />
-                        </svg>
-                      </RouterLink>
-                    )}
+                        <span className="font-mono text-xs text-[#f54900] font-bold shrink-0">
+                          {item.id}
+                        </span>
+                        <span className="font-clash text-sm sm:text-lg lg:text-xl font-semibold text-foreground group-hover:text-[#f54900] transition-colors">
+                          {item.label}
+                        </span>
+                      </div>
+                    ))}
                   </div>
+
+                  {/* CTA Button with sharp 90-degree rounded-none edges */}
+                  {service.cta && (
+                    <RouterLink
+                      to={service.cta.href}
+                      className="inline-flex items-center gap-2 px-5 py-3 bg-[#f54900] text-white hover:bg-[#d43f00] text-xs font-semibold uppercase tracking-wider transition-colors duration-300 font-clash rounded-none"
+                    >
+                      {service.cta.label}
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M7 7l10 10m0 0V7m0 10H7" />
+                      </svg>
+                    </RouterLink>
+                  )}
                 </div>
               </div>
             </div>
           ))}
-          <div className="stepper__spacer w-full" />
         </div>
 
-        {/* Row of the 4 SVGs in primary color under the 4th card — non-rotating */}
-        <div className="flex justify-center items-center gap-8 sm:gap-12 py-10 text-primary">
-          <SVGStar className="w-10 h-10 sm:w-14 sm:h-14" />
-          <SVGFourStar className="w-12 h-12 sm:w-16 sm:h-16" />
-          <SVGClover className="w-10 h-10 sm:w-14 sm:h-14" />
-          <SVGPinwheel className="w-10 h-10 sm:w-14 sm:h-14" />
-        </div>
-
-        {/* Ribbon nested at the bottom of the steps section, spanning full container width via negative margins */}
-        <div className="w-auto -mx-4 sm:-mx-8 overflow-hidden bg-background">
+        {/* Animated Ribbon Marquee Banner at bottom */}
+        <div className="w-full overflow-hidden bg-background">
           <Ribbon />
         </div>
 
       </div>
 
       <style>{`
-        @keyframes marquee-left {
-          0% { transform: translate3d(0, 0, 0); }
-          100% { transform: translate3d(-50%, 0, 0); }
-        }
-        @keyframes marquee-right {
-          0% { transform: translate3d(-50%, 0, 0); }
-          100% { transform: translate3d(0, 0, 0); }
-        }
-        .animate-marquee-left {
-          display: flex;
-          width: max-content;
-          animation: marquee-left 25s linear infinite;
-        }
-        .animate-marquee-right {
-          display: flex;
-          width: max-content;
-          animation: marquee-right 25s linear infinite;
+        .stepper__stack-container {
+          overflow: visible;
         }
 
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 12s linear infinite;
+        .stepper__card {
+          box-shadow: none;
+          border-radius: 0 !important;
         }
 
-        .stepper__header {
-          position: relative;
-          background-color: var(--background);
-        }
-
-        .stepper__steps {
-          --sticky-top-base: 1rem;
-          display: flex;
-          flex-direction: column;
-          padding-bottom: 0;
-        }
-
-        .stepper__spacer {
-          height: 35vh;
-        }
-
-        .stepper__item {
-          margin-bottom: 35vh;
-        }
-
-        .stepper__item:last-child {
-          margin-bottom: 0;
-        }
-
-        .stepper__item {
-          --header-height: 3.5rem;
-          position: sticky;
-          display: flex;
-          flex-direction: column;
-          min-height: auto;
-          background-color: var(--background);
-          box-shadow: 0 -10px 40px -15px rgba(0, 0, 0, 0.08);
-          transition: border-color 0.3s ease, transform 0.3s ease;
-          border-radius: 0;
-          overflow: hidden;
-          width: 100%;
-          max-width: 960px;
-          margin-left: auto;
-          margin-right: auto;
-
-          will-change: transform, opacity;
-
-          background-image:
-            linear-gradient(
-              to bottom,
-              rgba(255, 255, 227, 1) 0%,
-              rgba(255, 255, 227, 1) 100%
-            ),
-            url('https://i.ibb.co/ZpSdBkBH/dot.jpg');
-          background-repeat: no-repeat, repeat;
-          background-size: 100% 100%, 32px 32px;
-          background-blend-mode: normal, soft-light;
-        }
-
-        .dark .stepper__item {
-          box-shadow: 0 -10px 40px -15px rgba(0, 0, 0, 0.4);
-          background-image:
-            linear-gradient(
-              to bottom,
-              rgba(16, 16, 14, 1) 0%,
-              rgba(16, 16, 14, 1) 100%
-            ),
-            url('https://i.ibb.co/ZpSdBkBH/dot.jpg');
-        }
-
-        /* ── Number Header Bar ── */
-        .stepper__number-bar {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          padding: 0.65rem 2rem;
-          height: ${HEADER_HEIGHT_REM}rem;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-          background: rgba(255, 255, 227, 0.95);
-          backdrop-filter: blur(8px);
-        }
-
-        .dark .stepper__number-bar {
-          border-bottom-color: rgba(255, 255, 255, 0.1);
-          background: rgba(16, 16, 14, 0.95);
-        }
-
-        .stepper__number {
-          font-size: 1.75rem;
-          font-weight: 700;
-          color: #f54900;
-          line-height: 1;
-          letter-spacing: -0.02em;
-        }
-
-        .stepper__subtitle-label {
-          font-size: 0.75rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.15em;
-          color: var(--muted-foreground);
-        }
-
-        /* ── Content Grid (text + media) ── */
-        .stepper__content-grid {
-          display: grid;
-          flex: 1;
-        }
-
-        @media (min-width: 1024px) {
-          .stepper__steps {
-            --sticky-top-base: 6rem; /* Safe clearance for sticky headers */
-          }
-
-          .stepper__item {
-            min-height: 22.5rem;
-            height: auto;
-          }
-
-          .stepper__content-grid {
-            grid-template-columns: 1fr;
-            height: auto;
-          }
-
-          .stepper__step {
-            padding: 3.5rem 4.5rem; /* Spacious premium padding on desktop */
-          }
-        }
-
-        .stepper__step {
-          padding: 2.25rem 2.75rem; /* Good default padding on tablet */
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          overflow: hidden;
-        }
-
-        @media (max-width: 1023px) {
-          .stepper__steps {
-            --sticky-top-base: 4rem;
-            padding-bottom: 0;
-          }
-          .stepper__item {
-            --header-height: 3rem;
-            min-height: auto;
-            margin-bottom: 30vh;
-          }
-          .stepper__item:last-child {
-            margin-bottom: 0;
-          }
-          .stepper__number-bar {
-            padding: 0.5rem 1.5rem;
-            height: 3rem;
-          }
-          .stepper__number {
-            font-size: 1.5rem;
-          }
-          .stepper__step {
-            padding: 2rem 2.25rem; /* Generous padding on mobile */
-          }
-          .stepper__step h3 {
-            margin-bottom: 0.75rem !important;
-            font-size: 1.35rem !important;
-            line-height: 1.25 !important;
-          }
-          .stepper__step-text {
-            font-size: 0.875rem !important;
-            line-height: 1.6 !important;
-            margin-bottom: 0.5rem !important;
-          }
-        }
-
-        /* ── Extra-small devices (≤ 480px) ── */
-        @media (max-width: 480px) {
-          .stepper__steps {
-            --sticky-top-base: 3.5rem;
-          }
-          .stepper__item {
-            --header-height: 2.5rem;
-            margin-bottom: 25vh;
-          }
-          .stepper__number-bar {
-            padding: 0.4rem 1rem;
-            height: 2.5rem;
-            gap: 0.5rem;
-          }
-          .stepper__number {
-            font-size: 1.25rem;
-          }
-          .stepper__subtitle-label {
-            font-size: 0.625rem;
-          }
-          .stepper__step {
-            padding: 1.5rem 1.5rem; /* Clean padding on small mobile */
-          }
-          .stepper__step h3 {
-            font-size: 1.15rem !important;
-          }
-          .stepper__step-text {
-            font-size: 0.8rem !important;
-            line-height: 1.5 !important;
-            margin-bottom: 0.375rem !important;
-          }
+        .dark .stepper__card {
+          box-shadow: none;
+          border-radius: 0 !important;
         }
       `}</style>
     </section>
