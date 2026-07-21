@@ -260,7 +260,7 @@ const Navbar: React.FC = () => {
     { label: 'Home', url: '/' },
     { label: 'About', url: '/about' },
     { label: 'Projects', url: '/projects' },
-    { label: 'Skills', url: '/skills' },
+    { label: 'Skills', url: '/#skills' },
     { label: 'Blogs', url: '/blogs' },
     { label: 'Contact', url: '/contact' },
     { label: 'Resume', url: '/resume' },
@@ -280,7 +280,11 @@ const Navbar: React.FC = () => {
       {/* Burger Menu Button — outer wrapper controlled by GSAP scroll animation */}
       <div ref={burgerRef} className="fixed right-12 top-7 lg:right-16 lg:top-10 z-50" style={{ scale: 0, opacity: 0 }}>
         <MagneticEffect divId="magneto" textId="magnetoText">
-          <button id="magneto-wrapper" className="border-none bg-transparent p-0 outline-hidden">
+          <button 
+            id="magneto-wrapper" 
+            className="border-none bg-transparent p-0 outline-hidden"
+            style={{ display: isNavbarOpen ? 'none' : 'block' }}
+          >
             <div
               id="magneto"
               onClick={toggleBtnClickAnimation}
@@ -355,7 +359,7 @@ const Navbar: React.FC = () => {
         <div className="relative z-10 flex items-center justify-between px-8 pt-8 pb-6 border-b border-dashed border-border">
           <RouterLink to="/" onClick={toggleBtnClickAnimation} className="flex items-center gap-3">
             <img
-              src="https://i.ibb.co/pjL7BVkT/logo-dark.jpg"
+              src="https://i.ibb.co/4w3Zxxx9/logo.png"
               alt="LW"
               className="h-12 w-auto"
             />
@@ -395,7 +399,22 @@ const Navbar: React.FC = () => {
 
                 <RouterLink
                   to={l.url}
-                  onClick={toggleBtnClickAnimation}
+                  onClick={(e) => {
+                    toggleBtnClickAnimation();
+                    const isHashLink = l.url.includes('#');
+                    if (isHashLink) {
+                      const [path, hashVal] = l.url.split('#');
+                      if (location.pathname === path || (location.pathname === '/' && path === '')) {
+                        e.preventDefault();
+                        setTimeout(() => {
+                          const element = document.getElementById(hashVal);
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }, 350);
+                      }
+                    }
+                  }}
                   className="relative z-10 flex items-center px-8 py-5 overflow-hidden"
                 >
                   {/* Index + Label — slides right on hover */}
@@ -460,7 +479,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center h-full">
             <RouterLink to="/">
               <img
-                src="https://i.ibb.co/pjL7BVkT/logo-dark.jpg"
+                src="https://i.ibb.co/4w3Zxxx9/logo.png"
                 alt="LW"
                 className="h-20 w-auto cursor-pointer"
               />
@@ -472,14 +491,30 @@ const Navbar: React.FC = () => {
               { label: 'Home', url: '/' },
               { label: 'About', url: '/about' },
               { label: 'Projects', url: '/projects' },
-              { label: 'Skills', url: '/skills' },
+              { label: 'Skills', url: '/#skills' },
               { label: 'Blogs', url: '/blogs' },
             ].map((link) => {
               const isActive = location.pathname === link.url;
+              const isHashLink = link.url.includes('#');
+
+              const handleLinkClick = (e: React.MouseEvent) => {
+                if (isHashLink) {
+                  const [path, hashVal] = link.url.split('#');
+                  if (location.pathname === path || (location.pathname === '/' && path === '')) {
+                    e.preventDefault();
+                    const element = document.getElementById(hashVal);
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }
+                }
+              };
+
               return (
                 <RouterLink
                   key={link.label}
                   to={link.url}
+                  onClick={handleLinkClick}
                   className={`font-medium transition-colors duration-300 py-1 ${
                     isActive
                       ? 'text-primary'
@@ -508,7 +543,7 @@ const Navbar: React.FC = () => {
                 <div
                   className="absolute top-[85%] left-1/2 -translate-x-1/2 w-48 border-2 border-neutral-700 p-3 z-50 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 backdrop-blur-sm"
                   style={{
-                    backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
+                    backgroundImage: "var(--stripe-bg)",
                     backgroundRepeat: 'repeat',
                     backgroundSize: '38px',
                   }}
@@ -553,7 +588,7 @@ const Navbar: React.FC = () => {
             </button>
 
             <RouterLink to="/contact">
-              <button className="bg-foreground text-background font-semibold px-6 py-2.5 hover:bg-primary hover:text-white hover:shadow-[0_0_20px_rgba(245,73,0,0.4)] transition-all duration-300 rounded-none text-sm tracking-wider uppercase cursor-pointer">
+              <button className="bg-foreground text-background font-semibold px-6 py-2.5 hover:bg-primary hover:text-[#ffffe3] hover:shadow-[0_0_20px_rgba(245,73,0,0.4)] transition-all duration-300 rounded-none text-sm tracking-wider uppercase cursor-pointer">
                 Contact
               </button>
             </RouterLink>
@@ -569,20 +604,21 @@ const Navbar: React.FC = () => {
               {isDarkMode ? <Moon size={20} /> : <Sun size={20} />}
             </button>
 
-            {/* Mobile sidebar menu button — bg-primary, lines rotate to X when open */}
+            {/* Mobile sidebar menu button — transparent, lines are primary orange */}
             <button
               onClick={toggleBtnClickAnimation}
-              className="relative flex items-center justify-center w-[34px] h-[34px] rounded-full bg-primary border border-primary cursor-pointer focus:outline-none transition-colors duration-300 z-50"
+              className="relative flex items-center justify-center w-[34px] h-[34px] bg-transparent border-none cursor-pointer focus:outline-none transition-colors duration-300 z-50"
+              style={{ display: isNavbarOpen ? 'none' : 'flex' }}
               aria-label={isNavbarOpen ? 'Close menu' : 'Open menu'}
             >
               <span className="flex flex-col items-center justify-center w-[14px] h-[14px] relative">
                 <span
-                  className={`absolute block w-[14px] h-[1.5px] bg-white rounded-full transition-all duration-300 ease-in-out ${
+                  className={`absolute block w-[14px] h-[1.5px] bg-primary rounded-none transition-all duration-300 ease-in-out ${
                     isNavbarOpen ? 'rotate-45 top-[6px]' : 'rotate-0 top-[3px]'
                   }`}
                 />
                 <span
-                  className={`absolute block w-[14px] h-[1.5px] bg-white rounded-full transition-all duration-300 ease-in-out ${
+                  className={`absolute block w-[14px] h-[1.5px] bg-primary rounded-none transition-all duration-300 ease-in-out ${
                     isNavbarOpen ? '-rotate-45 top-[6px]' : 'rotate-0 top-[10px]'
                   }`}
                 />

@@ -228,7 +228,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="group hover:-translate-y-1 p-2 border border-neutral-300 dark:border-neutral-800 hover:border-[#FF5500] hover:dark:border-[#FF5500] rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer select-none w-10 h-10 bg-repeat bg-size-[15px_15px] hover:bg-[#FF5500]/10"
                     style={{
-                      backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')"
+                      backgroundImage: "var(--stripe-bg)"
                     }}
                     title={`${c.name} - ${c.description}`}
                   >

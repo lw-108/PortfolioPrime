@@ -170,7 +170,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Next.js",
-    image: "https://www.svgrepo.com/show/354113/nextjs-icon.svg",
+    image: "https://img.icons8.com/color/1200/nextjs.jpg",
     link: "https://nextjs.org",
     level: 85,
     experience: 80,
@@ -180,7 +180,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Three.js",
-    image: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Three.js_Icon.svg",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrIWOHq-dA9la8hmZydHjL0rAvwycI0SSdcxG60LHesPrXPujDxMRb_Qw&s=10",
     link: "https://threejs.org",
     level: 78,
     experience: 72,

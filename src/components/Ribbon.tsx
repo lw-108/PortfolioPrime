@@ -69,7 +69,7 @@ export default function Ribbon() {
           },
         }
       );
-    }, containerRef);
+    }, containerRef.current || undefined);
 
     return () => ctx.revert();
   }, []);

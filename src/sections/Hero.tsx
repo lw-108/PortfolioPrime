@@ -10,15 +10,8 @@ const Lanyard = lazy(() => import('../components/Lanyard'));
 export default function Hero({ isLoaded = false }: { isLoaded?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsInView(entry.isIntersecting);
@@ -31,7 +24,6 @@ export default function Hero({ isLoaded = false }: { isLoaded?: boolean }) {
     }
 
     return () => {
-      window.removeEventListener('resize', checkMobile);
       if (containerRef.current) {
         observer.unobserve(containerRef.current);
       }
@@ -108,7 +100,7 @@ export default function Hero({ isLoaded = false }: { isLoaded?: boolean }) {
                     WebkitClipPath: 'url(#hero-staircase-clip)',
                   }}
                 >
-                  {isInView && !isMobile ? (
+                  {isInView ? (
                     <Dither
                       waveColor={[0.96, 0.29, 0.0]}
                       disableAnimation={false}

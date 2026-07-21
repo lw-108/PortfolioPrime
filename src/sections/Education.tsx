@@ -39,7 +39,7 @@ const educationHistory: EducationItem[] = [
     duration: '2019 - 2020',
     score: 'Percentage: 76%',
     coursework: 'Computer Systems and work principles, Programming (C, C++, Java, Python), OOP concepts, R, SQL, MySQL, MS Access',
-    image: 'https://i.ibb.co/ZR5JTBTH/sakthi.jpg'
+    image: 'https://i.ibb.co/tT1WVpCr/svn2.jpg'
   },
   {
     degree: 'Secondary School Leaving Certificate (X - SSLC)',
@@ -48,7 +48,7 @@ const educationHistory: EducationItem[] = [
     duration: '2017 - 2018',
     score: 'Percentage: 88%',
     coursework: 'Tamil, English, Mathematics, Science, Social Science',
-    image: 'https://i.ibb.co/tT1WVpCr/svn2.jpg'
+    image: 'https://i.ibb.co/ZR5JTBTH/sakthi.jpg'
   }
 ];
 

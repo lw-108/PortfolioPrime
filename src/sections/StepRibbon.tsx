@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { AnimatedTitle } from '../components/ui/AnimatedTitle';
@@ -84,7 +85,7 @@ const onboardingData: StepperData = {
         "I translate ideas into wireframes and interactive prototypes so you can see the product take shape early.",
         "Feedback loops are fast and collaborative, ensuring the final design feels natural, purposeful, and easy to use."
       ],
-      cta: { label: "See designs", href: "/portfolio" },
+      cta: { label: "See designs", href: "/projects" },
       svgMarkup: <SVGFourStar className="w-10 h-10 sm:w-14 sm:h-14 text-[#f54900] translate-x-2" />
     },
     {
@@ -97,7 +98,7 @@ const onboardingData: StepperData = {
         "I work with React, Next.js, and Tailwind to create fast, scalable applications that perform well across devices.",
         "Every feature is tested, refined, and optimized — not just to work, but to last."
       ],
-      cta: { label: "Tech stack", href: "/skills" },
+      cta: { label: "Tech stack", href: "/#skills" },
       svgMarkup: <SVGClover className="w-8 h-8 sm:w-10 sm:h-10 text-[#f54900]" />
     },
     {
@@ -155,7 +156,7 @@ function Ribbon() {
           },
         }
       );
-    }, containerRef);
+    }, containerRef.current || undefined);
 
     return () => ctx.revert();
   }, []);
@@ -298,15 +299,30 @@ const StepRibbon: React.FC = () => {
                       </p>
                     ))}
                     {step.cta && (
-                      <a
-                        href={step.cta.href}
+                      <RouterLink
+                        to={step.cta.href}
+                        onClick={(e) => {
+                          if (!step.cta) return;
+                          const isHashLink = step.cta.href.includes('#');
+                          if (isHashLink) {
+                            const [path, hashVal] = step.cta.href.split('#');
+                            const currentPath = window.location.pathname;
+                            if (currentPath === path || (currentPath === '/' && path === '')) {
+                              e.preventDefault();
+                              const element = document.getElementById(hashVal);
+                              if (element) {
+                                element.scrollIntoView({ behavior: 'smooth' });
+                              }
+                            }
+                          }
+                        }}
                         className="stepper__step-cta inline-flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 bg-[#f54900] text-white hover:bg-[#d43f00] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wider transition-colors duration-300 font-clash"
                       >
                         {step.cta.label}
                         <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                           <path d="M7 7l10 10m0 0V7m0 10H7" />
                         </svg>
-                      </a>
+                      </RouterLink>
                     )}
                   </div>
                 </div>

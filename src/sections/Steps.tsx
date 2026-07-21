@@ -203,7 +203,7 @@ const Steps: React.FC = () => {
                     <div
                       className="absolute inset-0 w-full h-full opacity-35 dark:opacity-20 pointer-events-none select-none"
                       style={{
-                        backgroundImage: "url('https://i.ibb.co/7x9yp8J2/stripe.jpg')",
+                        backgroundImage: "var(--stripe-bg)",
                         backgroundRepeat: 'repeat',
                         backgroundSize: '16px 16px',
                       }}

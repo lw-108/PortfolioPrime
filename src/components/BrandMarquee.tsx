@@ -18,7 +18,7 @@ const defaultLogos: Logo[] = [
   { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg", alt: "C" },
   { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg", alt: "C++" },
   { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", alt: "Python" },
-  { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg", alt: "Java" },
+  { image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Duke.svg/960px-Duke.svg.png", alt: "Java" },
 
   { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", alt: "HTML5" },
   { image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg", alt: "CSS3" },
@@ -55,7 +55,7 @@ const defaultLogos: Logo[] = [
   },
 
   {
-    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
+    image: "https://git-scm.com/images/logos/downloads/Git-Icon-White.png",
     alt: "Git",
   },
   {
@@ -75,11 +75,11 @@ const defaultLogos: Logo[] = [
     alt: "VS Code",
   },
   {
-    image: "https://fastly.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Docker-svgrepo-com.svg/3840px-Docker-svgrepo-com.svg.png",
     alt: "Docker",
   },
   {
-    image: "https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/Vercel.svg",
+    image: "https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/vercel.png",
     alt: "Vercel",
   },
 

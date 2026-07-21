@@ -65,7 +65,7 @@ export const Greetings: React.FC = () => {
           scrub: 0.5,
         },
       });
-    }, containerRef);
+    }, containerRef.current || undefined);
 
     return () => {
       ctx.revert();
@@ -74,11 +74,11 @@ export const Greetings: React.FC = () => {
   }, []);
 
   return (
-    <section id="greetings" className="relative z-40 w-full bg-transparent py-0 px-0 overflow-hidden select-none font-clash">
+    <section id="greetings" className="relative z-40 w-full bg-transparent py-0 px-0 overflow-hidden select-none font-clash-light">
       <div ref={containerRef} className="w-[97%] max-w-384 mx-auto bg-background px-6 sm:px-10 lg:px-16 py-24 sm:py-32 relative">
         <p
           ref={textRef}
-          className="text-[clamp(1.1rem,3.2vw,3.8rem)] font-bold uppercase tracking-wide leading-[1.3] text-left sm:text-justify m-0 text-foreground dark:text-foreground"
+          className="text-[clamp(1.8rem,4.8vw,5.5rem)] font-light uppercase tracking-wide leading-[1.15] text-justify m-0 text-foreground dark:text-foreground"
         >
           {textContent}
         </p>

@@ -189,18 +189,25 @@ export const BlogsPage: React.FC = () => {
       h.classList.add("cms-heading");
     });
 
-    // Code blocks header copy buttons
+    // Code blocks header copy buttons - wrapped to prevent horizontal overflow/scroll stretching
     const preBlocks = doc.querySelectorAll("pre");
     preBlocks.forEach((block) => {
-      block.classList.add("relative", "group", "my-6", "rounded-xl", "overflow-hidden", "border", "border-neutral-800");
+      const wrapper = doc.createElement("div");
+      wrapper.className = "code-block-wrapper relative group my-6 rounded-xl overflow-hidden border border-neutral-800 bg-[#0d0d0c] w-full max-w-full text-left";
+      
       const lang = block.getAttribute("data-lang") || "code";
       const headerHtml = `
-        <div class="flex justify-between items-center bg-neutral-900 px-4 py-2 border-b border-neutral-800 text-[10px] font-mono text-neutral-450 select-none">
+        <div class="flex justify-between items-center bg-neutral-900 px-4 py-2 border-b border-neutral-800 text-[10px] font-mono text-neutral-450 select-none w-full">
           <span class="font-bold text-neutral-400">${lang.toUpperCase()}</span>
           <button class="copy-btn px-2.5 py-1 bg-neutral-800 hover:bg-neutral-700 text-white rounded font-bold cursor-pointer text-[9px] uppercase transition-colors">COPY</button>
         </div>
       `;
-      block.insertAdjacentHTML("afterbegin", headerHtml);
+      
+      block.parentNode?.insertBefore(wrapper, block);
+      wrapper.innerHTML = headerHtml;
+      wrapper.appendChild(block);
+      
+      block.className = "p-4 overflow-x-auto max-w-full block font-mono text-xs sm:text-sm leading-relaxed scrollbar-thin text-neutral-300 bg-transparent";
     });
 
     // Custom alignment & styling for inline figures
@@ -251,8 +258,9 @@ export const BlogsPage: React.FC = () => {
   const handleCopyCode = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target.classList.contains("copy-btn")) {
-      const pre = target.closest("pre");
-      const code = pre?.querySelector("code");
+      const wrapper = target.closest(".code-block-wrapper");
+      const pre = wrapper?.querySelector("pre");
+      const code = pre?.querySelector("code") || pre;
       if (code) {
         navigator.clipboard.writeText(code.textContent || "");
         target.innerText = "COPIED!";
@@ -542,7 +550,7 @@ export const BlogsPage: React.FC = () => {
       >
       
         {/* Breadcrumbs Navigation - Normal dashed hr line */}
-        <nav className="mb-10 flex items-center gap-2 text-xs uppercase tracking-widest font-semibold border-b border-dashed border-border pb-4">
+        <nav className="mb-10 flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest font-semibold border-b border-dashed border-border pb-4">
           <a href="/" className="hover:text-primary transition-colors flex items-center gap-1.5 text-foreground">
             <HomeIcon className="w-3.5 h-3.5" />
             Home
@@ -577,23 +585,30 @@ export const BlogsPage: React.FC = () => {
               </button>
             </div>
 
-            <div className="relative w-[calc(100%-12px)] group/banner">
+            <div className="relative w-[calc(100%-12px)] group/banner mb-6 sm:mb-8">
               {/* Neobrutalist Hard Shadow */}
               <div className="absolute inset-0 translate-x-3 translate-y-3 bg-foreground transition-transform duration-300 ease-out group-hover/banner:translate-x-0 group-hover/banner:translate-y-0" />
               
-              {/* Image Container with Border - wide LinkedIn style aspect ratio */}
-              <div className="relative aspect-3/1 sm:aspect-4/1 w-full min-h-[160px] sm:min-h-[220px] md:min-h-[260px] overflow-hidden border-2 border-foreground bg-neutral-950">
+              {/* Image Container with Border - responsive and contain-fit */}
+              <div className="relative w-full h-[180px] sm:h-[280px] md:h-[360px] lg:h-[420px] overflow-hidden border-2 border-foreground bg-neutral-950">
+                {/* Blur backdrop for full showcased aesthetic */}
+                <img 
+                  src={selectedBlog.thumbnail} 
+                  alt="" 
+                  className="absolute inset-0 w-full h-full object-cover blur-lg opacity-35 select-none pointer-events-none scale-105"
+                />
+                {/* Contain foreground image to display full uncropped banner */}
                 <img 
                   src={selectedBlog.thumbnail} 
                   alt={selectedBlog.title} 
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  className="relative z-10 w-full h-full object-contain transition-transform duration-500 hover:scale-102"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent pointer-events-none"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent pointer-events-none z-20"></div>
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-foreground">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-bold uppercase tracking-wider text-foreground">
                 <span className="px-2.5 py-0.5 bg-primary text-white shadow-[2px_2px_0px_0px_var(--foreground)]"
                 >
                   {selectedBlog.category}
@@ -672,7 +687,8 @@ export const BlogsPage: React.FC = () => {
                   .blog-canvas hr { border: none; border-top: 2px dashed #333; margin: 40px 0; }
                   .blog-canvas a { color: var(--primary); text-decoration: underline; font-weight: bold; }
                   .blog-canvas a:hover { color: #ff8833; }
-                  .blog-canvas pre, .blog-canvas code { max-width: 100%; overflow-x: auto; word-break: break-all; }
+                  .blog-canvas pre { max-width: 100%; overflow-x: auto; white-space: pre; word-wrap: normal; word-break: normal; }
+                  .blog-canvas code { max-width: 100%; font-family: monospace; font-size: 14px; }
                 `}} />
                 
                 <div className="w-full overflow-x-hidden" dangerouslySetInnerHTML={{ __html: getProcessedHtml(selectedBlog.htmlContent) }} />
@@ -785,11 +801,17 @@ export const BlogsPage: React.FC = () => {
                         
                         {/* Primary Card face */}
                         <div className="relative bg-background p-4 flex flex-col h-full border border-foreground">
-                          <div className="relative h-56 overflow-hidden bg-neutral-950">
+                          <div className="relative h-56 overflow-hidden bg-neutral-950 border-b border-foreground">
+                            {/* Blur backdrop for cohesive grid aesthetics */}
+                            <img 
+                              src={blog.thumbnail} 
+                              alt="" 
+                              className="absolute inset-0 w-full h-full object-cover blur-sm opacity-25 select-none pointer-events-none scale-105"
+                            />
                             <img 
                               src={blog.thumbnail} 
                               alt={blog.title} 
-                              className="w-full h-full object-contain"
+                              className="relative z-10 w-full h-full object-contain transition-transform duration-300 group-hover:scale-102"
                             />
                             <div className="absolute top-4 left-4">
                               <span className="text-[10px] font-black uppercase tracking-wider px-3 py-1 bg-primary text-white"

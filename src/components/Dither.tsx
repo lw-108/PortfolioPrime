@@ -349,7 +349,7 @@ export default function Dither({
     <Canvas
       className="w-full h-full relative"
       camera={{ position: [0, 0, 6] }}
-      dpr={isMobile ? 0.4 : 0.75}
+      dpr={isMobile ? 0.6 : 1.0}
       gl={{ 
         antialias: false, 
         preserveDrawingBuffer: false,
@@ -366,7 +366,7 @@ export default function Dither({
         waveColor={waveColor}
         bgColor={bgColor}
         colorNum={colorNum}
-        pixelSize={isMobile ? 4 : pixelSize}
+        pixelSize={isMobile ? 2 : pixelSize}
         disableAnimation={disableAnimation}
         enableMouseInteraction={enableMouseInteraction}
         mouseRadius={mouseRadius}

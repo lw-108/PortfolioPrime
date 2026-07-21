@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import CreepyButton from '@/components/ui/creepy-button';
 import { techStackItems } from '../lib/tech-data';
 
 const containerVariants = {
@@ -28,7 +26,6 @@ const itemVariants = {
 } as const;
 
 export const Skills: React.FC = () => {
-  const navigate = useNavigate();
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -39,6 +36,15 @@ export const Skills: React.FC = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    const handleClose = () => {
+      setHoveredSkill(null);
+      setHoveredIcon(null);
+    };
+    window.addEventListener('click', handleClose);
+    return () => window.removeEventListener('click', handleClose);
   }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -84,10 +90,20 @@ export const Skills: React.FC = () => {
     }
   ];
 
+  const col1 = skillsData[0].items;
+  const col2 = skillsData[1].items;
+  const col3 = skillsData[2].items;
+  const maxRows = Math.max(col1.length, col2.length, col3.length);
+  const skillsRows = Array.from({ length: maxRows }).map((_, index) => ({
+    lang: col1[index] || "",
+    framework: col2[index] || "",
+    concept: col3[index] || "",
+  }));
+
   return (
     <section
       id="skills"
-      className="relative z-10 w-full bg-transparent overflow-hidden select-none font-clash"
+      className="relative z-10 w-full bg-transparent select-none font-clash"
       onMouseMove={handleMouseMove}
     >
       {/* Side border rails */}
@@ -104,10 +120,10 @@ export const Skills: React.FC = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="lg:col-span-5 flex flex-col justify-start text-left lg:sticky lg:top-28"
           >
-            <h2 className="font-extrabold uppercase text-[clamp(2.5rem,6vw,5.5rem)] leading-[1.02] tracking-tighter text-foreground/80 dark:text-neutral-300">
-              <span className="block hover:text-[#f54900] transition-colors duration-300 cursor-default">Developer</span>
-              <span className="block hover:text-[#f54900] transition-colors duration-300 cursor-default">Designer</span>
-              <span className="block hover:text-[#f54900] transition-colors duration-300 cursor-default">Creator/</span>
+            <h2 className="font-extrabold uppercase text-[clamp(2rem,4.5vw,4.5rem)] leading-[1.02] tracking-tighter text-foreground/80 dark:text-neutral-300">
+              <span className="block hover:text-[#f54900] transition-colors duration-300 cursor-default">Languages</span>
+              <span className="block hover:text-[#f54900] transition-colors duration-300 cursor-default">Frameworks</span>
+              <span className="block hover:text-[#f54900] transition-colors duration-300 cursor-default">Concepts/</span>
             </h2>
           </motion.div>
 
@@ -120,53 +136,157 @@ export const Skills: React.FC = () => {
               </h3>
             </div>
 
-            {/* List columns */}
+            {/* List columns side by side like a table row */}
             <motion.div 
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 text-left"
+              className="flex flex-col gap-1.5 text-left"
             >
-              {skillsData.map((group, groupIdx) => (
+              {skillsRows.map((row, rowIdx) => (
                 <motion.div 
-                  key={groupIdx} 
+                  key={rowIdx} 
                   variants={itemVariants}
-                  className="flex flex-col gap-4"
+                  className="grid grid-cols-3 gap-8 sm:gap-6 items-center py-0.5"
                 >
-                  {/* Category Title */}
-                  <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#f54900] border-b border-dashed border-border pb-2">
-                    {group.category}
-                  </h4>
-                  {/* Category Items */}
-                  <ul className="flex flex-col gap-2.5">
-                    {group.items.map((skill, skillIdx) => (
+                  {/* Language & Tools Column */}
+                  <div>
+                    {row.lang && (
                       <li 
-                        key={skillIdx} 
-                        className="text-xs sm:text-xs md:text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 cursor-pointer flex items-center group relative py-1"
+                        className="text-xs sm:text-xs md:text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 cursor-pointer flex items-center group relative list-none"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (hoveredSkill === row.lang) {
+                            setHoveredSkill(null);
+                            setHoveredIcon(null);
+                          } else {
+                            setHoveredSkill(row.lang);
+                            setHoveredIcon(getIconForSkill(row.lang));
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setMousePos({
+                              x: rect.left + rect.width / 2,
+                              y: rect.top
+                            });
+                          }
+                        }}
                         onMouseEnter={() => {
                           if (!isMobile) {
-                            setHoveredSkill(skill);
-                            setHoveredIcon(getIconForSkill(skill));
+                            setHoveredSkill(row.lang);
+                            setHoveredIcon(getIconForSkill(row.lang));
                           }
                         }}
                         onMouseLeave={() => {
-                          setHoveredSkill(null);
-                          setHoveredIcon(null);
+                          if (!isMobile) {
+                            setHoveredSkill(null);
+                            setHoveredIcon(null);
+                          }
                         }}
                       >
                         {/* Text Flipping Container */}
                         <span className="h-[1.25em] overflow-hidden select-none block relative flex-1">
                           <span className="block translate-y-0 transition-all duration-300 ease-in-out group-hover:-translate-y-full">
-                            {skill}
+                            {row.lang}
                           </span>
                           <span className="block transition-all duration-300 ease-in-out group-hover:-translate-y-full text-[#f54900] absolute top-full left-0 w-full">
-                            {skill}
+                            {row.lang}
                           </span>
                         </span>
                       </li>
-                    ))}
-                  </ul>
+                    )}
+                  </div>
+
+                  {/* Frameworks & Libraries Column */}
+                  <div>
+                    {row.framework && (
+                      <li 
+                        className="text-xs sm:text-xs md:text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 cursor-pointer flex items-center group relative list-none"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (hoveredSkill === row.framework) {
+                            setHoveredSkill(null);
+                            setHoveredIcon(null);
+                          } else {
+                            setHoveredSkill(row.framework);
+                            setHoveredIcon(getIconForSkill(row.framework));
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setMousePos({
+                              x: rect.left + rect.width / 2,
+                              y: rect.top
+                            });
+                          }
+                        }}
+                        onMouseEnter={() => {
+                          if (!isMobile) {
+                            setHoveredSkill(row.framework);
+                            setHoveredIcon(getIconForSkill(row.framework));
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          if (!isMobile) {
+                            setHoveredSkill(null);
+                            setHoveredIcon(null);
+                          }
+                        }}
+                      >
+                        {/* Text Flipping Container */}
+                        <span className="h-[1.25em] overflow-hidden select-none block relative flex-1">
+                          <span className="block translate-y-0 transition-all duration-300 ease-in-out group-hover:-translate-y-full">
+                            {row.framework}
+                          </span>
+                          <span className="block transition-all duration-300 ease-in-out group-hover:-translate-y-full text-[#f54900] absolute top-full left-0 w-full">
+                            {row.framework}
+                          </span>
+                        </span>
+                      </li>
+                    )}
+                  </div>
+
+                  {/* Databases & Core CS Column */}
+                  <div>
+                    {row.concept && (
+                      <li 
+                        className="text-xs sm:text-xs md:text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 cursor-pointer flex items-center group relative list-none"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (hoveredSkill === row.concept) {
+                            setHoveredSkill(null);
+                            setHoveredIcon(null);
+                          } else {
+                            setHoveredSkill(row.concept);
+                            setHoveredIcon(getIconForSkill(row.concept));
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setMousePos({
+                              x: rect.left + rect.width / 2,
+                              y: rect.top
+                            });
+                          }
+                        }}
+                        onMouseEnter={() => {
+                          if (!isMobile) {
+                            setHoveredSkill(row.concept);
+                            setHoveredIcon(getIconForSkill(row.concept));
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          if (!isMobile) {
+                            setHoveredSkill(null);
+                            setHoveredIcon(null);
+                          }
+                        }}
+                      >
+                        {/* Text Flipping Container */}
+                        <span className="h-[1.25em] overflow-hidden select-none block relative flex-1">
+                          <span className="block translate-y-0 transition-all duration-300 ease-in-out group-hover:-translate-y-full">
+                            {row.concept}
+                          </span>
+                          <span className="block transition-all duration-300 ease-in-out group-hover:-translate-y-full text-[#f54900] absolute top-full left-0 w-full">
+                            {row.concept}
+                          </span>
+                        </span>
+                      </li>
+                    )}
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
@@ -174,27 +294,20 @@ export const Skills: React.FC = () => {
 
         </div>
 
-        {/* Bottom Footer with View More Button */}
-        <div className="w-full">
-          <div className="flex justify-end items-center py-4 px-6 sm:px-8 lg:px-16">
-            <CreepyButton onClick={() => navigate('/skills')}>
-              View More
-            </CreepyButton>
-          </div>
-        </div>
+
 
       </div>
 
-      {/* Cursor Follower Tech Icon Card (Desktop Only) */}
+      {/* Cursor Follower Tech Icon Card (Desktop & Touch Popup) */}
       <AnimatePresence>
-        {!isMobile && hoveredIcon && (
+        {hoveredIcon && (
           <motion.div
             className="fixed pointer-events-none z-50 w-16 h-16 rounded-lg border-2 border-foreground bg-background shadow-2xl p-1.5 flex items-center justify-center overflow-hidden"
             style={{
               left: mousePos.x,
               top: mousePos.y,
-              x: "15px", // offset to right of cursor
-              y: "-50%", // centered vertically with cursor
+              x: isMobile ? "-50%" : "15px", // Center horizontally on mobile
+              y: isMobile ? "-120%" : "-50%", // Center vertically on desktop, shift up on mobile
             }}
             initial={{ opacity: 0, scale: 0.6, rotate: -15 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
