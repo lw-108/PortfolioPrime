@@ -348,11 +348,11 @@ const StepRibbon: React.FC = () => {
           ))}
         </div>
 
-        {/* Animated Ribbon Marquee Banner at bottom */}
-        <div className="w-full overflow-hidden bg-background">
-          <Ribbon />
-        </div>
+      </div>
 
+      {/* Animated 97% Width Ribbon Marquee Banner at bottom */}
+      <div className="w-[97%] max-w-384 mx-auto overflow-hidden bg-background">
+        <Ribbon />
       </div>
 
       <style>{`
