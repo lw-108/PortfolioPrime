@@ -5,71 +5,11 @@ import { motion } from 'motion/react';
 import { CreepyButton } from '../components/ui/creepy-button';
 import { useNavigate } from 'react-router-dom';
 import { useProjects } from '../lib/projects-data';
+import { getTechIcon } from '../lib/tech-data';
+import { AnimatedTitle } from '../components/ui/AnimatedTitle';
 
 gsap.registerPlugin(ScrollTrigger);
 
-
-// ── Animated Title Characters ──
-const AnimatedTitle: React.FC<{ text: string }> = ({ text }) => {
-  let words = text.split(' ');
-  if (words.length > 1 && words[words.length - 1] === '/') {
-    const lastWord = words[words.length - 2] + ' /';
-    words = [...words.slice(0, words.length - 2), lastWord];
-  }
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: 0.02, delayChildren: 0 },
-    },
-  };
-  const charVariants = {
-    hidden: { opacity: 0, y: 60 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { type: 'spring', damping: 12, stiffness: 100 },
-    },
-  } as const;
-
-  return (
-    <motion.span
-      variants={containerVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      className="inline-block"
-    >
-      {words.map((word, wordIdx) => (
-        <span key={wordIdx} className="inline-block whitespace-nowrap">
-          {word.split('').map((char, i) => (
-            <motion.span key={i} variants={charVariants} className="inline-block">
-              {char}
-            </motion.span>
-          ))}
-          {wordIdx < words.length - 1 && <span className="inline-block">&nbsp;</span>}
-        </span>
-      ))}
-    </motion.span>
-  );
-};
-
-// ── Tag Icon Map ──
-const tagIcons: Record<string, string> = {
-  'React': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-  'Tailwind': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
-  'Tailwind CSS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
-  'GSAP': 'https://cdn.worldvectorlogo.com/logos/gsap-greensock.svg',
-  'TypeScript': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
-  'Next.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
-  'Node.js': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-  'AWS': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg',
-  'Figma': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
-  'Supabase': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg',
-  'Firebase': 'https://brandlogos.net/wp-content/uploads/2025/03/firebase_icon-logo_brandlogos.net_tcvck-512x646.png',
-  'PostgreSQL': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
-};
-
-// ── Main Component ──
 const Projects: React.FC = () => {
   const navigate = useNavigate();
   const { projects, loading } = useProjects();
@@ -267,6 +207,7 @@ const Projects: React.FC = () => {
                   data-index={i + 1}
                   className="work-card pb-10"
                 >
+                  {/* Image — clickable link */}
                   <a
                     className="group block"
                     target="_blank"
@@ -295,55 +236,77 @@ const Projects: React.FC = () => {
                         }}
                       />
                     </div>
+                  </a>
 
-                    {/* Card info */}
-                    <div className="mt-3">
-                      <div className="flex justify-between items-end mb-1">
-                        <p className="font-clash text-xs sm:text-sm text-muted-foreground uppercase tracking-widest leading-none">
-                          {work.category}
-                        </p>
-                        <span className="md:hidden text-foreground/10 text-3xl font-semibold font-clash tracking-tighter leading-none select-none">
-                          0{i + 1}
-                        </span>
-                      </div>
-                      <div className="items-center justify-between sm:flex">
-                        <h3 className="font-clash text-2xl sm:text-3xl font-bold uppercase text-foreground">
-                          {work.name}
-                        </h3>
-                        <div className="flex gap-1.5 select-none mt-2 sm:mt-0 flex-wrap">
-                          {work.tags.map((tag) => {
-                            if (!tag.trim()) return null;
-                            const iconUrl = tagIcons[tag];
-                            return (
-                              <span
-                                key={tag}
-                                className="bg-[#f54900] text-white text-xs sm:text-sm font-semibold px-3 py-1 flex items-center gap-1.5 cursor-default hover:bg-[#d43f00] transition-colors duration-300"
-                              >
-                                {iconUrl && (
-                                  <img
-                                    src={iconUrl}
-                                    alt={tag}
-                                    className="w-4 h-4 object-contain"
-                                  />
-                                )}
-                                <span>{tag}</span>
-                              </span>
-                            );
-                          })}
-                          <span className="bg-foreground text-background text-xs sm:text-sm font-semibold px-3 py-1 flex items-center cursor-default">
-                            {work.year}
+                  {/* Card info — outside <a> so CreepyButton isn't nested inside another anchor */}
+                  <div className="mt-3 space-y-2">
+                    {/* Category */}
+                    <p className="font-clash text-xs sm:text-sm text-muted-foreground uppercase tracking-widest leading-none">
+                      {work.category}
+                    </p>
+
+                    {/* Name + Year on same row */}
+                    <div className="flex items-baseline justify-between gap-4">
+                      <h3 className="font-clash text-2xl sm:text-3xl font-bold uppercase text-foreground leading-none">
+                        {work.name}
+                      </h3>
+                      <span className="bg-foreground text-background text-xs font-semibold px-3 py-1 shrink-0 flex items-center cursor-default">
+                        {work.year}
+                      </span>
+                    </div>
+
+                    {/* Tags row */}
+                    <div className="flex gap-1.5 select-none flex-wrap">
+                      {work.tags.map((tag) => {
+                        if (!tag.trim()) return null;
+                        const iconUrl = getTechIcon(tag);
+                        return (
+                          <span
+                            key={tag}
+                            className="bg-[#f54900] text-white text-xs font-semibold px-2.5 py-1 flex items-center gap-1.5 cursor-default hover:bg-[#d43f00] transition-colors duration-300"
+                          >
+                            {iconUrl && (
+                              <img
+                                src={iconUrl}
+                                alt={tag}
+                                className="w-3.5 h-3.5 object-contain shrink-0"
+                              />
+                            )}
+                            <span>{tag}</span>
                           </span>
-                        </div>
-                      </div>
-                      <p className="mt-2 text-xs sm:text-sm text-neutral-400 font-clash leading-relaxed max-w-xl">
+                        );
+                      })}
+                    </div>
+
+                    {/* Description + Visit Button row */}
+                    <div className="flex items-end justify-between gap-4 pt-1">
+                      <p className="text-xs sm:text-sm text-neutral-400 font-clash leading-relaxed max-w-xl">
                         {work.description}
                       </p>
+                      {work.url && (
+                        <a
+                          href={work.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="shrink-0"
+                        >
+                          <CreepyButton
+                            coverClassName="text-xs font-clash font-semibold uppercase tracking-wider text-white whitespace-nowrap flex items-center gap-1.5"
+                          >
+                            <span>Visit Live</span>
+                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <path d="M7 17L17 7M17 7H7M17 7V17" />
+                            </svg>
+                          </CreepyButton>
+                        </a>
+                      )}
                     </div>
-                  </a>
+                  </div>
                 </div>
               </React.Fragment>
             ))}
           </aside>
+
         </div>
 
         {/* More Projects Button */}

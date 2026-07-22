@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useProjects } from '../lib/projects-data';
-import { techStackItems } from '../lib/tech-data';
+import { getTechIcon } from '../lib/tech-data';
 import { CreepyButton } from '../components/ui/creepy-button';
 import { AnimatedTitle } from '../components/ui/AnimatedTitle';
 import { ArrowUpRight } from 'lucide-react';
@@ -31,7 +31,7 @@ const revealVariants = {
 // ── Skeleton card shown while Firestore loads ────────────────────────────────
 const ProjectSkeleton: React.FC = () => (
   <div className="w-full h-full flex flex-col justify-center items-center px-4 sm:px-12 md:px-20 lg:px-32 py-8 bg-background shrink-0">
-    <div className="w-full max-w-6xl h-[50vh] sm:h-[55vh] md:h-[65vh] bg-neutral-900 animate-pulse" />
+    <div className="w-full max-w-6xl h-[50vh] sm:h-[55vh] md:h-[65vh] bg-muted animate-pulse" />
     <div className="w-full max-w-6xl mt-6 flex flex-col gap-4 border-t border-border pt-6">
       <div className="h-8 w-1/3 bg-neutral-800 animate-pulse rounded-none" />
       <div className="h-4 w-2/3 bg-neutral-800 animate-pulse rounded-none" />
@@ -53,18 +53,7 @@ export const ProjectsPage: React.FC = () => {
 
   const totalSlides = projects.length;
 
-  // Helper to fetch SVG icon path for a given technology tag
-  const getTechIcon = (tag: string) => {
-    const normalizedTag = tag.toLowerCase().trim();
-    const match = techStackItems.find(item => {
-      const titleLower = item.title.toLowerCase().trim();
-      if (titleLower === normalizedTag) return true;
-      if (titleLower === 'tailwind css' && normalizedTag === 'tailwind') return true;
-      if (titleLower === 'postgresql' && (normalizedTag === 'postgres' || normalizedTag === 'postgresql')) return true;
-      return false;
-    });
-    return match ? match.image : null;
-  };
+  // getTechIcon is imported from tech-data
 
   /* ── Tween to a specific index ── */
   const goTo = (idx: number) => {
@@ -296,7 +285,7 @@ export const ProjectsPage: React.FC = () => {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
-                    className="relative w-full max-w-7xl h-[55vh] sm:h-[60vh] md:h-[68vh] overflow-hidden shadow-2xl bg-neutral-950 flex items-center justify-center border border-neutral-800"
+                    className="relative w-full max-w-7xl h-[55vh] sm:h-[60vh] md:h-[68vh] overflow-hidden shadow-2xl bg-background flex items-center justify-center border border-border"
                   >
                     <a href={project.url} target="_blank" rel="noopener noreferrer" className="w-full h-full flex items-center justify-center overflow-hidden relative">
                       <img
@@ -305,7 +294,7 @@ export const ProjectsPage: React.FC = () => {
                         className="project-img max-w-[95%] max-h-[92%] object-contain select-none pointer-events-none"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-black/15 group-hover:bg-transparent transition-colors duration-300 pointer-events-none" />
+                      <div className="absolute inset-0 bg-foreground/5 group-hover:bg-transparent transition-colors duration-300 pointer-events-none" />
                     </a>
 
                     {/* Mixed-Blend Mode Serial Number */}
@@ -367,7 +356,7 @@ export const ProjectsPage: React.FC = () => {
                             return (
                               <span
                                 key={j}
-                                className="text-[9px] bg-neutral-900 border border-neutral-800 text-neutral-300 px-2 py-0.5 uppercase font-clash font-bold flex items-center tracking-widest gap-1"
+                                className="text-[9px] bg-background border border-border text-foreground/70 px-2 py-0.5 uppercase font-clash font-bold flex items-center tracking-widest gap-1"
                               >
                                 {icon && <img src={icon} alt={tag} className="w-3 h-3 object-contain" />}
                                 <span>{tag}</span>

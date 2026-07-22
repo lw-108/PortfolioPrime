@@ -436,7 +436,7 @@ export const techStackItems: TechItem[] = [
   },
   {
     title: "Ollama",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Ollama-logo.svg/1920px-Ollama-logo.svg.png",
+    image: "https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/ollama.png",
     link: "https://ollama.com",
     level: 84,
     experience: 78,
@@ -445,6 +445,24 @@ export const techStackItems: TechItem[] = [
     tools: ["LLMs", "Local AI", "Model Inference"],
   },
 ];
+
+export const getTechIcon = (tag: string): string | null => {
+  if (!tag || !tag.trim()) return null;
+  const normalizedTag = tag.trim().toLowerCase().replace(/[\s\-_]/g, '');
+
+  const match = techStackItems.find(item => {
+    const titleNormalized = item.title.toLowerCase().replace(/[\s\-_]/g, '');
+    if (titleNormalized === normalizedTag) return true;
+    if ((titleNormalized === 'tailwindcss' || titleNormalized === 'tailwind') && (normalizedTag === 'tailwind' || normalizedTag === 'tailwindcss')) return true;
+    if ((titleNormalized === 'postgresql' || titleNormalized === 'postgres') && (normalizedTag === 'postgres' || normalizedTag === 'postgresql')) return true;
+    if ((titleNormalized === 'fastapi' || titleNormalized === 'fast-api') && (normalizedTag === 'fastapi' || normalizedTag === 'fast-api')) return true;
+    if ((titleNormalized === 'typescript' || titleNormalized === 'ts') && (normalizedTag === 'typescript' || normalizedTag === 'ts')) return true;
+    if ((titleNormalized === 'javascript' || titleNormalized === 'js') && (normalizedTag === 'javascript' || normalizedTag === 'js')) return true;
+    return false;
+  });
+
+  return match ? match.image : null;
+};
 
 export const getTechDetails = (title: string, category: string) => {
   const item = techStackItems.find(t => t.title === title);
